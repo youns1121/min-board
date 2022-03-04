@@ -2,14 +2,13 @@ package com.minboard.controller;
 
 
 import com.minboard.dto.BoardDto;
+import com.minboard.paging.PaginationDto;
 import com.minboard.service.BoardService;
 import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,44 +21,41 @@ public class BoardController {
 
 
 
-    @GetMapping("/newBoard")
-    public String formBoard(Model model){
-
-        model.addAttribute("BoardDto", new BoardDto());
-
+    @GetMapping("/new")
+    public String formBoard(@ModelAttribute("boardDto") BoardDto boardDto){
         return "html/board";
     }
 
-    @PostMapping("/newBoard")
+    @PostMapping("/new")
     public String createBoard(BoardVo boardVo, Model model){
-
         int successBoard = boardService.createBoard(boardVo);
-
         model.addAttribute("successBoard", successBoard);
-
         return "html/board";
     }
-
-//    @PostMapping("/newBoard")
-//    public String newBoard(BoardVo boardVo, Model model){
-//
-//        Long success = boardService.newBoard(boardVo);
-//
-//        model.addAttribute("success", success);
-//
-//        return "html/board";
-//    }
 
     @GetMapping("/list")
-    public String boardAllList(Model model){
-
-        List<BoardDto> boardList = boardService.findAllByBoard();
-
+    public String getBoardPagingList(@ModelAttribute("boardVo") BoardVo boardVo, Model model){
+        List<BoardDto> boardList = boardService.getBoardList(boardVo);
         model.addAttribute("boardList", boardList);
-
         return "html/boardList";
     }
 
+    //상세보기
+    @GetMapping()
+    public String getDetailBoardView(){
+        return "html/board";
+    }
+
+    //수정
+    @PatchMapping()
+    public String updateBoard(){
+        return "html/board";
+    }
+    //삭제, delYn = "Y"
+    @PatchMapping()
+    public String deleteBoard(){
+        return "html/board";
+    }
 
 
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatisrestapi.repository.BoardRepository">
+
+    <resultMap id="boardVoResultMap" type="BoardVo">
+        <result property="createTime" column="create_time"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+    </resultMap>
+
+
+    <!--- 게시판 전체보기  -->
+    <select id="findAllByBoard" resultType="BoardVo" resultMap="boardVoResultMap" >
+        select title, create_time, view_count, like_count
+        from board
+        where del_yn = 'N'
+    </select>
+
+
+
+
+    <!--- 생성하기  -->
+    <insert id="createBoard"
+            parameterType="BoardVo"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        insert into board(title, contents, create_time, update_time)
+        values (#{title}, #{contents}, #{createTime}, #{updateTime})
+
+    </insert>
+
+    <!--    &lt;!&ndash;- 게시판 상세보기  &ndash;&gt;-->
+    <!--    <select id="getBoard" resultType="BoardVo">-->
+
+    <!--        select id, title, contents-->
+    <!--        from board-->
+    <!--        where id = #{param} and delyn = 'N'-->
+    <!--    </select>-->
+
+<!--    <insert id="newBoard"-->
+<!--            parameterType="BoardVo"-->
+<!--            useGeneratedKeys ="true"-->
+<!--            keyProperty="id">-->
+
+<!--        insert into board(title, contents, create_time, update_time, view_count, like_count, del_yn)-->
+<!--        values (#{title}, #{contents}, #{createTime}, #{updateTime}, #{view_count}, #{like_count}, #{del_yn})-->
+
+<!--    </insert>-->
+
+<!--    &lt;!&ndash;- 수정하기  &ndash;&gt;-->
+<!--    <update id="editBoard" parameterType="BoardDto">-->
+<!--        update board-->
+<!--        set title = #{title},-->
+<!--            contents = #{contents},-->
+<!--            author = #{author}-->
+<!--        where id = #{id} and delyn = 'N'-->
+<!--    </update>-->
+
+<!--    &lt;!&ndash;- 삭제하기 : 삭제여부 = 'Y' 변경  &ndash;&gt;-->
+<!--    <update id="delBoard" parameterType="BoardDto">-->
+<!--        update board-->
+<!--        set delyn = 'Y'-->
+<!--        where id = #{id}-->
+<!--    </update>-->
+
+
+
+
+</mapper>

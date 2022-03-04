@@ -1,0 +1,26 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+    username: min
+    password: wjdqhqhdks
+
+mybatis:
+  mapper-locations: classpath:mapper/**.xml
+  type-aliases:package: com.mybatisrestapi.vo
+
+
+logging:
+  config: classpath:log4j2.xml
+
+

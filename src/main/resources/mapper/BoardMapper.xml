@@ -10,27 +10,28 @@
         <result property="likeCount" column="like_count"/>
     </resultMap>
 
-    <!--- 게시판 전체보기  -->
-    <select id="findAllByBoard" resultType="BoardVo" resultMap="boardVoResultMap" >
-        select title, create_time, update_time view_count, like_count
-        from board
-        where del_yn = 'N'
-    </select>
+    <resultMap id="boardDtoResultMap" type="BoardDto">
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+    </resultMap>
 
-    <!--- 게시물 페이징  -->
-    <select id="getBoardPaging" parameterType="BoardVo" resultType="BoardVo" resultMap="boardVoResultMap" >
-        select (@rownum := @rownum + 1) as num, title, create_time, update_time view_count, like_count, del_yn
+    <!--- 게시물 전체보기  -->
+    <select id="getBoardPagingList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
+        select id, (@rownum := @rownum + 1) as num, title, create_time, update_time, view_count, like_count, del_yn
         from board b, (select @rownum := 0) as num_table
         where del_yn = 'N'
         order by
-                rownum desc,
+                num desc,
                 create_time desc
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage}
     </select>
 
     <!--    게시판 상세 상세보기-->
-    <select id="findAllByBoard" resultType="BoardVo" resultMap="boardVoResultMap" >
-        select title, contents, create_time, update_time, view_count, like_count
+    <select id="getDetailViewBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
+        select id, title, contents, create_time, update_time, view_count, like_count
         from board
         where id = #{id} and del_yn = 'N'
     </select>
@@ -53,20 +54,23 @@
     </insert>
 
     <!--수정하기-->
-    <update id="updateBoard"  parameterType="int" >
+    <update id="updateBoard" parameterType="BoardDto">
         update board
         set title = #{title},
-            contents = #{contents},
-            update_time = #{updateTime}
-        where del_yn = 'N'
+            contents = #{contents}
+        where
+              del_yn = 'N'
+          and id = #{id}
     </update>
 
     <!--삭제하기-->
     <update id="deleteBoard" parameterType="int">
         update board
-        set del_yn = #{delYn},
-            delete_time = #{deleteTime}
-        where del_yn = 'N'
+        set del_yn = 'Y',
+        where
+            del_yn = 'N'
+            and id = #{id}
+
     </update>
 
 </mapper>

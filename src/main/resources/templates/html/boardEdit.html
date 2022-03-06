@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<form  th:object="${boardDto}" th:action="@{/board/update}" method="post">
+  <fieldset>
+    <legend>수정</legend>
+    </br>
+    <tr>
+      <td>
+        <input type="hidden" class="form-control" id="exampleIdInput" th:field="*{id}">
+        <div for="exampleFormControlInput1" class="form-label">제목</div>
+        <input type="text" class="form-control" id="exampleFormControlInput1" th:field="*{title}">
+      </td>
+    </tr>
+    <br/>
+    <tr>
+      <td>
+        <label for="exampleTextarea">내용</label>
+        <textarea class="form-control" id="exampleTextarea" rows="3"  th:field="*{contents}" ></textarea>
+      </td>
+    </tr>
+    </div>
+
+  </fieldset>
+  <button type="submit" th:value="${id}" class="btn btn-primary" th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|" >저장</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+</form>
+
+
+
+</body>
+
+
+</html>

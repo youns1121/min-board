@@ -1,6 +1,7 @@
 package com.minboard.vo;
 
-import com.minboard.paging.CommonPageDto;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +9,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
-public class BoardVo extends CommonPageDto {
+public class BoardVo {
+
+    /** BoardVo PK **/
+    private Long id;
 
     /** 게시글 번호 **/
     private Long num;
@@ -22,15 +26,6 @@ public class BoardVo extends CommonPageDto {
     /** 게시글 내용 **/
     private String contents;
 
-    /** 게시글 생성시간 **/
-    private LocalDateTime createTime;
-
-    /** 게시글 수정시간 **/
-    private LocalDateTime updateTime;
-
-    /** 게시글 삭제시간 **/
-    private LocalDateTime deleteTime;
-
     /** 게시글 삭제여부, Y : 삭제, N : 삭제안됨 **/
     private String delYn;
 
@@ -40,19 +35,23 @@ public class BoardVo extends CommonPageDto {
     /** 게시글 좋아요수 **/
     private Integer likeCount;
 
+    /** 등록일 */
+    private LocalDateTime createTime;
 
-    public BoardVo(String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
+    /** 수정일 */
+    private LocalDateTime updateTime;
+
+    @Builder
+    public BoardVo(Long id, Long num, String title, String author, String contents, String delYn, Integer viewCount, Integer likeCount, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.id = id;
+        this.num = num;
         this.title = title;
+        this.author = author;
         this.contents = contents;
+        this.delYn = delYn;
+        this.viewCount = viewCount;
+        this.likeCount = likeCount;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
     }
-
-    public BoardVo(String title, LocalDateTime createTime, Integer viewCount, Integer likeCount) {
-        this.title = title;
-        this.createTime = createTime.now();
-        this.viewCount = viewCount;
-        this.likeCount = likeCount;
-    }
-
 }

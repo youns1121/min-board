@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<form  th:object="${detailViewBoard}" th:action="@{/board/view/*{id}}" method="get">
+  <fieldset>
+    <legend>상세보기</legend>
+    <a th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-hh:mm')}"/>
+    </br>
+    <tr>
+      <td>
+        <div for="exampleFormControlInput1" class="form-label">제목</div>
+        <input type="text" class="form-control" id="exampleFormControlInput1" readonly th:field="*{title}">
+      </td>
+    </tr>
+    <br/>
+    <tr>
+      <td>
+        <label for="exampleTextarea">내용</label>
+        <textarea class="form-control" id="exampleTextarea" rows="3" readonly th:field="*{contents}" ></textarea>
+      </td>
+    </tr>
+    </div>
+  </fieldset>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>
+  <button type="button" class="btn btn-primary >삭제</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+</form>
+
+
+
+</body>
+
+
+</html>

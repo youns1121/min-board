@@ -1,5 +1,10 @@
 package com.minboard.paging;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class PaginationInfo {
 
     /** 페이징 계산에 필요한 파라미터들이 담긴 클래스 */
@@ -29,4 +34,16 @@ public class PaginationInfo {
     /** 다음 페이지 존재 여부 */
     private boolean hasNextPage;
 
+
+    public PaginationInfo(PaginationDto paginationDto) {
+        this.paginationDto = paginationDto;
+        this.totalRecordCount = totalRecordCount;
+        this.totalPageCount = totalPageCount;
+        this.firstPage = firstPage;
+        this.lastPage = lastPage;
+        this.firstRecordIndex = firstRecordIndex;
+        this.lastRecordIndex = lastRecordIndex;
+        this.hasPreviousPage = hasPreviousPage;
+        this.hasNextPage = hasNextPage;
+    }
 }

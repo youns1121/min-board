@@ -9,19 +9,21 @@ import java.util.List;
 
 public interface BoardService {
 
-    List<BoardDto> findAllByBoard(); //전체 출력
+    /** 게시물 리스트 **/
+    List<BoardDto> getBoardList(BoardDto boardDto);
 
-    // 게시물 페이징
-    List<BoardDto> getBoardList(BoardVo boardVo);
+    /** 전체 게시물 수 **/
+    int geTotalBoardCount();
 
-    int geTotalBoardCount(); // 총 게시물 수
+    /** 게시물 상세보기 **/
+    BoardDto getDetailViewBoard(int id);
 
-    BoardDto getDetailViewBoard(int id); // 상세보기
+    /** 게시물 생성 **/
+    int createBoard(BoardVo boardVo);
 
-    int createBoard(BoardVo boardVo); //게시물 생성
+    /** 게시물 삭제 **/
+    void deleteBoard(int id);
 
-    int deleteBoard(int id); // 게시물 삭제
-
-    int updateBoard(int id); // 게시물 수정
+    int updateBoard(BoardDto boardDto);
 
 }

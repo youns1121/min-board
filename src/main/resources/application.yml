@@ -10,18 +10,18 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3307/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 
     username: min
     password: wjdqhqhdks
 
 mybatis:
   mapper-locations: classpath:mapper/**.xml
-  type-aliases:package: com.minBoard.vo, com.minBoard.paging
+  type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
 
 
 
-logging:
-  config: classpath:log4j2.xml
+#logging:
+#  config: classpath:log4j2.xml
 
 

@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+<form  th:object="${boardVo}" th:action="@{/board/new}" method="post">
+        <fieldset>
+            <legend>글쓰기</legend>
+            <tr>
+                <td>
+                    <label for="exampleFormControlInput1" class="form-label" >제목</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" th:field="*{title}">
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td>
+                    <label for="exampleTextarea">내용</label>
+                    <textarea class="form-control" id="exampleTextarea" rows="3" th:field="*{contents}" ></textarea>
+                </td>
+            </tr>
+            </div>
+
+        </fieldset>
+    <button type="submit" class="btn btn-primary" >작성</button>
+    <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+    </form>
+
+
+
+</body>
+
+
+</html>

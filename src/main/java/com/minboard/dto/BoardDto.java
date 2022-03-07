@@ -33,4 +33,5 @@ public class BoardDto extends CommonPageDto {
 
     /** 게시글 좋아요수 **/
     private Integer likeCount;
+
 }

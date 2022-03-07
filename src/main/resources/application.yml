@@ -8,9 +8,11 @@ server:
 
 
 spring:
+  thymeleaf:
+    cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 
     username: min
     password: wjdqhqhdks

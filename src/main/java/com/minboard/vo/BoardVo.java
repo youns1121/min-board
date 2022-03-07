@@ -1,14 +1,15 @@
 package com.minboard.vo;
 
 
+import com.minboard.dto.BoardDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
-@NoArgsConstructor
 public class BoardVo {
 
     /** BoardVo PK **/
@@ -26,7 +27,7 @@ public class BoardVo {
     /** 게시글 내용 **/
     private String contents;
 
-    /** 게시글 삭제여부, Y : 삭제, N : 삭제안됨 **/
+    /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;
 
     /** 게시글 조회수 **/
@@ -53,5 +54,18 @@ public class BoardVo {
         this.likeCount = likeCount;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoardVo boardVo = (BoardVo) o;
+        return Objects.equals(id, boardVo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

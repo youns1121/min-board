@@ -1,15 +1,16 @@
 package com.minboard.paging;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Getter
 @Setter
 public class PaginationDto {
 
     /** 페이지 번호 **/
-    private Integer pageNo;
+    private Integer currentPageNo ;
 
     /** 페이지당 게시물 갯수 **/
     private Integer recordsPerPage;
@@ -18,13 +19,19 @@ public class PaginationDto {
     private Integer pageSize;
 
     public PaginationDto() {
-        this.pageNo = 1;
+        this.currentPageNo  = 1;
         this.recordsPerPage = 10;
         this.pageSize = 10;
     }
 
-    public int getStartPage() {
-        return (pageNo - 1) * recordsPerPage;
+    public String makeQueryString(int pageNo) {
+        UriComponents uriComponents = UriComponentsBuilder.newInstance()
+                .queryParam("currentPageNo", pageNo)
+                .queryParam("recordsPerPage", recordsPerPage)
+                .queryParam("pageSize", pageSize)
+                .build()
+                .encode();
+        return uriComponents.toUriString();
     }
 
 }

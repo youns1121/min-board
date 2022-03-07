@@ -35,6 +35,9 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
+
+
+
     /** 게시물 삭제 **/
     @Override
     public void deleteBoard(int id) {
@@ -48,14 +51,14 @@ public class BoardServiceImpl implements BoardService {
         return successUpdate;
     }
 
+
     /** 게시물 리스트 **/
     @Override
-    @Transactional(readOnly = true)
     public List<BoardDto> getBoardList(BoardDto boardDto) {
         List<BoardDto> boardList = Collections.emptyList();
         int boardTotalCount = boardMapper.geTotalBoardCount();
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
-        paginationInfo.setTotalPageCount(boardTotalCount);
+        paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);
         if(boardTotalCount > 0){
             boardList = boardMapper.getBoardPagingList(boardDto);
@@ -65,7 +68,6 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 전체 갯수 **/
     @Override
-    @Transactional(readOnly = true)
     public int geTotalBoardCount() {
         int successCount = boardMapper.geTotalBoardCount();
         return successCount;

@@ -58,6 +58,7 @@
         update board
         set title = #{title},
             contents = #{contents}
+            update_time=
         where
               del_yn = 'N'
           and id = #{id}

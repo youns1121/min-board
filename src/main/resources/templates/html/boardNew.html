@@ -1,10 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<style>
+    fieldset, tr, td {
+        border: 1px solid #bcbcbc;
+        text-align: left;
+    }
+    fieldset {
+        width: 500px;
+        height: 200px;
+    }
+</style>
 <head>
   <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="../css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
 <form  th:object="${boardVo}" th:action="@{/board/new}" method="post">
@@ -12,15 +20,15 @@
             <legend>글쓰기</legend>
             <tr>
                 <td>
-                    <label for="exampleFormControlInput1" class="form-label" >제목</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" th:field="*{title}">
+                    <label class="title" >제목</label>
+                    <input type="text" class="form-control" style="width: 300px;" th:field="*{title}">
                 </td>
             </tr>
             <br/>
             <tr>
                 <td>
                     <label for="exampleTextarea">내용</label>
-                    <textarea class="form-control" id="exampleTextarea" rows="3" th:field="*{contents}" ></textarea>
+                    <input type="text" id="exampleTextarea" rows="3" style="width: 300px; height: 150px;" th:field="*{contents}" >
                 </td>
             </tr>
             </div>

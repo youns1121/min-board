@@ -1,61 +1,71 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<style>
+    table, th, td {
+        border: 1px solid #bcbcbc;
+        text-align: center;
+    }
+    table {
+        width: 1000px;
+        height: 200px;
+    }
+</style>
 <head>
   <meta charset="utf-8">
-  <link th:href="@{/css/bootstrap.min.css}"
-            href="../css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container" style="max-width: 600px">
-  <div class="py-5 text-center">
+    <div class="container" style="max-width: 600px">
     <h2>게시물 목록</h2>
-  </div>
   <div class="row">
     <div class="col">
-      <button class="btn btn-primary float-end" th:onclick="|location.href='@{/board/new}'|" type="button">글쓰기</button>
+      <button class="writeButton" th:onclick="|location.href='@{/board/new}'|" type="button">글쓰기</button>
     </div>
   </div>
-  <hr class="my-4">
   <div>
+  <fieldset>
     <table class="table">
       <thead>
-      <tr>
-        <th>번호</th>
-        <th>제목</th>
-        <th>작성자</th>
-        <th>날짜</th>
-        <th>조회</th>
-        <th>좋아요</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="board : ${boardList}">
-        <td th:text="${board.num}"></td>
-        <td th:text="${board.title}" style="cursor:pointer" th:value="${board.id}" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
-        <td></td>
-        <td th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}"></td>
-        <td th:text="${board.viewCount}"></td>
-        <td th:text="${board.likeCount}"></td>
-
-      </tr>
-      </tbody>
-    </table>
-    <div>
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link" href="#">&laquo;</a>
-        </li>
-        <tr class="page-item active">
-          <td class="page-link"  href="#">1</td>
+        <tr cros>
+          <th>번호</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>날짜</th>
+          <th>조회</th>
+          <th>좋아요</th>
         </tr>
-        <li class="page-item">
-          <a class="page-link" href="#">&raquo;</a>
-        </li>
-      </ul>
-    </div>
+      </thead>
+  <th:block layout:fragment="content">
+      <tbody>
+      <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board : ${boardList}">
+          <td th:text="${board.num}"></td>
+          <td th:text="${board.title}" style="cursor:pointer" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
+          <td></td>
+          <td th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}"></td>
+          <td th:text="${board.viewCount}"></td>
+          <td th:text="${board.likeCount}"></td>
+        </tr>
+        <tr th:unless="${not #lists.isEmpty(boardList)}">
+          <td colspan="5">조회된 결과가 없습니다.</td>
+        </tr>
+      </tbody>
+  </th:block>
+   </table>
+   </fieldset>
+      <th:block layout:fragment="paging">
+          <nav th:replace="html/commonPaging :: pagination"></nav>
+      </th:block>
+</div>
+    <th:block layout:fragment="script">
+      <script th:inline="javascript">
+        /*<![CDATA[*/
 
-
-  </div>
-</div> <!-- /container -->
+        function movePage(uri, queryString) {
+          location.href = uri + queryString;
+        }
+        /*]]>*/
+      </script>
+    </th:block>
+</div>
 </body>
 </html>

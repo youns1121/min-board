@@ -19,6 +19,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
+
     /** 게시물 페이지 **/
     @GetMapping("/new")
     public String formBoard(@ModelAttribute("boardVo") BoardVo boardVo, Model model){
@@ -36,7 +37,7 @@ public class BoardController {
 
     /** 게시물 리스트 **/
     @GetMapping("/list")
-    public String getBoardPagingList(BoardDto boardDto, Model model){
+    public String getBoardPagingList(@ModelAttribute("boardDto") BoardDto boardDto, Model model){
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("boardList", boardList);
         return "html/boardList";

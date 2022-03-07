@@ -1,39 +1,46 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<style>
+  fieldset, tr, td {
+    border: 1px solid #bcbcbc;
+    text-align: left;
+  }
+  fieldset {
+    width: 500px;
+    height: 250px;
+  }
+</style>
 <head>
   <meta charset="utf-8">
-  <link th:href="@{/css/bootstrap.min.css}"
-        href="../css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 <body>
 <form  th:object="${detailViewBoard}" th:action="@{/board/view/*{id}}" method="get">
   <fieldset>
     <legend>상세보기</legend>
+    <label>시간</label>
     <a th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-hh:mm')}"/>
     </br>
     <tr>
       <td>
-        <div for="exampleFormControlInput1" class="form-label">제목</div>
-        <input type="text" class="form-control" id="exampleFormControlInput1" readonly th:field="*{title}">
+        <label class="title" >제목</label>
+        <input type="text" class="contents" style="width: 300px;" readonly th:field="*{title}">
       </td>
     </tr>
     <br/>
     <tr>
       <td>
-        <label for="exampleTextarea">내용</label>
-        <textarea class="form-control" id="exampleTextarea" rows="3" readonly th:field="*{contents}" ></textarea>
+        <label >내용</label>
+        <input type="text" class="contets" style="width: 300px; height: 150px;" rows="3" readonly th:field="*{contents}" >
       </td>
     </tr>
     </div>
   </fieldset>
   <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>
-  <button type="button" class="btn btn-primary >삭제</button>
-  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|"> 목록</button>
+  <button type="button" class="btn btn-primary">삭제</button>
+
 </form>
-
-
-
 </body>
 
 

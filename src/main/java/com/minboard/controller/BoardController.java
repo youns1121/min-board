@@ -2,7 +2,6 @@ package com.minboard.controller;
 
 
 import com.minboard.dto.BoardDto;
-import com.minboard.paging.PaginationDto;
 import com.minboard.service.BoardService;
 import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
@@ -19,25 +18,23 @@ public class BoardController {
 
     private final BoardService boardService;
 
-
-    /** 게시물 페이지 **/
+    /** 게시물 생성페이지 **/
     @GetMapping("/new")
-    public String formBoard(@ModelAttribute("boardVo") BoardVo boardVo, Model model){
+    public String formBoard(@ModelAttribute("boardVo") BoardVo boardVo, Model model) {
         model.addAttribute("boardVo", BoardVo.builder().build());
         return "html/boardNew";
     }
 
     /** 게시물 생성하기 **/
     @PostMapping("/new")
-    public String createBoard(@ModelAttribute("boardVo") BoardVo boardVo, Model model){
-        int successBoard = boardService.createBoard(boardVo);
-        model.addAttribute("successBoard", successBoard);
-        return "html/boardNew";
+    public String createBoard(BoardVo boardVo) {
+        boardService.createBoard(boardVo);
+        return "redirect:/board/list";
     }
 
     /** 게시물 리스트 **/
     @GetMapping("/list")
-    public String getBoardPagingList(@ModelAttribute("boardDto") BoardDto boardDto, Model model){
+    public String getBoardPagingList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("boardList", boardList);
         return "html/boardList";
@@ -45,7 +42,7 @@ public class BoardController {
 
     /** 게시물 상세페이지 **/
     @GetMapping("/view/{id}")
-    public String getDetailBoardView(@PathVariable("id") int id, Model model){
+    public String getDetailBoardView(@PathVariable("id") int id, Model model) {
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
         model.addAttribute("detailViewBoard", detailViewBoard);
         return "html/boardDetail";
@@ -53,15 +50,14 @@ public class BoardController {
 
     /** 게시물 수정하기 **/
     @PostMapping("/update")
-    public String updateBoard(@ModelAttribute("boardDto") BoardDto boardDto, Model model){
-        int updateBoard = boardService.updateBoard(boardDto);
-        model.addAttribute("updateBoard", updateBoard);
-        return "html/boardEdit";
+    public String updateBoard(@ModelAttribute("boardDto") BoardDto boardDto) {
+        boardService.updateBoard(boardDto);
+        return "redirect:/board/view/"+boardDto.getId();
     }
 
     /** 게시물 수정페이지 **/
     @GetMapping("/update/{id}")
-    public String getUpdateBoardView(@PathVariable("id") int id, Model model){
+    public String getUpdateBoardView(@PathVariable("id") int id, Model model) {
         BoardDto boardDto = boardService.getDetailViewBoard(id);
         model.addAttribute("boardDto", boardDto);
         return "html/boardEdit";
@@ -69,12 +65,10 @@ public class BoardController {
 
     /** 게시물 삭제하기 **/
     @PostMapping("/delete")
-    public String deleteBoard(int id){
+    public String deleteBoard(int id) {
         boardService.deleteBoard(id);
-        return "html/boardDetail";
+        return "redirect:/board/list";
     }
-
-
-    }
+}
 
 

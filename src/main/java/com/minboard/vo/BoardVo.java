@@ -1,22 +1,17 @@
 package com.minboard.vo;
 
-
-import com.minboard.dto.BoardDto;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 public class BoardVo {
 
     /** BoardVo PK **/
-    private Long id;
+    private Integer id;
 
     /** 게시글 번호 **/
-    private Long num;
+    private Integer num;
 
     /** 게시글 제목 **/
     private String title;
@@ -43,7 +38,7 @@ public class BoardVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardVo(Long id, Long num, String title, String author, String contents, String delYn, Integer viewCount, Integer likeCount, LocalDateTime createTime, LocalDateTime updateTime) {
+    public BoardVo(Integer id, Integer num, String title, String author, String contents, String delYn, Integer viewCount, Integer likeCount, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.num = num;
         this.title = title;
@@ -54,18 +49,5 @@ public class BoardVo {
         this.likeCount = likeCount;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BoardVo boardVo = (BoardVo) o;
-        return Objects.equals(id, boardVo.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

@@ -22,9 +22,8 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 생성 **/
     @Override
-    public int createBoard(BoardVo boardVo) {
-        int successCreate = boardMapper.createBoard(boardVo);
-        return successCreate;
+    public void createBoard(BoardVo boardVo) {
+        boardMapper.createBoard(boardVo);
     }
 
     /** 게시물 상세보기 **/
@@ -35,9 +34,6 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
-
-
-
     /** 게시물 삭제 **/
     @Override
     public void deleteBoard(int id) {
@@ -46,11 +42,10 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 수정 **/
     @Override
-    public int updateBoard(BoardDto boardDto) {
-        int successUpdate = boardMapper.updateBoard(boardDto);
-        return successUpdate;
-    }
+    public void updateBoard(BoardDto boardDto) {
+       boardMapper.updateBoard(boardDto);
 
+    }
 
     /** 게시물 리스트 **/
     @Override

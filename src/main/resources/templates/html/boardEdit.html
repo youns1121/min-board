@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<link th:href="@{/css/main.css}" rel="stylesheet" />
 <style>
   fieldset, tr, td {
     border: 1px solid #bcbcbc;
@@ -13,31 +12,44 @@
 </style>
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form  th:object="${boardDto}" th:action="@{/board/update}" method="post">
+<form class="boardEdit" th:object="${boardDto}" th:action="@{/board/update}" method="post">
   <fieldset>
     <legend>수정</legend>
-    </br>
-    <tr>
-      <td>
-        <input type="hidden" class="form-control" id="exampleIdInput" th:field="*{id}">
-        <div for="exampleFormControlInput1" class="form-label">제목</div>
-        <input type="text" class="form-control" style="width: 300px;" th:field="*{title}">
-      </td>
-    </tr>
-    <br/>
-    <tr>
-      <td>
-        <label>내용</label>
-        <input class="form-control" style="width: 300px; height: 150px;" rows="3"  th:field="*{contents}" >
-      </td>
-    </tr>
-    </div>
+      <div>
+        <tr>
+          <td>
+            <label>생성일:</label>
+          </td>
+          <td>
+            <label th:text="${#temporals.format(boardDto.createTime, 'yyyy-MM-dd-hh:mm')}"></label>
+          </td>
+        </tr>
+        <br/>
+        <br/>
+        <tr>
+          <td>
+            <label class="title" >제목</label>
+            <input type="text" class="contents" style="width: 300px;" th:field="*{title}">
+          </td>
+        </tr>
+        <br/>
+        <tr>
+          <td>
+            <label >내용</label>
+            <input type="text" class="contets" style="width: 300px; height: 150px;" rows="3" th:field="*{contents}" >
+          </td>
+          <input type="hidden" th:field="*{id}" th:value="*{id}">
+        </tr>
+      </div>
 
   </fieldset>
-  <button type="submit" th:value="${id}" class="btn btn-primary" th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|" >저장</button>
-  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+  <button type="submit" id="updateButton" th:onclick="updateFn(this)" >저장</button>
+  <button type="button" th:onclick="|location.href='@{/board/list}'|">목록</button>
 </form>
 
 

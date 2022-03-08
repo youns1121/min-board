@@ -11,10 +11,10 @@ import lombok.Setter;
 public class BoardDto extends CommonPageDto {
 
     /** 게시글 아이디 **/
-    private int id;
+    private Integer id;
     
     /** 게시글 번호 **/
-    private Long num;
+    private Integer num;
 
     /** 게시글 제목 **/
     private String title;

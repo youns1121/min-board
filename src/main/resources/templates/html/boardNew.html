@@ -12,7 +12,10 @@
     }
 </style>
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
 <form  th:object="${boardVo}" th:action="@{/board/new}" method="post">
@@ -34,7 +37,7 @@
             </div>
 
         </fieldset>
-    <button type="submit" class="btn btn-primary" >작성</button>
+    <button type="submit" id="buttonCreate" th:onclick="createFn(this)" >저장</button>
     <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
     </form>
 

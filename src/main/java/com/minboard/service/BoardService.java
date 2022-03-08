@@ -19,12 +19,13 @@ public interface BoardService {
     BoardDto getDetailViewBoard(int id);
 
     /** 게시물 생성 **/
-    int createBoard(BoardVo boardVo);
+    void createBoard(BoardVo boardVo);
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);
 
-    int updateBoard(BoardDto boardDto);
+    /** 게시물 수정 **/
+    void updateBoard(BoardDto boardDto);
 
 
 }

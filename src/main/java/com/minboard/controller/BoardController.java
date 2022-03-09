@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -27,9 +28,11 @@ public class BoardController {
 
     /** 게시물 생성하기 **/
     @PostMapping("/new")
-    public String createBoard(BoardVo boardVo) {
+    public String createBoard(BoardVo boardVo, RedirectAttributes redirectAttributes) {
         boardService.createBoard(boardVo);
-        return "redirect:/board/list";
+        redirectAttributes.addAttribute("id", boardVo.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/board/view/{id}";
     }
 
     /** 게시물 리스트 **/

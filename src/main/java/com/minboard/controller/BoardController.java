@@ -5,13 +5,19 @@ import com.minboard.dto.BoardDto;
 import com.minboard.service.BoardService;
 import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
@@ -28,7 +34,23 @@ public class BoardController {
 
     /** 게시물 생성하기 **/
     @PostMapping("/new")
-    public String createBoard(BoardVo boardVo, RedirectAttributes redirectAttributes) {
+    public String createBoard(BoardVo boardVo, RedirectAttributes redirectAttributes, Model model) {
+        //검증 오류 결과를 보관
+        Map<String, String> hasErrors = new HashMap<>();
+        //검증 로직
+        if(!StringUtils.hasText(boardVo.getTitle())){
+            hasErrors.put("title", "제목은 필수입니다.");
+        }
+        if((boardVo.getContents() != null && boardVo.getContents().trim().length() < 20) || "".equals(boardVo.getContents())){
+            log.info("hasErrors = {}", hasErrors);
+            hasErrors.put("contents", "내용은 공백제외 20자 이상 작성해야 합니다.");
+        }
+        //검증에 실패하면 다시 입력 폼으로
+        if(!hasErrors.isEmpty()){
+            model.addAttribute("hasErrors", hasErrors);
+            return "html/boardNew";
+        }
+        //성공로직
         boardService.createBoard(boardVo);
         redirectAttributes.addAttribute("id", boardVo.getId());
         redirectAttributes.addAttribute("status", true);

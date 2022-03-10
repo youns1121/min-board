@@ -25,7 +25,7 @@ public interface BoardService {
     void deleteBoard(int id);
 
     /** 게시물 수정 **/
-    void updateBoard(BoardDto boardDto);
+    void updateBoard(BoardVo boardVo);
 
 
 }

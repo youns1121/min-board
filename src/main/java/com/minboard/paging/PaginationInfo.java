@@ -38,7 +38,7 @@ public class PaginationInfo {
 
 
 
-    private int findTotalPageCount(){
+    private int findByTotalPageCount(){
         /** 전체 페이지 수 (현재 페이지 번호가 전체 페이지 수보다 크면 현재 페이지 번호에 전체 페이지 수를 저장) **/
         totalPageCount = ((totalRecordCount - 1) / paginationDto.getRecordsPerPage()) + 1;
         if (paginationDto.getCurrentPageNo() > totalPageCount) {
@@ -47,39 +47,37 @@ public class PaginationInfo {
         return totalPageCount;
     }
 
-    private int findPageListFirstNo(){
+    private int findByPageListFirstNo(){
         /** 페이지 리스트의 첫 페이지 번호 **/
         return firstPage = ((paginationDto.getCurrentPageNo() - 1) / paginationDto.getPageSize()) * paginationDto.getPageSize() + 1;
     }
 
-    private int findPageListLastNo(){
+    private int findByPageListLastNo(){
         /** 페이지 리스트의 마지막 페이지 번호 (마지막 페이지가 전체 페이지 수보다 크면 마지막 페이지에 전체 페이지 수를 저장) **/
-        lastPage = findPageListFirstNo() + paginationDto.getPageSize() - 1;
+        lastPage = findByPageListFirstNo() + paginationDto.getPageSize() - 1;
         if (lastPage > getTotalPageCount()) {
             return lastPage = getTotalPageCount();
         }
         return lastPage;
     }
 
-    private int findFirstRecordIndex(){
+    private int findByFirstRecordIndex(){
         /** SQL의 조건절에 사용되는 첫번째 RNUM **/
         return firstRecordIndex = (paginationDto.getCurrentPageNo() - 1) * paginationDto.getRecordsPerPage();
     }
 
-    private int findLastRecordIndex(){
+    private int findByLastRecordIndex(){
         /** SQL의 조건절에 사용되는 첫번째 RNUM **/
         return lastRecordIndex = paginationDto.getCurrentPageNo() * paginationDto.getRecordsPerPage();
     }
 
-    private boolean findPreviousPageYn(){
-        return hasPreviousPage = findPageListFirstNo() != 1;
+    private boolean findByPreviousPageYn(){
+        return hasPreviousPage = findByPageListFirstNo() != 1;
     }
 
-    private boolean findNextPageYn(){
-        return hasNextPage = (findPageListLastNo() * paginationDto.getRecordsPerPage()) < totalRecordCount;
+    private boolean findByNextPageYn(){
+        return hasNextPage = (findByPageListLastNo() * paginationDto.getRecordsPerPage()) < totalRecordCount;
     }
-
-/////////////////////////////
 
     public PaginationInfo(PaginationDto paginationDto) {
         if (paginationDto.getCurrentPageNo() < 1) {
@@ -102,43 +100,43 @@ public class PaginationInfo {
     }
 
     private void newCalculation() {
-        totalPageCount = findTotalPageCount();
-        firstPage = findPageListFirstNo();
-        lastPage = findPageListLastNo();
-        firstRecordIndex = findFirstRecordIndex();
-        lastRecordIndex = findLastRecordIndex();
-        hasPreviousPage = findPreviousPageYn();
-        hasNextPage = findNextPageYn();
+        totalPageCount = findByTotalPageCount();
+        firstPage = findByPageListFirstNo();
+        lastPage = findByPageListLastNo();
+        firstRecordIndex = findByFirstRecordIndex();
+        lastRecordIndex = findByLastRecordIndex();
+        hasPreviousPage = findByPreviousPageYn();
+        hasNextPage = findByNextPageYn();
     }
 
-    private void calculation() {
-        /** 전체 페이지 수 (현재 페이지 번호가 전체 페이지 수보다 크면 현재 페이지 번호에 전체 페이지 수를 저장) **/
-        totalPageCount = ((totalRecordCount - 1) / paginationDto.getRecordsPerPage()) + 1;
-
-        if (paginationDto.getCurrentPageNo() > totalPageCount) {
-            paginationDto.setCurrentPageNo(totalPageCount);
-        }
-
-        /** 페이지 리스트의 첫 페이지 번호 **/
-        firstPage = ((paginationDto.getCurrentPageNo() - 1) / paginationDto.getPageSize()) * paginationDto.getPageSize() + 1;
-
-        /** 페이지 리스트의 마지막 페이지 번호 (마지막 페이지가 전체 페이지 수보다 크면 마지막 페이지에 전체 페이지 수를 저장) **/
-        lastPage = firstPage + paginationDto.getPageSize() - 1;
-        if (lastPage > totalPageCount) {
-            lastPage = totalPageCount;
-        }
-
-        /** SQL의 조건절에 사용되는 첫번째 RNUM **/
-        firstRecordIndex = (paginationDto.getCurrentPageNo() - 1) * paginationDto.getRecordsPerPage();
-
-        /** SQL의 조건절에 사용되는 마지막 RNUM **/
-        lastRecordIndex = paginationDto.getCurrentPageNo() * paginationDto.getRecordsPerPage();
-
-        /** 이전 페이지 존재 여부 **/
-        hasPreviousPage = firstPage != 1;
-
-        /** 다음 페이지 존재 여부 **/
-        hasNextPage = (lastPage * paginationDto.getRecordsPerPage()) < totalRecordCount;
-    }
+//    private void calculation() {
+//        /** 전체 페이지 수 (현재 페이지 번호가 전체 페이지 수보다 크면 현재 페이지 번호에 전체 페이지 수를 저장) **/
+//        totalPageCount = ((totalRecordCount - 1) / paginationDto.getRecordsPerPage()) + 1;
+//
+//        if (paginationDto.getCurrentPageNo() > totalPageCount) {
+//            paginationDto.setCurrentPageNo(totalPageCount);
+//        }
+//
+//        /** 페이지 리스트의 첫 페이지 번호 **/
+//        firstPage = ((paginationDto.getCurrentPageNo() - 1) / paginationDto.getPageSize()) * paginationDto.getPageSize() + 1;
+//
+//        /** 페이지 리스트의 마지막 페이지 번호 (마지막 페이지가 전체 페이지 수보다 크면 마지막 페이지에 전체 페이지 수를 저장) **/
+//        lastPage = firstPage + paginationDto.getPageSize() - 1;
+//        if (lastPage > totalPageCount) {
+//            lastPage = totalPageCount;
+//        }
+//
+//        /** SQL의 조건절에 사용되는 첫번째 RNUM **/
+//        firstRecordIndex = (paginationDto.getCurrentPageNo() - 1) * paginationDto.getRecordsPerPage();
+//
+//        /** SQL의 조건절에 사용되는 마지막 RNUM **/
+//        lastRecordIndex = paginationDto.getCurrentPageNo() * paginationDto.getRecordsPerPage();
+//
+//        /** 이전 페이지 존재 여부 **/
+//        hasPreviousPage = firstPage != 1;
+//
+//        /** 다음 페이지 존재 여부 **/
+//        hasNextPage = (lastPage * paginationDto.getRecordsPerPage()) < totalRecordCount;
+//    }
 
 }

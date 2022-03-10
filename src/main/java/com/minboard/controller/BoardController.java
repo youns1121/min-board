@@ -53,9 +53,11 @@ public class BoardController {
 
     /** 게시물 수정하기 **/
     @PostMapping("/update")
-    public String updateBoard(@ModelAttribute("boardDto") BoardDto boardDto) {
-        boardService.updateBoard(boardDto);
-        return "redirect:/board/view/"+boardDto.getId();
+    public String updateBoard(@ModelAttribute("boardDto") BoardDto boardDto, BoardVo boardVo, RedirectAttributes redirectAttributes) {
+        boardService.updateBoard(boardVo);
+        redirectAttributes.addAttribute("id", boardDto.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/board/view/{id}";
     }
 
     /** 게시물 수정페이지 **/

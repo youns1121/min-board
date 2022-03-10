@@ -27,5 +27,5 @@ public interface BoardMapper {
     void deleteBoard(int id);
 
     /** 게시물 수정 **/
-    void updateBoard(BoardDto boardDto); // 게시물 수정
+    void updateBoard(BoardVo boardVo); // 게시물 수정
 }

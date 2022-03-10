@@ -53,7 +53,7 @@
     </insert>
 
     <!--수정하기-->
-    <update id="updateBoard" parameterType="BoardDto">
+    <update id="updateBoard" parameterType="BoardVo">
         update board
         set title = #{title},
             contents = #{contents},

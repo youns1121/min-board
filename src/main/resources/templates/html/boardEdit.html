@@ -17,7 +17,7 @@
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form class="boardEdit" th:object="${boardDto}" th:action="/board/update" method="post">
+<form class="boardEdit" th:object="${boardDto}" th:action="@{/board/update}" method="post">
   <fieldset>
     <legend>수정</legend>
       <div>

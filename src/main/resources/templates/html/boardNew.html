@@ -10,6 +10,11 @@
         width: 500px;
         height: 200px;
     }
+
+    .field-error{
+        border-color: #dc3545;
+        color: #dc3545;
+    }
 </style>
 <head>
     <meta charset="utf-8">
@@ -19,8 +24,15 @@
 </head>
 <body>
 <form th:object="${boardVo}" th:action="@{/board/new}" method="post">
-        <fieldset>
+    <div th:if="${hasErrors?.containsKey('title')}">
+        <p class="field-error" th:text="${hasErrors['title']}">제목 오류 메시지</p>
+    </div>
+    <div th:if="${hasErrors?.containsKey('contents')}">
+        <p class="field-error" th:text="${hasErrors['contents']}">내용 오류 메시지</p>
+    </div>
+    <fieldset>
             <legend>글쓰기</legend>
+            <div>
             <tr>
                 <td>
                     <label class="title" >제목</label>
@@ -36,7 +48,7 @@
             </tr>
             </div>
 
-        </fieldset>
+    </fieldset>
     <button type="submit" id="buttonCreate" th:onclick="createFn(this)" >저장</button>
     <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
     </form>

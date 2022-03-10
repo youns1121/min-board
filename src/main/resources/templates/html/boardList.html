@@ -25,6 +25,7 @@
     </div>
   </div>
   <div>
+      <h2 th:text="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></h2>
   <fieldset>
     <table class="table">
       <thead>
@@ -32,7 +33,7 @@
           <th>번호</th>
           <th>제목</th>
           <th>작성자</th>
-          <th>생성일</th>
+          <th>작성일</th>
           <th>조회</th>
           <th>좋아요</th>
         </tr>
@@ -43,11 +44,12 @@
           <td th:text="${board.num}"></td>
           <td th:text="${board.title}" style="cursor:pointer" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
           <td></td>
-          <td th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}"></td>
+          <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}" th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red"></td>
+          <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}" th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}"></td>
           <td th:text="${board.viewCount}"></td>
           <td th:text="${board.likeCount}"></td>
         </tr>
-        <tr th:unless="${not #lists.isEmpty(boardList)}">
+        <tr th:if="${#lists.isEmpty(boardList)}">
           <td colspan="5">조회된 결과가 없습니다.</td>
         </tr>
       </tbody>

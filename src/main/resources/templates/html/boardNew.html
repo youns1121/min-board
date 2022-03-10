@@ -18,7 +18,7 @@
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form  th:object="${boardVo}" th:action="@{/board/new}" method="post">
+<form th:object="${boardVo}" th:action="@{/board/new}" method="post">
         <fieldset>
             <legend>글쓰기</legend>
             <tr>
@@ -30,8 +30,8 @@
             <br/>
             <tr>
                 <td>
-                    <label for="exampleTextarea">내용</label>
-                    <input type="text" id="exampleTextarea" rows="3" style="width: 300px; height: 150px;" th:field="*{contents}" >
+                    <label> 내용</label>
+                    <input type="text" rows="3" style="width: 300px; height: 150px;" th:field="*{contents}" >
                 </td>
             </tr>
             </div>

@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<style>
+  fieldset, tr, td {
+    border: 1px solid #bcbcbc;
+    text-align: left;
+  }
+  fieldset {
+    width: 500px;
+    height: 200px;
+  }
+</style>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+</head>
+<body>
+<form th:object="${boardVo}" th:action="" method="post">
+  <table>
+    <legend>회원가입</legend>
+    <tr>
+      <td>
+        <label>이메일</label>
+        <input type="text" class="form-member" style="width: 300px;" th:field="*{title}">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>패스워드</label>
+        <input type="text" class="form-pw" style="width: 300px;" th:field="*{title}">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>패스워드 확인</label>
+        <input type="text" class="form-pw" style="width: 300px;" th:field="*{title}">
+      </td>
+    </tr>
+    <br/>
+    <tr>
+      <td>
+        <label>이름</label>
+        <input type="text" rows="3" style="width: 300px;" th:field="*{contents}" >
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>성별</label>
+        <input type="text" rows="3" style="width: 300px;" th:field="*{contents}" >
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>생년월일</label>
+        <input type="text" rows="3" style="width: 300px;" th:field="*{contents}" >
+      </td>
+    </tr>
+    </div>
+
+  </table>
+  <button type="submit" id="buttonCreate" th:onclick="createFn(this)" >회원가입</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">취소</button>
+</form>
+
+
+
+</body>
+
+
+</html>

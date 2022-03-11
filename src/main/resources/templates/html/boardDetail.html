@@ -24,7 +24,7 @@
     <div>
       <tr>
         <td>
-          <label>생성일:</label>
+          <label>작성일:</label>
         </td>
         <td>
           <label th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
@@ -58,7 +58,7 @@
   </fieldset>
   <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>
   <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|"> 목록</button>
-  <button type="button" class="deleteButton"  th:onclick="updateFn(this)">삭제</button>
+  <button type="button" class="deleteButton"  th:onclick="deleteFn(this)">삭제</button>
 </form>
 </body>
 </html>

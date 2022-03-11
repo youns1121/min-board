@@ -6,6 +6,8 @@ import com.minboard.mapper.BoardMapper;
 import com.minboard.paging.PaginationDto;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
+import com.minboard.vo.BoardSaveVo;
+import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,8 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 생성 **/
     @Override
-    public void createBoard(BoardVo boardVo) {
-        boardMapper.createBoard(boardVo);
+    public void createBoard(BoardSaveVo boardSaveVo) {
+        boardMapper.createBoard(boardSaveVo);
     }
 
     /** 게시물 상세보기 **/
@@ -42,8 +44,8 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 수정 **/
     @Override
-    public void updateBoard(BoardVo boardVo) {
-       boardMapper.updateBoard(boardVo);
+    public void updateBoard(BoardUpdateVo boardUpdateVo) {
+       boardMapper.updateBoard(boardUpdateVo);
 
     }
 

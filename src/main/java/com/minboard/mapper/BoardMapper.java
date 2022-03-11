@@ -3,6 +3,8 @@ package com.minboard.mapper;
 import com.minboard.dto.BoardDto;
 
 import com.minboard.paging.PaginationDto;
+import com.minboard.vo.BoardSaveVo;
+import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,11 +23,11 @@ public interface BoardMapper {
     BoardDto getDetailViewBoard(int id);
 
     /** 게시물 생성 **/
-    void createBoard(BoardVo boardVo);
+    void createBoard(BoardSaveVo boardSaveVo);
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);
 
     /** 게시물 수정 **/
-    void updateBoard(BoardVo boardVo); // 게시물 수정
+    void updateBoard(BoardUpdateVo boardUpdateVo); // 게시물 수정
 }

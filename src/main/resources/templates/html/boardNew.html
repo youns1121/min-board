@@ -23,12 +23,15 @@
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form th:object="${boardVo}" th:action="@{/board/new}" method="post">
-    <div th:if="${hasErrors?.containsKey('title')}">
-        <p class="field-error" th:text="${hasErrors['title']}">제목 오류 메시지</p>
+<form th:object="${board}" th:action="@{/board/new}" method="post">
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
     </div>
-    <div th:if="${hasErrors?.containsKey('contents')}">
-        <p class="field-error" th:text="${hasErrors['contents']}">내용 오류 메시지</p>
+    <div class="field-error" th:errors="*{title}">
+        제목 오류 메시지
+    </div>
+    <div class="field-error" th:errors="*{contents}">
+        내용 오류 메시지
     </div>
     <fieldset>
             <legend>글쓰기</legend>
@@ -36,14 +39,14 @@
             <tr>
                 <td>
                     <label class="title" >제목</label>
-                    <input type="text" class="form-control" style="width: 300px;" th:field="*{title}">
+                    <input type="text" class="inputForm" style="width: 300px;" th:field="*{title}">
                 </td>
             </tr>
             <br/>
             <tr>
                 <td>
                     <label> 내용</label>
-                    <input type="text" rows="3" style="width: 300px; height: 150px;" th:field="*{contents}" >
+                    <input type="text" class="inputForm" rows="3" style="width: 300px; height: 150px;" th:field="*{contents}" >
                 </td>
             </tr>
             </div>

@@ -42,9 +42,10 @@
         from board
         where del_yn = 'N'
     </select>
+
     <!--- 생성하기  -->
     <insert id="createBoard"
-            parameterType="BoardVo"
+            parameterType="BoardSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
 
@@ -53,7 +54,7 @@
     </insert>
 
     <!--수정하기-->
-    <update id="updateBoard" parameterType="BoardVo">
+    <update id="updateBoard" parameterType="BoardUpdateVo">
         update board
         set title = #{title},
             contents = #{contents},

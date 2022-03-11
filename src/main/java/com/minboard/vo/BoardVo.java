@@ -2,6 +2,9 @@ package com.minboard.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,12 +17,15 @@ public class BoardVo {
     private Integer num;
 
     /** 게시글 제목 **/
+    @NotBlank
     private String title;
 
     /** 게시글 작성자 **/
     private String author;
 
     /** 게시글 내용 **/
+    @NotBlank
+    @Range(min = 5, max = 100)
     private String contents;
 
     /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/

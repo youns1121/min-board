@@ -9,6 +9,11 @@
     width: 500px;
     height: 250px;
   }
+
+  .field-error{
+    border-color: #dc3545;
+    color: #dc3545;
+  }
 </style>
 <head>
   <meta charset="utf-8">
@@ -17,16 +22,19 @@
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form class="boardEdit" th:object="${boardDto}" th:action="@{/board/update}" method="post">
+<form class="boardEdit" th:object="${boardUpdateVo}" th:action="@{/board/update}" method="post">
+  <div th:if="${#fields.hasGlobalErrors()}">
+    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+  </div>
   <fieldset>
     <legend>수정</legend>
       <div>
         <tr>
           <td>
-            <label>생성일:</label>
+            <label>작성일:</label>
           </td>
           <td>
-            <label th:text="${#temporals.format(boardDto.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
+            <label th:text="${#temporals.format(boardUpdateVo.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
           </td>
         </tr>
         <br/>

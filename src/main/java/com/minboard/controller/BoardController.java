@@ -3,6 +3,9 @@ package com.minboard.controller;
 
 import com.minboard.dto.BoardDto;
 import com.minboard.service.BoardService;
+import com.minboard.validation.BoardValidator;
+import com.minboard.vo.BoardSaveVo;
+import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -10,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,32 +32,29 @@ public class BoardController {
 
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
-    public String formBoard(@ModelAttribute("boardVo") BoardVo boardVo, Model model) {
-        model.addAttribute("boardVo", BoardVo.builder().build());
+    public String formBoard(Model model, BoardVo boardVo) {
+        model.addAttribute("board", boardVo.builder().build());
         return "html/boardNew";
     }
 
     /** 게시물 생성하기 **/
     @PostMapping("/new")
-    public String createBoard(BoardVo boardVo, RedirectAttributes redirectAttributes, Model model) {
-        //검증 오류 결과를 보관
-        Map<String, String> hasErrors = new HashMap<>();
-        //검증 로직
-        if(!StringUtils.hasText(boardVo.getTitle())){
-            hasErrors.put("title", "제목은 필수입니다.");
+    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+
+        if(boardSaveVo.getContents() == null || "".equals(boardSaveVo.getContents()) ||
+                boardSaveVo.getContents().trim().length() < 20 || boardSaveVo.getContents().trim().length() > 100){
+            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
         }
-        if((boardVo.getContents() != null && boardVo.getContents().trim().length() < 20) || "".equals(boardVo.getContents())){
-            log.info("hasErrors = {}", hasErrors);
-            hasErrors.put("contents", "내용은 공백제외 20자 이상 작성해야 합니다.");
-        }
-        //검증에 실패하면 다시 입력 폼으로
-        if(!hasErrors.isEmpty()){
-            model.addAttribute("hasErrors", hasErrors);
+
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
             return "html/boardNew";
         }
-        //성공로직
-        boardService.createBoard(boardVo);
-        redirectAttributes.addAttribute("id", boardVo.getId());
+
+        //정상로직
+        boardService.createBoard(boardSaveVo);
+        redirectAttributes.addAttribute("id", boardSaveVo.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/board/view/{id}";
     }
@@ -75,9 +77,23 @@ public class BoardController {
 
     /** 게시물 수정하기 **/
     @PostMapping("/update")
-    public String updateBoard(@ModelAttribute("boardDto") BoardDto boardDto, BoardVo boardVo, RedirectAttributes redirectAttributes) {
-        boardService.updateBoard(boardVo);
-        redirectAttributes.addAttribute("id", boardDto.getId());
+    public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+        if(boardUpdateVo.getTitle() == null || "".equals(boardUpdateVo.getTitle())){
+            bindingResult.reject("title", "제목은 필수값 입니다.");
+        }
+        if(boardUpdateVo.getContents() == null || "".equals(boardUpdateVo.getContents()) ||
+                boardUpdateVo.getContents().trim().length() < 20 || boardUpdateVo.getContents().trim().length() > 100){
+            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
+        }
+
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return "html/boardEdit";
+        }
+
+        boardService.updateBoard(boardUpdateVo);
+        redirectAttributes.addAttribute("id", boardUpdateVo.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/board/view/{id}";
     }
@@ -86,7 +102,7 @@ public class BoardController {
     @GetMapping("/update/{id}")
     public String getUpdateBoardView(@PathVariable("id") int id, Model model) {
         BoardDto boardDto = boardService.getDetailViewBoard(id);
-        model.addAttribute("boardDto", boardDto);
+        model.addAttribute("boardUpdateVo", boardDto);
         return "html/boardEdit";
     }
 

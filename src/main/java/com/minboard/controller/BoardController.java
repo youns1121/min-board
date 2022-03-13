@@ -3,7 +3,6 @@ package com.minboard.controller;
 
 import com.minboard.dto.BoardDto;
 import com.minboard.service.BoardService;
-import com.minboard.validation.BoardValidator;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
@@ -42,10 +41,10 @@ public class BoardController {
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
-        if(boardSaveVo.getContents() == null || "".equals(boardSaveVo.getContents()) ||
-                boardSaveVo.getContents().trim().length() < 20 || boardSaveVo.getContents().trim().length() > 100){
-            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
-        }
+//        if(boardSaveVo.getContents() == null || "".equals(boardSaveVo.getContents()) ||
+//                boardSaveVo.getContents().trim().length() < 20 || boardSaveVo.getContents().trim().length() > 100){
+//            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
+//        }
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
@@ -100,9 +99,9 @@ public class BoardController {
 
     /** 게시물 수정페이지 **/
     @GetMapping("/update/{id}")
-    public String getUpdateBoardView(@PathVariable("id") int id, Model model) {
-        BoardDto boardDto = boardService.getDetailViewBoard(id);
-        model.addAttribute("boardUpdateVo", boardDto);
+    public String getDetailViewUpdateBoard(@PathVariable("id") int id, Model model) {
+        BoardUpdateVo boardUpdateVo = boardService.getDetailViewUpdateBoard(id);
+        model.addAttribute("boardUpdateVo", boardUpdateVo);
         return "html/boardEdit";
     }
 

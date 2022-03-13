@@ -2,6 +2,7 @@ package com.minboard.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class BoardSaveVo {
 
     /** 게시글 내용 **/
     @NotBlank(message = "내용은 필수값 입니다.")
+    @Length(min = 20, max = 100,message = "내용은 20자 이상 100자 이하")
     private String contents;
 
     /** 등록일 */

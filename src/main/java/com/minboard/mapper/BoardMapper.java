@@ -22,6 +22,9 @@ public interface BoardMapper {
     /** 게시물 상세보기 **/
     BoardDto getDetailViewBoard(int id);
 
+    /** 게시물 수정 상세보기 **/
+    BoardUpdateVo getDetailViewUpdateBoard(int id);
+
     /** 게시물 생성 **/
     void createBoard(BoardSaveVo boardSaveVo);
 

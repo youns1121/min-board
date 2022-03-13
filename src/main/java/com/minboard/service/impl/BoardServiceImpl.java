@@ -36,6 +36,14 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
+    /** 게시물 상세보기 **/
+    @Override
+    @Transactional(readOnly = true)
+    public BoardUpdateVo getDetailViewUpdateBoard(int id) {
+        BoardUpdateVo detailViewUpdateBoard = boardMapper.getDetailViewUpdateBoard(id);
+        return detailViewUpdateBoard;
+    }
+
     /** 게시물 삭제 **/
     @Override
     public void deleteBoard(int id) {

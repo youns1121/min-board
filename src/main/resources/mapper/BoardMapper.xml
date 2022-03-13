@@ -18,6 +18,14 @@
         <result property="likeCount" column="like_count"/>
     </resultMap>
 
+    <resultMap id="boardUpdateVoResultMap" type="BoardUpdateVo">
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+    </resultMap>
+
     <!--- 게시물 전체보기  -->
     <select id="getBoardPagingList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         select id, (@rownum := @rownum + 1) as num, title, create_time, update_time, view_count, like_count, del_yn
@@ -29,8 +37,15 @@
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage}
     </select>
 
-    <!--    게시판 상세 상세보기-->
+    <!--    게시판 상세보기-->
     <select id="getDetailViewBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
+        select id, title, contents, create_time, update_time, view_count, like_count
+        from board
+        where id = #{id} and del_yn = 'N'
+    </select>
+
+    <!--게시판 수정 상세보기 -->
+    <select id="getDetailViewUpdateBoard" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
         select id, title, contents, create_time, update_time, view_count, like_count
         from board
         where id = #{id} and del_yn = 'N'

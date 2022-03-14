@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 public class BoardSaveVo {
 
-    /** Board Table PK **/
-    private Integer id;
 
     /** 게시글 제목 **/
     @NotBlank(message = "제목은 필수값 입니다.")
@@ -30,8 +28,7 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardSaveVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
-        this.id = id;
+    public BoardSaveVo(String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
         this.title = title;
         this.contents = contents;
         this.createTime = createTime.now();

@@ -26,7 +26,7 @@ public interface BoardMapper {
     BoardUpdateVo getDetailViewUpdateBoard(int id);
 
     /** 게시물 생성 **/
-    void createBoard(BoardSaveVo boardSaveVo);
+    Integer createBoard(BoardSaveVo boardSaveVo);
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);

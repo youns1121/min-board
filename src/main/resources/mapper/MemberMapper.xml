@@ -4,19 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.minboard.mapper.MemberMapper">
 
-    <resultMap id="memberVoResultMap" type="MemberVo">
+    <resultMap id="memberVoResultMap" type="MemberSaveVo">
         <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
 
     <!--- 회원가입  -->
     <insert id="createMember"
-            parameterType="MemberVo"
+            parameterType="MemberSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        insert into member(email, password, member_name, birthday, gender, create_time, update_time)
-        values (#{email}, #{password}, #{name}, #{birthday}, #{gender}, #{createTime}, #{update_time})
+        insert into member(email, password, name, phone, birthday, gender, create_time, update_time)
+        values (#{email}, #{password}, #{name}, #{phone}, #{birthday}, #{gender}, #{createTime}, #{updateTime})
+
     </insert>
 
 

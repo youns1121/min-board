@@ -41,21 +41,20 @@ public class BoardController {
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
 
-//        if(boardSaveVo.getContents() == null || "".equals(boardSaveVo.getContents()) ||
-//                boardSaveVo.getContents().trim().length() < 20 || boardSaveVo.getContents().trim().length() > 100){
-//            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
-//        }
-
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
             return "html/boardNew";
         }
+        Integer retVal = boardService.createBoard(boardSaveVo);
 
-        //정상로직
-        boardService.createBoard(boardSaveVo);
-        redirectAttributes.addAttribute("id", boardSaveVo.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/board/view/{id}";
+        if(retVal == null || retVal == 0){
+            return "html/boardNew";
+        }else{
+            redirectAttributes.addAttribute("id", retVal);
+            redirectAttributes.addAttribute("status", true);
+            return "redirect:/board/view/{id}";
+        }
+
     }
 
     /** 게시물 리스트 **/
@@ -76,15 +75,8 @@ public class BoardController {
 
     /** 게시물 수정하기 **/
     @PostMapping("/update")
-    public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-
-        if(boardUpdateVo.getTitle() == null || "".equals(boardUpdateVo.getTitle())){
-            bindingResult.reject("title", "제목은 필수값 입니다.");
-        }
-        if(boardUpdateVo.getContents() == null || "".equals(boardUpdateVo.getContents()) ||
-                boardUpdateVo.getContents().trim().length() < 20 || boardUpdateVo.getContents().trim().length() > 100){
-            bindingResult.reject("contents", "내용은 20자 이상 100자 이하");
-        }
+    public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);

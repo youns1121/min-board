@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+  fieldset, tr, td {
+    border: 1px solid #bcbcbc;
+    text-align: left;
+  }
+  fieldset {
+    width: 800px;
+    height: 350px;
+  }
+
+  .field-error{
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+</style>
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/main.css}" rel="stylesheet" />
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+    <title>회원가입</title>
+</head>
+<body>
+<form th:object="${memberSaveVo}" th:action="@{/member/signup}" method="post">
+  <fieldset>
+    <legend>회원가입</legend>
+    <table>
+    <tr>
+      <td>이름</td>
+      <td>
+        <input type="text" placeholder="한글 입력" th:field="*{name}">
+      </td>
+      <td>
+        <div class="field-error" style="width: 300px;" th:errors="*{name}">이름 오류 메시지</div>
+      </td>
+    </tr>
+    <tr>
+      <td>E-mail</td>
+      <td>
+        <input type="text" style="width: 300px;" th:field="*{email}">
+      </td>
+      <td>
+        <div class="field-error" th:errors="*{email}">이메일 오류 메시지</div>
+      </td>
+    </tr>
+    <tr>
+      <td>PW</td>
+          <td>
+            <input type="password" style="width: 300px;" placeholder="8~16자 영문 대 소문자, 숫자, 특수문자 포함" th:field="*{password}">
+          </td>
+          <td>
+            <div class="field-error"   th:errors="*{password}">비밀번호 오류 메시지</div>
+          </td>
+    </tr>
+    <tr>
+      <td>PW 확인</td>
+      <td>
+        <input type="password" style="width: 300px;" placeholder="8~16자 영문 대 소문자, 숫자, 특수문자 포함" th:field="*{passwordVerify}">
+      </td>
+      <td>
+        <div class="field-error" th:errors="*{passwordVerify}">비밀번호 오류 메시지</div>
+      </td>
+    </tr>
+    <tr>
+      <td>생년월일</td>
+      <td>
+        <input type="text" style="width: 300px;" placeholder="생년월일 6자리" th:field="*{birthday}">
+      </td>
+      <td>
+        <div class="field-error" th:errors="*{birthday}">생년월일 오류 메시지</div>
+      </td>
+    </tr>
+    <tr>
+      <td>연락처</td>
+      <td>
+        <input type="text" placeholder="연락처 11자리" th:field="*{phone}">
+      </td>
+      <td>
+        <div class="field-error" th:errors="*{phone}">연락처 오류 메시지</div>
+      </td>
+
+    </tr>
+    <tr>
+      <td>성별</td>
+      <td>
+        <input type="radio" th:value="남" th:field="*{gender}">남자
+        <input type="radio" th:value="여" th:field="*{gender}">여자
+      </td>
+      <td>
+        <div class="field-error" th:errors="*{gender}">성별 오류 메시지</div>
+      </td>
+    </tr>
+  </table>
+  </fieldset>
+  <br/>
+  <button type="submit" th:onclick="validationSignUp(this)">회원가입</button>
+  <button type="button" th:onclick="|location.href='@{/board/list}'|">취소</button>
+</form>
+</body>
+</html>

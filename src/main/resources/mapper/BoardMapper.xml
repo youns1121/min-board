@@ -37,6 +37,13 @@
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage}
     </select>
 
+    <!--총 게시물 수-->
+    <select id="geTotalBoardCount" resultType="int">
+        select count(*)
+        from board
+        where del_yn = 'N'
+    </select>
+
     <!--    게시판 상세보기-->
     <select id="getDetailViewBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
         select id, title, contents, create_time, update_time, view_count, like_count
@@ -49,13 +56,6 @@
         select id, title, contents, create_time, update_time, view_count, like_count
         from board
         where id = #{id} and del_yn = 'N'
-    </select>
-
-    <!--총 게시물 수-->
-    <select id="geTotalBoardCount" resultType="int">
-        select count(*)
-        from board
-        where del_yn = 'N'
     </select>
 
     <!--- 생성하기  -->

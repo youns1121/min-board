@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<link th:href="@{/css/main.css}" rel="stylesheet" />
+
 <style>
     fieldset, tr, td {
         border: 1px solid #bcbcbc;
@@ -24,15 +24,11 @@
 </head>
 <body>
 <form th:object="${board}" th:action="@{/board/new}" method="post">
-    <div th:if="${#fields.hasGlobalErrors()}">
-        <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
-    </div>
-    <div class="field-error" th:errors="*{title}">
-        제목 오류 메시지
-    </div>
-    <div class="field-error" th:errors="*{contents}">
-        내용 오류 메시지
-    </div>
+<!--    <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--        <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>-->
+<!--    </div>-->
+    <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
+    <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
     <fieldset>
             <legend>글쓰기</legend>
             <div>

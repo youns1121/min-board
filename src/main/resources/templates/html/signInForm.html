@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+  fieldset, tr, td {
+    border: 1px solid #bcbcbc;
+    text-align: left;
+  }
+  fieldset {
+    width: 700px;
+    height: 100px;
+  }
+
+  .field-error{
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+</style>
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/main.css}" rel="stylesheet" />
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+  <title>로그인</title>
+</head>
+<body>
+<form th:object="${memberVo}" th:action="@{/member/signin}" method="post">
+
+  <fieldset>
+    <legend>로그인</legend>
+    <table>
+      <tr>
+        <td>E-mail</td>
+        <td>
+          <input type="text" style="width: 300px;" th:field="*{email}">
+        </td>
+        <td>
+          <div class="field-error" th:errors="*{email}">이름 오류 메시지</div>
+        </td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td>
+          <input type="email" style="width: 300px;" th:field="*{password}">
+        </td>
+        <td>
+          <div class="field-error" th:errors="*{password}">이메일 오류 메시지</div>
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+  <br/>
+  <button type="submit">로그인</button>
+  <button type="button" th:onclick="|location.href='@{/board/list}'|">취소</button>
+</form>
+</body>
+</html>

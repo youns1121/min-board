@@ -36,21 +36,21 @@
           <label>수정일:</label>
         </td>
         <td>
-          <label th:text="${#temporals.format(detailViewBoard.updateTime, 'yyyy-MM-dd-HH:mm')}"></label>
+          <label th:text="*{#temporals.format(updateTime, 'yyyy-MM-dd-HH:mm')}"></label>
         </td>
       </tr>
       <br/>
       <tr>
         <td>
           <label class="title" >제목</label>
-          <input type="text" class="contents" style="width: 300px;" readonly th:field="*{title}">
+          <input type="text" class="title" style="width: 300px;" readonly th:field="*{title}">
         </td>
       </tr>
       <br/>
       <tr>
         <td>
           <label >내용</label>
-          <input type="text" class="contets" style="width: 300px; height: 150px;" rows="3" readonly th:field="*{contents}" >
+          <input type="text" class="contents" style="width: 300px; height: 150px;" rows="3" readonly th:field="*{contents}" >
         </td>
           <input type="hidden" th:field="*{id}">
       </tr>

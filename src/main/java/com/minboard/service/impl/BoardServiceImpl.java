@@ -24,8 +24,8 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 생성 **/
     @Override
-    public void createBoard(BoardSaveVo boardSaveVo) {
-        boardMapper.createBoard(boardSaveVo);
+    public Integer createBoard(BoardSaveVo boardSaveVo) {
+        return boardMapper.createBoard(boardSaveVo);
     }
 
     /** 게시물 상세보기 **/

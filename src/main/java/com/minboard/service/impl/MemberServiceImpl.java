@@ -17,9 +17,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void createMember(MemberSaveVo memberSaveVo) {
 
-//        if(memberSaveVo.getPassword() != null && memberSaveVo.getPasswordVerify() != null &&
-//                memberSaveVo.getPasswordVerify().trim().equals(memberSaveVo.getPassword().trim()))
-
         memberMapper.createMember(memberSaveVo);
 
     }

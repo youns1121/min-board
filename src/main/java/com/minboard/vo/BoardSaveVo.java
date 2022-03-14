@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BoardSaveVo {
 
+    private Integer id;
 
     /** 게시글 제목 **/
     @NotBlank(message = "제목은 필수값 입니다.")

@@ -27,7 +27,7 @@
           <label>작성일:</label>
         </td>
         <td>
-          <label th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
+          <label th:text="*{#temporals.format(createTime, 'yyyy-MM-dd-HH:mm')}"></label>
         </td>
       </tr>
       <br/>

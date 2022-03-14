@@ -28,9 +28,20 @@
 
     <!--- 게시물 전체보기  -->
     <select id="getBoardPagingList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
-        select id, (@rownum := @rownum + 1) as num, title, create_time, update_time, view_count, like_count, del_yn
-        from board b, (select @rownum := 0) as num_table
-        where del_yn = 'N'
+        select
+               id,
+               (@rownum := @rownum + 1) as num,
+               title,
+               create_time,
+               update_time,
+               view_count,
+               like_count,
+               del_yn
+        from
+             board b,
+             (select @rownum := 0) as num_table
+        where
+              del_yn = 'N'
         order by
                 num desc,
                 create_time desc
@@ -46,16 +57,36 @@
 
     <!--    게시판 상세보기-->
     <select id="getDetailViewBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
-        select id, title, contents, create_time, update_time, view_count, like_count
-        from board
-        where id = #{id} and del_yn = 'N'
+        select
+               id,
+               title,
+               contents,
+               create_time,
+               update_time,
+               view_count,
+               like_count
+        from
+             board
+        where
+              id = #{id}
+          and del_yn = 'N'
     </select>
 
     <!--게시판 수정 상세보기 -->
     <select id="getDetailViewUpdateBoard" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
-        select id, title, contents, create_time, update_time, view_count, like_count
-        from board
-        where id = #{id} and del_yn = 'N'
+        select
+               id,
+               title,
+               contents,
+               create_time,
+               update_time,
+               view_count,
+               like_count
+        from
+             board
+        where
+              id = #{id}
+          and del_yn = 'N'
     </select>
 
     <!--- 생성하기  -->
@@ -64,14 +95,22 @@
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        insert into board(title, contents, create_time, update_time)
+        insert into
+            board(
+                  title,
+                  contents,
+                  create_time,
+                  update_time
+                  )
         values (#{title}, #{contents}, #{createTime}, #{updateTime})
     </insert>
 
     <!--수정하기-->
     <update id="updateBoard" parameterType="BoardUpdateVo">
-        update board
-        set title = #{title},
+        update
+            board
+        set
+            title = #{title},
             contents = #{contents},
             update_time = #{updateTime}
         where
@@ -81,8 +120,10 @@
 
     <!--삭제하기-->
     <update id="deleteBoard" parameterType="int">
-        update board
-        set del_yn = 'Y'
+        update
+            board
+        set
+            del_yn = 'Y'
         where
             del_yn = 'N'
             and id = #{id}

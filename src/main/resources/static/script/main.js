@@ -1,7 +1,7 @@
 
 
 
-function createFn(obj){
+function createFn(){
     const titleValueCheck = $('#title').val().trim().length;
     const contentsValueCheck = $('#contents').val().trim().length;
     if(titleValueCheck != 0 && (contentsValueCheck > 20 && contentsValueCheck < 100)){
@@ -9,14 +9,16 @@ function createFn(obj){
     }
 }
 
-function deleteFn(obj){
-    $(obj).parent('form').attr("action", "/board/delete");
-    $(obj).parent('form').attr("method","post");
-    $(obj).parent('form').submit();
+function deleteFn(){
+
+    let formConrole = $('form').eq(0)
+    formConrole.attr("action", "/board/delete");
+    formConrole.attr("method","post");
+    formConrole.submit();
     alert("삭제 되었습니다")
 }
 
-function updateFn(obj){
+function updateFn(){
     const titleValueCheck = $('#title').val().trim().length;
     const contentsValueCheck = $('#contents').val().trim().length;
     if(titleValueCheck != 0 && (contentsValueCheck > 20 && contentsValueCheck < 100)){
@@ -24,10 +26,7 @@ function updateFn(obj){
     }
 }
 
-function validationSignUp(obj){
-    $(obj).parent('form').val()
 
-}
 
 
 

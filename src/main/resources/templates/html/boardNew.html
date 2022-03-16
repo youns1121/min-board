@@ -23,7 +23,7 @@
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-    <form id="frm" name="frm" th:object="${board}" th:action="@{/board/new}" method="post">
+    <form id="frm" name="frm" th:object="${board}" th:action="@{/board/new}" method="post" th:enctype="multipart/form-data">
         <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
         <fieldset>

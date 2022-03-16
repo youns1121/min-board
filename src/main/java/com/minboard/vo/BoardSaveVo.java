@@ -30,7 +30,8 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardSaveVo(String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
+    public BoardSaveVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
+        this.id = id;
         this.title = title;
         this.contents = contents;
         this.createTime = createTime.now();

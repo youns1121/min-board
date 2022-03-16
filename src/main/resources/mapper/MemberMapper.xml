@@ -16,8 +16,27 @@
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        insert into member(email, password, name, phone, birthday, gender, create_time, update_time)
-        values (#{email}, #{password}, #{name}, #{phone}, #{birthday}, #{gender}, #{createTime}, #{updateTime})
+        insert into
+            member(
+                   email,
+                   password,
+                   name,
+                   phone,
+                   birthday,
+                   gender,
+                   create_time,
+                   update_time
+                   )
+        values (
+                #{email},
+                #{password},
+                #{name},
+                #{phone},
+                #{birthday},
+                #{gender},
+                #{createTime},
+                #{updateTime}
+                )
 
     </insert>
 

@@ -102,7 +102,13 @@
                   create_time,
                   update_time
                   )
-        values (#{title}, #{contents}, #{createTime}, #{updateTime})
+        values
+               (
+                #{title},
+                #{contents},
+                #{createTime},
+                #{updateTime}
+                )
     </insert>
 
     <!--수정하기-->

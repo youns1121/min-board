@@ -47,8 +47,13 @@
               <td th:text="${board.num}"></td>
               <td th:text="${board.title}" style="cursor:pointer" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
               <td></td>
-              <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}" th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red"></td>
-              <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}" th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}"></td>
+              <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
+                  th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red">
+
+              </td>
+              <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
+                  th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}">
+              </td>
               <td th:text="${board.viewCount}"></td>
               <td th:text="${board.likeCount}"></td>
             </tr>

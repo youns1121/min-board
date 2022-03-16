@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class BoardSaveVo {
 
+    /** Board Table PK **/
     private Integer id;
 
     /** 게시글 제목 **/

@@ -45,16 +45,10 @@ public class BoardController {
             log.info("errors={}", bindingResult);
             return "html/boardNew";
         }
-        Integer retVal = boardService.createBoard(boardSaveVo);
-
-        if(retVal == null || retVal == 0){
-            return "html/boardNew";
-        }else{
-            redirectAttributes.addAttribute("id", retVal);
-            redirectAttributes.addAttribute("status", true);
-            return "redirect:/board/view/{id}";
-        }
-
+        boardService.createBoard(boardSaveVo);
+        redirectAttributes.addAttribute("id", boardSaveVo.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/board/view/{id}";
     }
 
     /** 게시물 리스트 **/

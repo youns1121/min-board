@@ -12,18 +12,18 @@ spring:
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3307/mybatis?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: min
     password: wjdqhqhdks
-  messages:
-    basename: messages, errors
-
-
-
 
 mybatis:
   mapper-locations: classpath:mapper/**.xml
   type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
+
+custom:
+  path:
+    uploadPath: 'C:/board/upload'      # 게시판 파일 업로드 경로
+    uploadPathOri: 'file:///C:/board/upload_ori'       #원본파일 업로드 경로
 
 
 #logging:

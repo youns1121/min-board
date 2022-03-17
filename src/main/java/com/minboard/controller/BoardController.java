@@ -3,9 +3,11 @@ package com.minboard.controller;
 
 import com.minboard.dto.BoardDto;
 import com.minboard.service.BoardService;
+import com.minboard.service.FileStoreService;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
+import com.minboard.vo.UploadFileVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.io.IOException;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +28,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
+    private final FileStoreService fileStoreService;
 
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
@@ -36,7 +40,11 @@ public class BoardController {
     /** 게시물 생성하기 **/
     @PostMapping("/new")
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes) throws IOException {
+
+        UploadFileVo attachFile = fileStoreService.storeFile(boardSaveVo.getAttachFile());
+        List<UploadFileVo> storeBoardFiles = fileStoreService.storeFiles(boardSaveVo.getBoardFiles());
+
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);

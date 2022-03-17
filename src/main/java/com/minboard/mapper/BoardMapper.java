@@ -7,6 +7,7 @@ import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 

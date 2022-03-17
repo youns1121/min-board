@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +64,7 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Override
     public String extractExt(String originalFileName) {
         int pos = originalFileName.lastIndexOf(".");
-        return originalFileName.substring(pos+1);
+        return originalFileName.substring(pos + 1);
 
     }
 

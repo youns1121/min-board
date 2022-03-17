@@ -36,7 +36,7 @@ public class UploadFileVo {
         this.fileUrlOri = fileUrlOri;
         this.fileExtensionName = fileExtensionName;
         this.fileSize = fileSize;
-        this.createFileTime = createFileTime;
+        this.createFileTime = createFileTime.now();
         this.delYn = delYn;
     }
 

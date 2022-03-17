@@ -3,10 +3,10 @@ package com.minboard.vo;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class BoardSaveVo {
@@ -23,6 +23,9 @@ public class BoardSaveVo {
     @Length(min = 20, max = 100,message = "내용은 20자 이상 100자 이하")
     private String contents;
 
+    /** 파일업로드 **/
+    private List<UploadFileVo> fileUploadVo;
+
     /** 등록일 */
     private LocalDateTime createTime;
 
@@ -30,7 +33,7 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardSaveVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime) {
+    public BoardSaveVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime, List<UploadFileVo> fileUploadVo) {
         this.id = id;
         this.title = title;
         this.contents = contents;

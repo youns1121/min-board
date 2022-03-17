@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <style>
-    fieldset, tr, td {
-        border: 1px solid #bcbcbc;
-        text-align: left;
-    }
+    /*fieldset, tr, td {*/
+    /*    border: 1px solid #bcbcbc;*/
+    /*    text-align: left;*/
+    /*}*/
     fieldset {
         width: 500px;
-        height: 300px;
+        height: 400px;
     }
 
     .field-error{
@@ -21,12 +21,13 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
+    <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
 </head>
 <body>
-    <form id="frm" name="frm" th:object="${board}" th:action="@{/board/new}" method="post" th:enctype="multipart/form-data">
+    <form th:object="${board}" th:action="@{/board/new}" method="post" enctype="multipart/form-data">
         <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
-        <fieldset>
+        <fieldset class="field">
             <legend>글쓰기</legend>
             <div>
                 <tr>
@@ -43,14 +44,18 @@
                     </td>
                 </tr>
                 <br/>
-                <tr>
-                    <th>파일업로드: </th>
-                    <td>
-                        <input type="file" style="width: 400px; height: 50px;" id="subFiles" name="subFiles[]" multiple="multiple">
+                <div class="insert">
+                    <tr>
+                        <th>
+                            파일업로드:
+                        </th>
 
-                        <ul></ul>
-                    </td>
-                </tr>
+                        <td>
+                            <input type="file" onchange="addFile(this);" multiple />
+                            <div class="file-list"></div>
+                        </td>
+                    </tr>
+                </div>
             </div>
         </fieldset>
             <button type="submit" id="buttonCreate" th:onclick="createFn()" >저장</button>

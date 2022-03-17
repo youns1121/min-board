@@ -10,3 +10,22 @@ li {
     border : 0;
     float: left;
 }
+
+.insert .file-list {
+    width: 400px;
+    height: 100px;
+    overflow: auto;
+    border: 1px solid #989898;
+    padding: 10px;
+}
+
+.insert .file-list .filebox p {
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.insert .file-list .filebox .delete i{
+    color: #ff5353;
+    margin-left: 5px;
+}

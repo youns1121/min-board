@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class BoardVo {
@@ -44,6 +45,7 @@ public class BoardVo {
     private LocalDateTime updateTime;
 
     @Builder
+
     public BoardVo(Integer id, Integer num, String title, String author, String contents, String delYn, Integer viewCount, Integer likeCount, LocalDateTime createTime, LocalDateTime updateTime) {
         this.id = id;
         this.num = num;

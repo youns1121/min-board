@@ -4,9 +4,9 @@ import com.minboard.vo.UploadFileVo;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface FileMapper {
+public interface UploadFileMapper {
 
-    void save(UploadFileVo boardFileUploadVo);
+    void insertFileList(UploadFileVo boardFileUploadVo);
 
     String uploadFile(String uploadPath, String fileNameOri, byte[] fileData);
 

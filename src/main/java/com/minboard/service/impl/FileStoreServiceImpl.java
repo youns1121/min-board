@@ -1,7 +1,12 @@
 package com.minboard.service.impl;
 
+import com.minboard.mapper.BoardMapper;
+import com.minboard.mapper.UploadFileMapper;
+import com.minboard.service.BoardService;
 import com.minboard.service.FileStoreService;
+import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.UploadFileVo;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,7 +21,14 @@ import java.util.UUID;
 
 @Log
 @Service
+@RequiredArgsConstructor
 public class FileStoreServiceImpl implements FileStoreService {
+
+    private final UploadFileMapper uploadFileMapper;
+    private BoardSaveVo boardSaveVo;
+
+
+
 
     @Value("{uploadPath}")
     private String uploadPath;
@@ -28,6 +40,9 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+        UploadFileVo uploadFileVo = UploadFileVo.builder()
+                .id(boardSaveVo.getId())
+                .build();
 
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFiles) {

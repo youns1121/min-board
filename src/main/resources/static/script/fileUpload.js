@@ -15,7 +15,7 @@ function addFile(obj){
                 // 목록 추가
                 let htmlData = '';
                 htmlData += '<div id="file' + fileNo + '" class="filebox">';
-                htmlData += '   <p class="name">' + file.name + '</p>';
+                htmlData += '   <p class="name" name="storeFileName">' + file.name + '</p>';
                 htmlData += '   <button type="button" class="delete" onclick="deleteFile(' + fileNo + ');">삭제</button>';
                 htmlData += '</div>';
                 $('.file-list').append(htmlData);

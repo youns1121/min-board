@@ -11,6 +11,8 @@ public class UploadFileVo {
 
     private int id;
 
+    private int boardId;
+
     private String storeFileName;
 
     private String originalFileName;
@@ -28,8 +30,9 @@ public class UploadFileVo {
     private String delYn;
 
     @Builder
-    public UploadFileVo(int id, String storeFileName, String originalFileName, String fileUrl, String fileUrlOri, String fileExtensionName, int fileSize, LocalDateTime createFileTime, String delYn) {
+    public UploadFileVo(int id, int boardId, String storeFileName, String originalFileName, String fileUrl, String fileUrlOri, String fileExtensionName, int fileSize, LocalDateTime createFileTime, String delYn) {
         this.id = id;
+        this.boardId = boardId;
         this.storeFileName = storeFileName;
         this.originalFileName = originalFileName;
         this.fileUrl = fileUrl;
@@ -39,10 +42,4 @@ public class UploadFileVo {
         this.createFileTime = createFileTime.now();
         this.delYn = delYn;
     }
-
-//    public void updateBoardFile(String fileNameOri, String fileName, String fileUrl){
-//        this.fileNameOri = fileNameOri;
-//        this.fileName = fileName;
-//        this.fileUrl = fileUrl;
-//    }
 }

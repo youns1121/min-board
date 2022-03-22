@@ -8,16 +8,21 @@
 
     <!--- 생성하기  -->
     <insert id="insertFileList"
-            parameterType="UploadFileVo"
+            parameterType="java.util.List"
             useGeneratedKeys ="true"
             keyProperty="id">
 
         insert into
             upload_file(
-                        store_file_name
-        )values(
-            #{storeFileName}
-        )
+                        store_file_name,
+                        file_name_ori
+        )values
+        <foreach collection="list" item="item" separator=",">
+            (
+             #{item.storeFileName},
+             #{item.originalFileName}
+            )
+        </foreach>
     </insert>
 
 </mapper>

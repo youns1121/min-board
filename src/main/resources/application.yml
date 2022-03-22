@@ -12,9 +12,13 @@ spring:
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3307/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: min
     password: wjdqhqhdks
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
 
 mybatis:
   mapper-locations: classpath:mapper/**.xml

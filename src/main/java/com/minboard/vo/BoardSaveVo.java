@@ -3,6 +3,7 @@ package com.minboard.vo;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -24,11 +25,11 @@ public class BoardSaveVo {
     private String contents;
 
     /** 파일업로드 **/
-    private List<UploadFileVo> uploadFileVoList;
-
-    private String storeFileName;
+    private List<MultipartFile> fileList;
 
     private MultipartFile attachFile;
+
+    private UploadFileVo uploadFileVo;
 
     /** 등록일 */
     private LocalDateTime createTime;
@@ -37,15 +38,20 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-
-    public BoardSaveVo(Integer id, String title, String contents, List<UploadFileVo> uploadFileVoList, MultipartFile attachFile, String storeFileName, LocalDateTime createTime, LocalDateTime updateTime) {
-        this.id = id;
+    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList, MultipartFile attachFile, UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
         this.title = title;
         this.contents = contents;
-        this.uploadFileVoList = uploadFileVoList;
+        this.fileList = fileList;
         this.attachFile = attachFile;
-        this.storeFileName = storeFileName;
+        this.uploadFileVo = uploadFileVo;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
+    }
+
+
+
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

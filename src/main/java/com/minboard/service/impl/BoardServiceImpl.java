@@ -3,9 +3,11 @@ package com.minboard.service.impl;
 
 import com.minboard.dto.BoardDto;
 import com.minboard.mapper.BoardMapper;
+import com.minboard.mapper.UploadFileMapper;
 import com.minboard.paging.PaginationDto;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
+import com.minboard.service.FileStoreService;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.BoardVo;
@@ -21,6 +23,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
+
 
     /** 게시물 생성 **/
     @Override

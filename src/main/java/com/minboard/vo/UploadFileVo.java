@@ -2,8 +2,10 @@ package com.minboard.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Getter
@@ -13,33 +15,18 @@ public class UploadFileVo {
 
     private int boardId;
 
+    /** 서버에 저장 될 파일명**/
     private String storeFileName;
 
+    /** DB에 저장될 파일명 **/
     private String originalFileName;
 
-    private String fileUrl;
-
-    private String fileUrlOri;
-
-    private String fileExtensionName;
-
-    private LocalDateTime createFileTime;
-
-    private int fileSize;
-
-    private String delYn;
-
     @Builder
-    public UploadFileVo(int id, int boardId, String storeFileName, String originalFileName, String fileUrl, String fileUrlOri, String fileExtensionName, int fileSize, LocalDateTime createFileTime, String delYn) {
+    public UploadFileVo(int id, int boardId, String storeFileName, String originalFileName) {
         this.id = id;
         this.boardId = boardId;
         this.storeFileName = storeFileName;
         this.originalFileName = originalFileName;
-        this.fileUrl = fileUrl;
-        this.fileUrlOri = fileUrlOri;
-        this.fileExtensionName = fileExtensionName;
-        this.fileSize = fileSize;
-        this.createFileTime = createFileTime.now();
-        this.delYn = delYn;
     }
+
 }

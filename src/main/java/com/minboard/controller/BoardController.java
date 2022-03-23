@@ -2,6 +2,7 @@ package com.minboard.controller;
 
 
 import com.minboard.dto.BoardDto;
+import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.BoardService;
 import com.minboard.service.FileStoreService;
@@ -45,8 +46,10 @@ public class BoardController {
                               RedirectAttributes redirectAttributes) throws IOException {
 
         boardService.createBoard(boardSaveVo);
-        List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList());
-        uploadFileMapper.insertFileList(uploadFileList);
+        if(boardSaveVo.getFileList() != null && boardSaveVo.getAttachFile() != null){
+            List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList(), boardSaveVo.getId());
+            uploadFileMapper.insertFileList(uploadFileList);
+        }
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
@@ -70,7 +73,9 @@ public class BoardController {
     @GetMapping("/view/{id}")
     public String getDetailBoardView(@PathVariable("id") int id, Model model) {
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
+        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
         model.addAttribute("detailViewBoard", detailViewBoard);
+        model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardDetail";
     }
 

@@ -72,6 +72,8 @@
           and del_yn = 'N'
     </select>
 
+
+
     <!--게시판 수정 상세보기 -->
     <select id="getDetailViewUpdateBoard" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
         select
@@ -95,20 +97,18 @@
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        insert into
+        INSERT INTO
             board(
                   title,
                   contents,
                   create_time,
                   update_time
-                  )
-        values
-               (
+            )values(
                 #{title},
                 #{contents},
                 #{createTime},
                 #{updateTime}
-                )
+            )
     </insert>
 
     <!--수정하기-->

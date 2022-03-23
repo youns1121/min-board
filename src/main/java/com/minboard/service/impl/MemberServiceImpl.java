@@ -12,12 +12,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberMapper memberMapper;
 
-
     /** 회원생성 **/
     @Override
     public void createMember(MemberSaveVo memberSaveVo) {
-
         memberMapper.createMember(memberSaveVo);
-
     }
 }

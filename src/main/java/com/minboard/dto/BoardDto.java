@@ -12,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class BoardDto extends CommonPageDto {
 
+    private UploadFileDto uploadFileDto;
+
     /** 게시글 아이디 **/
     private Integer id;
     
@@ -37,5 +39,7 @@ public class BoardDto extends CommonPageDto {
 
     /** 게시글 좋아요수 **/
     private Integer likeCount;
+
+
 
 }

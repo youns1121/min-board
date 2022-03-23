@@ -1,7 +1,8 @@
 package com.minboard.service.impl;
 
+import com.minboard.dto.UploadFileDto;
+import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.FileStoreService;
-
 import com.minboard.vo.UploadFileVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -20,8 +21,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class FileStoreServiceImpl implements FileStoreService {
 
+    private final UploadFileMapper uploadFileMapper;
 
-    @Value("{uploadPath}")
+    @Value("${custom.path.uploadPath}")
     private String uploadPath;
 
     @Override
@@ -30,30 +32,36 @@ public class FileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+    public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
 
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFiles) {
             if(!multipartFiles.isEmpty()){
-                storeFileResult.add(storeFile(mutipartFile));
+                storeFileResult.add(storeFile(mutipartFile, boardId));
             }
         }
         return storeFileResult;
     }
 
     @Override
-    public UploadFileVo storeFile(MultipartFile multipartFile) throws IOException {
+    public UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException {
 
         if(multipartFile.isEmpty()){
             return null;
         }
         String originalFilename = multipartFile.getOriginalFilename();
+        String extensionName = extractExt(originalFilename);
         String storeFileName = createStoreFileName(originalFilename);
+        long fileSize = multipartFile.getSize();
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
 
         return UploadFileVo.builder()
                 .originalFileName(originalFilename)
                 .storeFileName(storeFileName)
+                .extensionName(extensionName)
+                .storeFileSize(fileSize)
+                .storeFilePath(uploadPath)
+                .boardId(boardId)
                 .build();
 
     }
@@ -69,7 +77,12 @@ public class FileStoreServiceImpl implements FileStoreService {
     public String extractExt(String originalFileName) {
         int pos = originalFileName.lastIndexOf(".");
         return originalFileName.substring(pos + 1);
-
     }
 
+    @Override
+    public List<UploadFileDto> getUploadFileList(int id) {
+
+        List<UploadFileDto> uploadFileList = uploadFileMapper.getUploadFileList(id);
+        return uploadFileList;
+    }
 }

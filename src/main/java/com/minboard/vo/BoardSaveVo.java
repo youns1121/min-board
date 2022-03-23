@@ -47,11 +47,4 @@ public class BoardSaveVo {
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
     }
-
-
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

@@ -7,7 +7,7 @@
   }
   fieldset {
     width: 500px;
-    height: 250px;
+    height: 400px;
   }
 </style>
 <head>
@@ -27,7 +27,7 @@
             <label>작성일:</label>
           </td>
           <td>
-            <label th:text="*{#temporals.format(createTime, 'yyyy-MM-dd-HH:mm')}"></label>
+<!--            <label th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-HH:mm')}"></label>-->
           </td>
         </tr>
         <br/>
@@ -36,7 +36,7 @@
             <label>수정일:</label>
           </td>
           <td>
-            <label th:text="*{#temporals.format(updateTime, 'yyyy-MM-dd-HH:mm')}"></label>
+<!--            <label th:text="*{#temporals.format(updateTime, 'yyyy-MM-dd-HH:mm')}"></label>-->
           </td>
         </tr>
         <br/>
@@ -54,10 +54,25 @@
           </td>
             <input type="hidden" th:field="*{id}">
         </tr>
+        <br/>
+        <div class="insert">
+          <tr>
+            <th>
+              파일리스트:
+            </th>
+            <td>
+              <tr class="file" style="width: 300px;" readonly th:each="uploadFile, current : ${uploadFileList}">
+                <td th:text="${uploadFile.originalFileName}" ></td>
+              </tr>
+
+            </td>
+          </tr>
+        </div>
       </div>
     </fieldset>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>
-      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|"> 목록</button>
+      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/new}'|">글작성</button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
   </form>
 </body>

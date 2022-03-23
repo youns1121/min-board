@@ -11,22 +11,39 @@ import java.util.List;
 @Getter
 public class UploadFileVo {
 
-    private int id;
-
-    private int boardId;
+    /** keyProperty **/
+    private Integer id;
 
     /** 서버에 저장 될 파일명**/
     private String storeFileName;
 
-    /** DB에 저장될 파일명 **/
+    /** 작성글 FK **/
+    private int boardId;
+
+    /** 실제 파일명 **/
     private String originalFileName;
 
-    @Builder
-    public UploadFileVo(int id, int boardId, String storeFileName, String originalFileName) {
-        this.id = id;
-        this.boardId = boardId;
-        this.storeFileName = storeFileName;
-        this.originalFileName = originalFileName;
-    }
+    /** 확장자명 **/
+    private String extensionName;
 
+    /** 파일사이즈 **/
+    private long storeFileSize;
+
+    /** 파일 저장 경로 **/
+    private String storeFilePath;
+
+    /** 파일 저장 시간 **/
+    private LocalDateTime createTime;
+
+
+    @Builder
+    public UploadFileVo(String storeFileName, int boardId, String originalFileName, String extensionName, long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+        this.storeFileName = storeFileName;
+        this.boardId = boardId;
+        this.originalFileName = originalFileName;
+        this.extensionName = extensionName;
+        this.storeFileSize = storeFileSize;
+        this.storeFilePath = storeFilePath;
+        this.createTime = createTime.now();
+    }
 }

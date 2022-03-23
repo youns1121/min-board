@@ -54,20 +54,15 @@
           </td>
             <input type="hidden" th:field="*{id}">
         </tr>
-        <br/>
-        <div class="insert">
+        <br/><br/>
           <tr>
-            <th>
-              파일리스트:
-            </th>
-            <td>
-              <tr class="file" style="width: 300px;" readonly th:each="uploadFile, current : ${uploadFileList}">
-                <td th:text="${uploadFile.originalFileName}" ></td>
-              </tr>
-
-            </td>
+              <th>파일리스트</th>
+              <br/>
           </tr>
-        </div>
+          <tr th:each="uploadFile : ${uploadFileList}">
+              <td class="file" style="width: 300px;" readonly th:text="${uploadFile.originalFileName}"></td>
+              <br/>
+          </tr>
       </div>
     </fieldset>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>

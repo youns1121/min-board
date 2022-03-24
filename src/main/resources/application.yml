@@ -12,7 +12,7 @@ spring:
     cache: false
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: min
     password: wjdqhqhdks
   servlet:
@@ -23,6 +23,9 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/**.xml
   type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
+  configuration:
+    return-instance-for-empty-row: true
+
 
 custom:
   path:

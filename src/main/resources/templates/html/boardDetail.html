@@ -17,7 +17,7 @@
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-  <form class="detailView" th:object="${detailViewBoard}" th:action="@{/board/view/*{id}}" method="get">
+  <form class="detailView" th:object="${detailViewBoard}" th:action method="get">
     <h2 th:if="${param.status}" th:text="저장되었습니다."></h2>
     <fieldset id="field">
       <legend>상세보기</legend>
@@ -27,7 +27,7 @@
             <label>작성일:</label>
           </td>
           <td>
-<!--            <label th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-HH:mm')}"></label>-->
+            <label th:text="${#temporals.format(detailViewBoard.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
           </td>
         </tr>
         <br/>
@@ -36,7 +36,7 @@
             <label>수정일:</label>
           </td>
           <td>
-<!--            <label th:text="*{#temporals.format(updateTime, 'yyyy-MM-dd-HH:mm')}"></label>-->
+            <label th:text="*{#temporals.format(updateTime, 'yyyy-MM-dd-HH:mm')}"></label>
           </td>
         </tr>
         <br/>
@@ -56,11 +56,11 @@
         </tr>
         <br/><br/>
           <tr>
-              <th>파일리스트</th>
+              <th>파일리스트: </th>
               <br/>
           </tr>
           <tr th:each="uploadFile : ${uploadFileList}">
-              <td class="file" style="width: 300px;" readonly th:text="${uploadFile.originalFileName}"></td>
+              <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
               <br/>
           </tr>
       </div>

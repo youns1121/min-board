@@ -81,8 +81,13 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public List<UploadFileDto> getUploadFileList(int id) {
-
         List<UploadFileDto> uploadFileList = uploadFileMapper.getUploadFileList(id);
         return uploadFileList;
+    }
+
+    @Override
+    public UploadFileDto findByUploadFile(int id) {
+        UploadFileDto uploadFile = uploadFileMapper.findByUploadFile(id);
+        return uploadFile;
     }
 }

@@ -11,5 +11,10 @@ public interface UploadFileMapper {
 
     void insertFileList(List<UploadFileVo> uploadFileList);
 
+    UploadFileDto findByUploadFile(int id);
+
     List<UploadFileDto> getUploadFileList(int id);
+
+    /** 첨부파일 삭제 **/
+    void deleteUploadFile(int id);
 }

@@ -7,7 +7,7 @@
   }
   fieldset {
     width: 500px;
-    height: 250px;
+    height: 400px;
   }
 
   .field-error{
@@ -50,6 +50,16 @@
             </td>
               <input type="hidden" th:field="*{id}">
           </tr>
+          <div class="insert">
+            <tr>
+              <th>
+                파일업로드:
+              </th>
+              <td>
+                <input type="file"  name = "fileList" multiple="multiple" />
+              </td>
+            </tr>
+          </div>
       </div>
     </fieldset>
       <button type="submit" id="updateButton" th:onclick="updateFn()" >저장</button>

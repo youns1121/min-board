@@ -2,15 +2,12 @@ package com.minboard.vo;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Getter
-public class UploadFileVo {
+public class UploadFileUpdateVo {
 
     /** keyProperty **/
     private Integer id;
@@ -38,7 +35,7 @@ public class UploadFileVo {
 
 
     @Builder
-    public UploadFileVo(String storeFileName, int boardId, String originalFileName, String extensionName, long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+    public UploadFileUpdateVo(String storeFileName, int boardId, String originalFileName, String extensionName, long storeFileSize, String storeFilePath, LocalDateTime createTime) {
         this.storeFileName = storeFileName;
         this.boardId = boardId;
         this.originalFileName = originalFileName;

@@ -20,4 +20,10 @@ public interface FileStoreService {
     String extractExt(String originalFileName);
 
     List<UploadFileDto> getUploadFileList(int id);
+
+    UploadFileDto findByUploadFile(int id);
+
+
+
+
 }

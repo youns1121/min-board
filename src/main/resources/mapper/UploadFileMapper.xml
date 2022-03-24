@@ -8,7 +8,10 @@
     <resultMap id="UploadFileDtoResultMap" type="UploadFileDto">
         <result property="originalFileName" column="original_file_name"/>
         <result property="storeFileName" column="store_file_name"/>
+        <result property="extensionName" column="extension_name"/>
+        <result property="storeFileSize" column="store_file_size"/>
         <result property="storeFilePath" column="store_file_path"/>
+        <result property="createTime" column="create_time"/>
         <result property="boardId" column="board_id"/>
         <result property="delYn" column="del_yn"/>
     </resultMap>
@@ -16,8 +19,7 @@
     <!--- 생성하기  -->
     <insert id="insertFileList"
             parameterType="java.util.List"
-            useGeneratedKeys ="true"
-            keyProperty="id">
+            useGeneratedKeys ="true">
 
         insert into
             upload_file(
@@ -26,7 +28,8 @@
                         extension_name,
                         store_file_size,
                         store_file_path,
-                        board_id
+                        board_id,
+                        create_time
         )values
         <foreach collection="list" item="item" separator=",">
             (
@@ -35,7 +38,8 @@
              #{item.extensionName},
              #{item.storeFileSize},
              #{item.storeFilePath},
-             #{item.boardId}
+             #{item.boardId},
+             #{item.createTime}
             )
         </foreach>
     </insert>
@@ -58,6 +62,43 @@
             board_id = #{boardId}
             AND del_yn = 'N'
     </select>
+
+    <select id="findByUploadFile" resultType="UploadFileDto" resultMap="UploadFileDtoResultMap">
+        SELECT
+                id,
+                original_file_name,
+                store_file_name,
+                extension_name,
+                store_file_size,
+                store_file_path,
+                create_time,
+                board_id,
+                del_yn
+
+        FROM
+            upload_file
+
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="getUploadFileUpdateList" resultType="UploadFileDto" resultMap="UploadFileDtoResultMap" >
+        select
+            id,
+            original_file_name,
+            store_file_name,
+            store_file_path,
+            store_file_size,
+            board_id,
+            del_yn
+        from
+            board
+        where
+            id = #{id}
+          and del_yn = 'N'
+    </select>
+
+
 
 
 </mapper>

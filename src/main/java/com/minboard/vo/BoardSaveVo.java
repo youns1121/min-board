@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -27,8 +28,6 @@ public class BoardSaveVo {
     /** 파일업로드 **/
     private List<MultipartFile> fileList;
 
-    private MultipartFile attachFile;
-
     private UploadFileVo uploadFileVo;
 
     /** 등록일 */
@@ -38,11 +37,10 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList, MultipartFile attachFile, UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
+    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList, UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
         this.title = title;
         this.contents = contents;
         this.fileList = fileList;
-        this.attachFile = attachFile;
         this.uploadFileVo = uploadFileVo;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();

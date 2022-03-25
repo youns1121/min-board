@@ -15,6 +15,4 @@ public interface UploadFileMapper {
 
     List<UploadFileDto> getUploadFileList(int id);
 
-    /** 첨부파일 삭제 **/
-    void deleteUploadFile(int id);
 }

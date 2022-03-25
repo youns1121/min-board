@@ -21,16 +21,16 @@ spring:
       max-request-size: 50MB
 
 mybatis:
-  mapper-locations: classpath:mapper/**.xml
-  type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
   configuration:
     return-instance-for-empty-row: true
+  mapper-locations: classpath:mapper/**.xml
+  type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
+
 
 
 custom:
   path:
     uploadPath: 'C:/Users/daema/board/file/'      # 게시판 파일 업로드 경로
-#    uploadPathOri: 'file:///C:/board/upload_ori'       #원본파일 업로드 경로
 
 
 #logging:

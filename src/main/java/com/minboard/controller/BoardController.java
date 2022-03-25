@@ -55,9 +55,10 @@ public class BoardController {
 
         boardService.createBoard(boardSaveVo);
         List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList(), boardSaveVo.getId());
-        if(!CollectionUtils.isEmpty(uploadFileList) && uploadFileList.size() != 1) {
+        if(!CollectionUtils.isEmpty(uploadFileList)) {
             uploadFileMapper.insertFileList(uploadFileList);
         }
+
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
             return "html/boardNew";
@@ -85,10 +86,11 @@ public class BoardController {
         return "html/boardDetail";
     }
 
+    /** 첨부파일 다운로드  **/
     @GetMapping("/attach/{fileId}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable int fileId) throws MalformedURLException {
-        UploadFileDto uploadFile = uploadFileMapper.findByUploadFile(fileId);
 
+        UploadFileDto uploadFile = uploadFileMapper.findByUploadFile(fileId);
         String storeFileName = uploadFile.getStoreFileName();
         String uploadFileName = uploadFile.getOriginalFileName();
 
@@ -99,8 +101,6 @@ public class BoardController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(resource);
-
-
     }
 
     /** 게시물 수정하기 **/

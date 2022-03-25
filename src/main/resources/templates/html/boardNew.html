@@ -2,10 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <style>
-    /*fieldset, tr, td {*/
-    /*    border: 1px solid #bcbcbc;*/
-    /*    text-align: left;*/
-    /*}*/
+
     fieldset {
         width: 500px;
         height: 400px;
@@ -24,7 +21,7 @@
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
 </head>
 <body>
-    <form th:object="${board}" th:action="@{/board/new}" method="post" enctype="multipart/form-data">
+    <form id="frm" th:object="${board}" th:action="@{/board/new}" method="post" enctype="multipart/form-data">
         <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
         <fieldset class="field">
@@ -46,11 +43,17 @@
                 <br/>
                 <div class="insert">
                     <tr>
+                        <label for="input-file">
                         <th>
                             파일업로드:
                         </th>
+                        </label>
                         <td>
-                            <input type="file"  name = "fileList" multiple="multiple" />
+                            <div id="input-file">
+                                <input type="file" class="file" onchange="addFile(this);" style={{display:"none"}}	/>
+                            </div>
+                                <div class="file-list"></div>
+
                         </td>
                     </tr>
                 </div>

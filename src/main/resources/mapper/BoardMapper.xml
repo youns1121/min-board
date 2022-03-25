@@ -5,9 +5,6 @@
 
 <mapper namespace="com.minboard.mapper.BoardMapper">
 
-
-
-
     <resultMap id="boardVoResultMap" type="BoardVo">
         <result property="createTime" column="create_time"/>
         <result property="viewCount" column="view_count"/>

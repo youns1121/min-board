@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,6 +50,7 @@ public class FileStoreServiceImpl implements FileStoreService {
         if(multipartFile.isEmpty()){
             return null;
         }
+
         String originalFilename = multipartFile.getOriginalFilename();
         String extensionName = extractExt(originalFilename);
         String storeFileName = createStoreFileName(originalFilename);

@@ -12,9 +12,6 @@ import java.util.List;
 @Getter
 public class UploadFileVo {
 
-    /** keyProperty **/
-    private Integer id;
-
     /** 서버에 저장 될 파일명**/
     private String storeFileName;
 

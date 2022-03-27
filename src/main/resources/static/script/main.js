@@ -2,7 +2,7 @@
 function createFn(){
     const titleValueCheck = $('#title').val().trim().length;
     const contentsValueCheck = $('#contents').val().trim().length;
-    submitForm()
+
     if(titleValueCheck != 0 && (contentsValueCheck > 20 && contentsValueCheck < 100)){
         alert("저장 되었습니다")
     }

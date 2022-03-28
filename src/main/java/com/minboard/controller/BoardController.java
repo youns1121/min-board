@@ -22,10 +22,12 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -58,7 +60,6 @@ public class BoardController {
         if(!CollectionUtils.isEmpty(uploadFileList)) {
             uploadFileMapper.insertFileList(uploadFileList);
         }
-
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
             return "html/boardNew";
@@ -122,8 +123,9 @@ public class BoardController {
     /** 게시물 수정페이지 **/
     @GetMapping("/update/{id}")
     public String getDetailViewUpdateBoard(@PathVariable("id") int id, Model model) {
-        UploadFileDto uploadFileList = uploadFileMapper.findByUploadFile(id);
+
         BoardUpdateVo boardUpdateVo = boardService.getDetailViewUpdateBoard(id);
+        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
         model.addAttribute("boardUpdateVo", boardUpdateVo);
         model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardEdit";

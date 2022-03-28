@@ -18,7 +18,7 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
-<!--    <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>-->
+    <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
 </head>
 <body>
     <form id="frm" th:object="${board}" th:action="@{/board/new}" method="post" enctype="multipart/form-data">
@@ -41,61 +41,21 @@
                     </td>
                 </tr>
                 <br/>
-                <div class="insert">
                     <tr>
                         <td>
-                            <button type="button" id="button-add-file" onclick="addFileForm()">파일업로드</button>
+                            <div id="Files0">
+                                <input type='file' name='fileList0' />
+                                <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
+                                <button type="button" id="delete" onclick="deleteDefaultFile()">삭제</button>
+                            </div>
                             <div id="file-list"></div>
-
                         </td>
                     </tr>
-                </div>
             </div>
         </fieldset>
-            <button type="submit" id="buttonCreate" onclick="createFn()"  >저장</button>
+            <button type="button" id="buttonCreate" onclick="createFn()">저장</button>
             <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
     </form>
-    <script>
-        function delFile(){
-                $(this).parent().remove();
-        };
-
-        var count = 0
-        function addFileForm() {
-            html= ""
-            html += "<input type='file' name='attachFile[]' />";
-            html += "<button class='button-delete-file' onclick='delFile()'>삭제</button></div>";
-            count++;
-            $("#file-list").append(html);
-        }
-
-        function uploadFile(){
-
-            var formData = new FormData();
-            var inputFile = $("input[type='file']")
-            formData.append("title", $("#title").val());
-            formData.append("content", $("#content").val());
-
-
-
-            for (var i=0; i < inputFile.length; i++){
-                formData.append("uploadFiles", inputFile[i])
-            }
-
-            $.ajax({
-                url: '/board/new',
-                contentType : false,
-                processData: false,
-                type : "POST",
-                data : formData,
-                success: function(returnData) {
-                    console.log(returnData);
-                },
-            });
-
-        }
-
-    </script>
 </body>
 
 </html>

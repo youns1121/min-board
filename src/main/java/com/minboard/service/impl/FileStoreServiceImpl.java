@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,14 +33,24 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
-
+        boolean retVal = false;
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFiles) {
             if(!multipartFiles.isEmpty()){
-                storeFileResult.add(storeFile(mutipartFile, boardId));
+                UploadFileVo filevo = storeFile(mutipartFile, boardId);
+                if(filevo != null) {
+                    storeFileResult.add(filevo);
+                    retVal = true;
+                }
             }
         }
-        return storeFileResult;
+
+        if(!retVal){
+            return null;
+        }else{
+            return storeFileResult;
+        }
+
     }
 
     @Override
@@ -56,15 +65,18 @@ public class FileStoreServiceImpl implements FileStoreService {
         String storeFileName = createStoreFileName(originalFilename);
         long fileSize = multipartFile.getSize();
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
-
-        return UploadFileVo.builder()
-                .originalFileName(originalFilename)
-                .storeFileName(storeFileName)
-                .extensionName(extensionName)
-                .storeFileSize(fileSize)
-                .storeFilePath(uploadPath)
-                .boardId(boardId)
-                .build();
+        if(fileSize !=0 ){
+            return UploadFileVo.builder()
+                    .originalFileName(originalFilename)
+                    .storeFileName(storeFileName)
+                    .extensionName(extensionName)
+                    .storeFileSize(fileSize)
+                    .storeFilePath(uploadPath)
+                    .boardId(boardId)
+                    .build();
+        }else {
+            return  null;
+        }
 
     }
 

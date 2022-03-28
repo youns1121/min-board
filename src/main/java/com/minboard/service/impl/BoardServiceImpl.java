@@ -58,6 +58,7 @@ public class BoardServiceImpl implements BoardService {
     public void updateBoard(BoardUpdateVo boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
 
+
     }
 
     /** 게시물 리스트 **/

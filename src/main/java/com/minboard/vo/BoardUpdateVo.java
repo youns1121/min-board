@@ -4,9 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class BoardUpdateVo {
@@ -28,6 +30,11 @@ public class BoardUpdateVo {
 
     /** 수정일 **/
     private LocalDateTime updateTime;
+//    /**
+//     * 파일업로드 **/
+//    private List<MultipartFile> fileList;
+//
+//    private UploadFileVo uploadFileVo;
 
     /** 게시글 조회수 **/
     private Integer viewCount;
@@ -36,12 +43,13 @@ public class BoardUpdateVo {
     private Integer likeCount;
 
     @Builder
+
     public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime, Integer viewCount, Integer likeCount) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.createTime = createTime;
-        this.updateTime = updateTime.now();
+        this.updateTime = updateTime;
         this.viewCount = viewCount;
         this.likeCount = likeCount;
     }

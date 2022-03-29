@@ -25,7 +25,7 @@ public class UploadFileVo {
     private String extensionName;
 
     /** 파일사이즈 **/
-    private long storeFileSize;
+    private Long storeFileSize;
 
     /** 파일 저장 경로 **/
     private String storeFilePath;
@@ -34,7 +34,7 @@ public class UploadFileVo {
     private LocalDateTime createTime;
 
     @Builder
-    public UploadFileVo(String storeFileName, int boardId, String originalFileName, String extensionName, long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+    public UploadFileVo(String storeFileName, int boardId, String originalFileName, String extensionName, Long storeFileSize, String storeFilePath, LocalDateTime createTime) {
         this.storeFileName = storeFileName;
         this.boardId = boardId;
         this.originalFileName = originalFileName;

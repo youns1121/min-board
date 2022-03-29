@@ -25,6 +25,7 @@
         <result property="delYn" column="del_yn"/>
         <result property="viewCount" column="view_count"/>
         <result property="likeCount" column="like_count"/>
+        <result property="id" column="id"/>
     </resultMap>
 
     <!--- 게시물 전체보기  -->
@@ -135,5 +136,7 @@
             del_yn = 'N'
             and id = #{id}
     </update>
+
+
 
 </mapper>

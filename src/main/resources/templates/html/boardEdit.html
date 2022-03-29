@@ -21,9 +21,10 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
   <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
+
 </head>
 <body>
-  <form class="boardEdit" th:object="${boardUpdateVo}" th:action="@{/board/update}" method="post">
+  <form class="boardEdit" th:object="${boardUpdateVo}" th:action="@{/board/update}" enctype="multipart/form-data" method="post" >
     <fieldset>
       <legend>수정하기</legend>
         <div>
@@ -60,18 +61,16 @@
           </tr>
 
           <tr th:each="uploadFile : ${uploadFileList}">
-            <div th:id="delete+${uploadFile.id}">
+            <div th:id="delete+${uploadFile.id}" th:value="${uploadFile.id}">
             <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
-            <button type="button" onclick="deleteViewFile(this)">삭제</button>
+            <button type="button" onclick="deleteFile(this)">삭제</button>
             </div>
           </tr>
           <br/>
           <tr>
             <td>
               <div id="Files0">
-                <input type='file' name='fileList0' />
                 <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
-                <button type="button" id="delete" onclick="deleteDefaultFile()">삭제</button>
               </div>
               <div id="file-list"></div>
             </td>
@@ -79,16 +78,8 @@
       </div>
     </fieldset>
       <button type="submit" id="updateButton" th:onclick="updateFn()" >저장</button>
-    <button type="button"  th:onclick="|location.href='@{/board/view//{id}(id = ${id})}'|">취소</button>
+    <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
       <button type="button" th:onclick="|location.href='@{/board/list}'|">목록</button>
   </form>
-<script>
-  function deleteViewFile(obj){
-    $(obj).parent().remove()
-
-  }
-
-
-</script>
 </body>
 </html>

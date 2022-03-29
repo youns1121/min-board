@@ -6,12 +6,10 @@ import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.BoardService;
 import com.minboard.service.FileStoreService;
-import com.minboard.vo.BoardSaveVo;
-import com.minboard.vo.BoardUpdateVo;
-import com.minboard.vo.BoardVo;
-import com.minboard.vo.UploadFileVo;
+import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -22,12 +20,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
@@ -107,14 +102,22 @@ public class BoardController {
     /** 게시물 수정하기 **/
     @PostMapping("/update")
     public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
-                              BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo,
+                              BindingResult bindingResult, RedirectAttributes redirectAttributes)
+            throws IOException {
+
+        boardService.updateBoard(boardUpdateVo);
+
+        if(!CollectionUtils.isEmpty(boardUpdateVo.getFileList())){
+            List<UploadFileUpdateVo> uploadFileUpdate = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
+                    boardUpdateVo.getId());
+            uploadFileMapper.updateFileList(uploadFileUpdate);
+        }
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
             return "html/boardEdit";
         }
-
-        boardService.updateBoard(boardUpdateVo);
         redirectAttributes.addAttribute("id", boardUpdateVo.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/board/view/{id}";
@@ -124,8 +127,9 @@ public class BoardController {
     @GetMapping("/update/{id}")
     public String getDetailViewUpdateBoard(@PathVariable("id") int id, Model model) {
 
-        BoardUpdateVo boardUpdateVo = boardService.getDetailViewUpdateBoard(id);
+        BoardDto boardUpdateVo = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
+        model.addAttribute("uploadFileUpdateVo", UploadFileUpdateVo.builder().build());
         model.addAttribute("boardUpdateVo", boardUpdateVo);
         model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardEdit";
@@ -136,6 +140,11 @@ public class BoardController {
     public String deleteBoard(int id) {
         boardService.deleteBoard(id);
         return "redirect:/board/list";
+    }
+
+    @DeleteMapping("/deleteFile")
+    public void deleteFile(int id){
+        fileStoreService.deleteFile(id);
     }
 }
 

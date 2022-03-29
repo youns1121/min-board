@@ -12,10 +12,18 @@ public interface UploadFileMapper {
 
     void insertFileList(List<UploadFileVo> uploadFileList);
 
+    void updateFileList(List<UploadFileUpdateVo> uploadFileList);
+
     void getDetailViewUpdateUploadFile(List<UploadFileUpdateVo> uploadFileUpdateVo);
 
     UploadFileDto findByUploadFile(int id);
 
     List<UploadFileDto> getUploadFileList(int id);
+
+    List<UploadFileUpdateVo> getUploadFileUpdateList(int id);
+
+    void deleteFile(int id);
+
+
 
 }

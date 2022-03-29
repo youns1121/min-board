@@ -23,7 +23,7 @@
     <title>회원가입</title>
 </head>
 <body>
-<form th:object="${memberSaveVo}" th:action="@{/member/signup}" method="post">
+<form th:object="${memberSaveVo}" th:action="@{/member/signup}" method="post" enctype="multipart/form-data">
   <fieldset>
     <legend>회원가입</legend>
     <table>

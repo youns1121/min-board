@@ -18,14 +18,13 @@ function deleteDefaultFile() {
 
 function deleteFile(obj) {
     $(obj).parent().remove();
-    var id = $(obj).parent('div').attr('value')
+    let id = $(obj).parent('div').attr('value')
 
-    var idData = {"id" : parseInt(id)};
-
+    let idData = {"id" : parseInt(id)};
 
     $.ajax({
         url : '/board/deleteFile',
-        type : "DELETE",
+        type : "post",
         data :  idData,
         success : function (returnData){
 

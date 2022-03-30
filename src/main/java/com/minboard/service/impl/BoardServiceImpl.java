@@ -2,19 +2,19 @@ package com.minboard.service.impl;
 
 
 import com.minboard.dto.BoardDto;
+import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.BoardMapper;
 import com.minboard.mapper.UploadFileMapper;
-import com.minboard.paging.PaginationDto;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
-import com.minboard.service.FileStoreService;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
-import com.minboard.vo.BoardVo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,10 +23,14 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
+    private final UploadFileMapper fileMapper;
 
+    @Value("${custom.path.uploadPath}")
+    private String uploadPath;
 
     /** 게시물 생성 **/
     @Override
+    @Transactional
     public void createBoard(BoardSaveVo boardSaveVo) {
         boardMapper.createBoard(boardSaveVo);
     }
@@ -50,6 +54,13 @@ public class BoardServiceImpl implements BoardService {
     /** 게시물 삭제 **/
     @Override
     public void deleteBoard(int id) {
+        List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
+        for(int i=0; i < uploadFileList.size(); i++){
+            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName());
+            if(file.exists()){
+                file.delete();
+            }
+        }
         boardMapper.deleteBoard(id);
     }
 
@@ -57,8 +68,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void updateBoard(BoardUpdateVo boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
-
-
     }
 
     /** 게시물 리스트 **/

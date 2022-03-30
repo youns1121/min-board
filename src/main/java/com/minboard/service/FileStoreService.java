@@ -10,26 +10,37 @@ import java.util.List;
 
 public interface FileStoreService {
 
+    /** 파일 전체경로 가져오기 **/
     String getFullPath(String filePath);
 
+    /** 파일리스트 저장하기 **/
     List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException;
 
+    /** 단일파일 저장하기 **/
     UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException;
 
+    /** 파일리스트 수정하기 **/
     List<UploadFileUpdateVo> storeFilesUpdate(List<MultipartFile> multipartFiles, int boardId) throws IOException;
 
+    /** 단일파일 수정하기 **/
     UploadFileUpdateVo storeFileUpdate(MultipartFile multipartFile, int boardId) throws IOException;
 
+    /** 파일이름 생성하기 **/
     String createStoreFileName(String fileNameOri);
 
+    /** 파일확장자 추출하기 **/
     String extractExt(String originalFileName);
 
+    /** 업로드한 파일리스트 가져오기 **/
     List<UploadFileDto> getUploadFileList(int id);
 
+    /** 업데이트할 파일리스트 가져오기 **/
     List<UploadFileUpdateVo> getUploadFileUpdateList(int id);
 
+    /** 파일정보 가져오기 **/
     UploadFileDto findByUploadFile(int id);
 
+    /** 단일파일 삭제하기 **/
     void deleteFile(int id);
 
 

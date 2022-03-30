@@ -77,8 +77,8 @@
           </tr>
       </div>
     </fieldset>
-      <button type="submit" id="updateButton" th:onclick="updateFn()" >저장</button>
-    <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
+      <button type="button" id="updateButton" onclick="updateFn()" >저장</button>
+      <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
       <button type="button" th:onclick="|location.href='@{/board/list}'|">목록</button>
   </form>
 </body>

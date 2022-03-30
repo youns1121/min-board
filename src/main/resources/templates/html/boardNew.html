@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <style>
-
     fieldset {
         width: 500px;
         height: 400px;
@@ -44,7 +43,7 @@
                     <tr>
                         <td>
                             <div id="Files0">
-                                <input type='file' name='fileList0' />
+                                <input type='file' name='fileList' />
                                 <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
                                 <button type="button" id="delete" onclick="deleteDefaultFile()">삭제</button>
                             </div>
@@ -57,5 +56,4 @@
             <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
     </form>
 </body>
-
 </html>

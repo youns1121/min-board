@@ -5,12 +5,6 @@
 
 <mapper namespace="com.minboard.mapper.BoardMapper">
 
-    <resultMap id="boardVoResultMap" type="BoardVo">
-        <result property="createTime" column="create_time"/>
-        <result property="viewCount" column="view_count"/>
-        <result property="likeCount" column="like_count"/>
-    </resultMap>
-
     <resultMap id="boardDtoResultMap" type="BoardDto">
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
@@ -74,8 +68,6 @@
           and del_yn = 'N'
     </select>
 
-
-
     <!--게시판 수정 상세보기 -->
     <select id="getDetailViewUpdateBoard" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
         select
@@ -136,7 +128,4 @@
             del_yn = 'N'
             and id = #{id}
     </update>
-
-
-
 </mapper>

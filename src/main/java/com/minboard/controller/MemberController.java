@@ -22,7 +22,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-
     /** 회원가입 페이지 **/
     @GetMapping("/signup")
     public String getFormMemberSignUp(@ModelAttribute("memberSaveVo") MemberSaveVo memberSaveVo){

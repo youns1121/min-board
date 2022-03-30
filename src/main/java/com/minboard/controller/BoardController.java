@@ -1,6 +1,5 @@
 package com.minboard.controller;
 
-
 import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
@@ -9,7 +8,6 @@ import com.minboard.service.FileStoreService;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +18,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
@@ -40,28 +37,27 @@ public class BoardController {
 
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
-    public String formBoard(Model model, BoardVo boardVo) {
-        model.addAttribute("board", boardVo.builder().build());
+    public String formBoard(Model model, BoardSaveVo boardSaveVo) {
+        model.addAttribute("board", boardSaveVo.builder().build());
         return "html/boardNew";
     }
 
     /** 게시물 생성하기 **/
+    @ResponseBody
     @PostMapping("/new")
-    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes) throws IOException {
+    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult
+    ) throws IOException {
 
         boardService.createBoard(boardSaveVo);
-        List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList(), boardSaveVo.getId());
-        if(!CollectionUtils.isEmpty(uploadFileList)) {
+        if(!CollectionUtils.isEmpty(boardSaveVo.getFileList())) {
+            List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList(), boardSaveVo.getId());
             uploadFileMapper.insertFileList(uploadFileList);
         }
-        if(bindingResult.hasErrors()){
-            log.info("errors={}", bindingResult);
-            return "html/boardNew";
-        }
-        redirectAttributes.addAttribute("id", boardSaveVo.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/board/view/{id}";
+//        if(bindingResult.hasErrors()){
+//            log.info("errors={}", bindingResult);
+//            return "html/boardNew";
+//        }
+        return boardSaveVo.getId().toString();
     }
 
     /** 게시물 리스트 **/
@@ -100,27 +96,23 @@ public class BoardController {
     }
 
     /** 게시물 수정하기 **/
+    @ResponseBody
     @PostMapping("/update")
     public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
                               @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo,
-                              BindingResult bindingResult, RedirectAttributes redirectAttributes)
-            throws IOException {
+                              BindingResult bindingResult) throws IOException {
 
         boardService.updateBoard(boardUpdateVo);
-
         if(!CollectionUtils.isEmpty(boardUpdateVo.getFileList())){
             List<UploadFileUpdateVo> uploadFileUpdate = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
                     boardUpdateVo.getId());
             uploadFileMapper.updateFileList(uploadFileUpdate);
         }
-
-        if(bindingResult.hasErrors()){
-            log.info("errors={}", bindingResult);
-            return "html/boardEdit";
-        }
-        redirectAttributes.addAttribute("id", boardUpdateVo.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/board/view/{id}";
+//        if(bindingResult.hasErrors()){
+//            log.info("errors={}", bindingResult);
+//            return "html/boardEdit";
+//        }
+        return boardUpdateVo.getId().toString();
     }
 
     /** 게시물 수정페이지 **/
@@ -142,7 +134,8 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @DeleteMapping("/deleteFile")
+    /** 단일 파일삭제 **/
+    @PostMapping("/deleteFile")
     public void deleteFile(int id){
         fileStoreService.deleteFile(id);
     }

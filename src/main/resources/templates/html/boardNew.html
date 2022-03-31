@@ -11,6 +11,7 @@
         border-color: #dc3545;
         color: #dc3545;
     }
+
 </style>
 <head>
     <meta charset="utf-8">
@@ -40,16 +41,15 @@
                     </td>
                 </tr>
                 <br/>
-                    <tr>
-                        <td>
-                            <div id="Files0">
-                                <input type='file' name='fileList' />
+                <tr>
+                    <td>
+                        <div id="Files0">
+                                <input type='file' class="file" name='fileList' />
                                 <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
-                                <button type="button" id="delete" onclick="deleteDefaultFile()">삭제</button>
-                            </div>
-                            <div id="file-list"></div>
-                        </td>
-                    </tr>
+                        </div>
+                        <div id="file-list"></div>
+                    </td>
+                </tr>
             </div>
         </fieldset>
             <button type="button" id="buttonCreate" onclick="createFn()">저장</button>

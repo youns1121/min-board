@@ -30,6 +30,7 @@ public interface BoardMapper {
     /** 게시물 삭제 **/
     void deleteBoard(int id);
 
+
     /** 게시물 수정 **/
     void updateBoard(BoardUpdateVo boardUpdateVo); // 게시물 수정
 }

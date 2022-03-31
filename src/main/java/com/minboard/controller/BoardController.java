@@ -1,6 +1,7 @@
 package com.minboard.controller;
 
 import com.minboard.dto.BoardDto;
+import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.BoardService;
@@ -8,8 +9,6 @@ import com.minboard.service.FileStoreService;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,14 +17,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
@@ -33,7 +29,6 @@ public class BoardController {
 
     private final BoardService boardService;
     private final FileStoreService fileStoreService;
-    private final UploadFileMapper uploadFileMapper;
 
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
@@ -49,9 +44,10 @@ public class BoardController {
     ) throws IOException {
 
         boardService.createBoard(boardSaveVo);
-        if(!CollectionUtils.isEmpty(boardSaveVo.getFileList())) {
-            List<UploadFileVo> uploadFileList = fileStoreService.storeFiles(boardSaveVo.getFileList(), boardSaveVo.getId());
-            uploadFileMapper.insertFileList(uploadFileList);
+         if(!CollectionUtils.isEmpty(boardSaveVo.getFileList())) {
+            List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
+                    boardSaveVo.getId());
+            fileStoreService.insertFileInfoList(uploadFileInfoList);
         }
 //        if(bindingResult.hasErrors()){
 //            log.info("errors={}", bindingResult);
@@ -78,21 +74,15 @@ public class BoardController {
         return "html/boardDetail";
     }
 
-    /** 첨부파일 다운로드  **/
+    /** 첨부파일 다운로드
+     * @return**/
     @GetMapping("/attach/{fileId}")
-    public ResponseEntity<Resource> downloadAttach(@PathVariable int fileId) throws MalformedURLException {
+    public ResponseEntity<String> downloadAttach(@PathVariable int fileId) throws MalformedURLException {
 
-        UploadFileDto uploadFile = uploadFileMapper.findByUploadFile(fileId);
-        String storeFileName = uploadFile.getStoreFileName();
-        String uploadFileName = uploadFile.getOriginalFileName();
-
-        UrlResource resource = new UrlResource("file:" + fileStoreService.getFullPath(storeFileName));
-        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
-        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
-
+        DownloadFileDto downloadFileInfo = fileStoreService.downloadAttachedFile(fileId);
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
-                .body(resource);
+                .header(HttpHeaders.CONTENT_DISPOSITION, downloadFileInfo.getContentDisposition())
+                .body(downloadFileInfo.getResource());
     }
 
     /** 게시물 수정하기 **/
@@ -104,9 +94,10 @@ public class BoardController {
 
         boardService.updateBoard(boardUpdateVo);
         if(!CollectionUtils.isEmpty(boardUpdateVo.getFileList())){
-            List<UploadFileUpdateVo> uploadFileUpdate = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
+            List<UploadFileUpdateVo> uploadFileUpdateInfoList =
+                    fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
                     boardUpdateVo.getId());
-            uploadFileMapper.updateFileList(uploadFileUpdate);
+            fileStoreService.updateFileInfoList(uploadFileUpdateInfoList);
         }
 //        if(bindingResult.hasErrors()){
 //            log.info("errors={}", bindingResult);

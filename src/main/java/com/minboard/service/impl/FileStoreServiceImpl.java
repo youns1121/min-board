@@ -1,22 +1,28 @@
 package com.minboard.service.impl;
 
+import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.FileStoreService;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
+import jdk.internal.util.xml.impl.Input;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystemException;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,38 +43,37 @@ public class FileStoreServiceImpl implements FileStoreService {
     /** 파일리스트 저장하기 **/
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
-        boolean status = false;
+
+
         List<UploadFileVo> storeFileResult = new ArrayList<>();
-        for (MultipartFile mutipartFile : multipartFiles) {
-            if(!multipartFiles.isEmpty()){
-                UploadFileVo uploadFileInfo = storeFile(mutipartFile, boardId);
-                if(uploadFileInfo != null) {
-                    storeFileResult.add(uploadFileInfo);
-                    status = true;
-                }
-            }
-        }
-        if(!status){
-            return null;
+        for (MultipartFile multipartFile : multipartFiles) {
+            UploadFileVo uploadFileInfo = storeFile(multipartFile, boardId);
+            storeFileResult.add(uploadFileInfo);
         }
         return storeFileResult;
+    }
+
+    /** 파일업로드 리스트 정보 입력하기 **/
+    @Override
+    public void insertFileInfoList(List<UploadFileVo> uploadFileInfo) {
+        uploadFileMapper.insertFileInfoList(uploadFileInfo);
+    }
+
+    @Override
+    public void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList) {
+        uploadFileMapper.updateFileInfoList(uploadFileList);
     }
 
     /** 단일파일 저장하기 **/
     @Override
     public UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException {
 
-        if(multipartFile.isEmpty()){
-            return null;
-        }
+        fileExtensionInboundCheck(multipartFile);
         String originalFilename = multipartFile.getOriginalFilename();
         String extensionName = extractExt(originalFilename);
-        String storeFileName = createStoreFileName(originalFilename);
+        String storeFileName = createStoreFileName();
         long fileSize = multipartFile.getSize();
-        multipartFile.transferTo(new File(getFullPath(storeFileName)));
-        if(fileSize == 0){
-            return  null;
-        }
+        multipartFile.transferTo(new File(getFullPath(storeFileName + "." + extensionName)));
         return UploadFileVo.builder()
                 .originalFileName(originalFilename)
                 .storeFileName(storeFileName)
@@ -82,47 +87,34 @@ public class FileStoreServiceImpl implements FileStoreService {
     /** 파일리스트 수정하기 **/
     @Override
     public List<UploadFileUpdateVo> storeFilesUpdate(List<MultipartFile> multipartFilesUpdate, int boardId) throws IOException {
-        boolean status = false;
+
         List<UploadFileUpdateVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFilesUpdate) {
-            if(!multipartFilesUpdate.isEmpty()){
-                UploadFileUpdateVo uploadFileUpdateInfo = storeFileUpdate(mutipartFile, boardId);
-                if(uploadFileUpdateInfo != null) {
-                    storeFileResult.add(uploadFileUpdateInfo);
-                    status = true;
-                }
-            }
+            UploadFileUpdateVo uploadFileInfo = storeFileUpdate(mutipartFile, boardId);
+            storeFileResult.add(uploadFileInfo);
         }
-        if(!status) {
-            return null;
-        }
+
         return storeFileResult;
     }
 
     /** 단일파일 수정하기 **/
     @Override
     public UploadFileUpdateVo storeFileUpdate(MultipartFile multipartFileUpdate, int boardId) throws IOException {
-        if(multipartFileUpdate.isEmpty()){
-            return null;
-        }
 
+        fileExtensionInboundCheck(multipartFileUpdate);
         String originalFilename = multipartFileUpdate.getOriginalFilename();
         String extensionName = extractExt(originalFilename);
-        String storeFileName = createStoreFileName(originalFilename);
+        String storeFileName = createStoreFileName();
         long fileSize = multipartFileUpdate.getSize();
-        multipartFileUpdate.transferTo(new File(getFullPath(storeFileName)));
-        if(fileSize == 0){
-            return  null;
-        }
+        multipartFileUpdate.transferTo(new File(getFullPath(storeFileName + "." + extensionName)));
         return UploadFileUpdateVo.builder()
                 .originalFileName(originalFilename)
-                .extensionName(extensionName)
                 .storeFileName(storeFileName)
+                .extensionName(extensionName)
                 .storeFileSize(fileSize)
                 .storeFilePath(uploadPath)
                 .boardId(boardId)
                 .build();
-
     }
 
     /** 업로드한 파일리스트 가져오기 **/
@@ -139,6 +131,28 @@ public class FileStoreServiceImpl implements FileStoreService {
         return uploadFileUpdateList;
     }
 
+    @Override
+    public String fileNameSpecialPatternCheck(String originalFilenameCheck) {
+        String[] invalidName = {"\\\\", "/", ":", "[*]", "[%]", "[?]", "\"", "<", ">","[|]"};
+
+                originalFilenameCheck.replace("[%]", "").replaceAll("[\\\\/:*?%\"<>|]", "");
+                System.out.println(originalFilenameCheck);
+
+
+
+        return originalFilenameCheck;
+    }
+
+    @Override
+    public void fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException {
+        List<String> permitImgMimeType = Arrays.asList("image/pjpeg", "image/gif", "image/jpeg", "image/png", "image/x-png", "text/plain", "application/pdf");
+        InputStream inputStream = multipartFile.getInputStream();
+        String mimeType = new Tika().detect(inputStream);
+        if(!permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT))){
+            throw new FileSystemException("파일 형식이 다릅니다.");
+        }
+    }
+
     /** 파일정보 가져오기 **/
     @Override
     public UploadFileDto findByUploadFile(int id) {
@@ -148,10 +162,9 @@ public class FileStoreServiceImpl implements FileStoreService {
 
     /** 파일이름 생성하기 **/
     @Override
-    public String createStoreFileName(String originalFileName) {
-        String ext = extractExt(originalFileName);
+    public String createStoreFileName() {
         String uuid = UUID.randomUUID().toString();
-        return uuid + "." + ext;
+        return uuid;
     }
 
     /** 파일확장자 추출하기 **/
@@ -172,5 +185,22 @@ public class FileStoreServiceImpl implements FileStoreService {
         }
         uploadFileMapper.deleteFile(id);
 
+    }
+
+    /** 첨부파일 다운로드 **/
+    @Override
+    public DownloadFileDto downloadAttachedFile(int fileId) throws MalformedURLException {
+        UploadFileDto uploadFile = uploadFileMapper.findByUploadFile(fileId);
+        String storeFileName = uploadFile.getStoreFileName() + "." + uploadFile.getExtensionName();
+        String uploadFileName = uploadFile.getOriginalFileName();
+
+        UrlResource resource = new UrlResource("file:" + getFullPath(storeFileName));
+        String encodedUploadFileName = UriUtils.encode(uploadFileName, StandardCharsets.UTF_8);
+        String contentDisposition = "attachment; filename=\"" + encodedUploadFileName + "\"";
+
+        return DownloadFileDto.builder()
+                .resource(String.valueOf(resource))
+                .contentDisposition(contentDisposition)
+                .build();
     }
 }

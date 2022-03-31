@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
-    /** 게시물 상세보기 **/
+    /** 게시물 수정 상세보기 **/
     @Override
     @Transactional(readOnly = true)
     public BoardUpdateVo getDetailViewUpdateBoard(int id) {
@@ -56,12 +56,14 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(int id) {
         List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
         for(int i=0; i < uploadFileList.size(); i++){
-            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName());
+            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." + uploadFileList.get(i).getExtensionName());
             if(file.exists()){
                 file.delete();
             }
         }
         boardMapper.deleteBoard(id);
+        fileMapper.deleteAlldFile(id);
+
     }
 
     /** 게시물 수정 **/

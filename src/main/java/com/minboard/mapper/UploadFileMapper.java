@@ -10,11 +10,11 @@ import java.util.List;
 @Mapper
 public interface UploadFileMapper {
 
-    /** 파일업로드 리스트 입력하기 **/
-    void insertFileList(List<UploadFileVo> uploadFileList);
+    /** 파일업로드 리스트 정보 입력하기 **/
+    void insertFileInfoList(List<UploadFileVo> uploadFileList);
 
-    /** 파일업로드 리스트 수정하기 **/
-    void updateFileList(List<UploadFileUpdateVo> uploadFileList);
+    /** 파일업로드 리스트 정보수정하기 **/
+    void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList);
 
     /** 단일 파일정보 찾기 **/
     UploadFileDto findByUploadFile(int id);
@@ -27,4 +27,8 @@ public interface UploadFileMapper {
 
     /** 단일파일 삭제하기 **/
     void deleteFile(int id);
+
+    /** 파일 전체 삭제하기 **/
+    void deleteAlldFile(int id);
+
 }

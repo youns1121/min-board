@@ -27,7 +27,7 @@
 
 
     <!--- 생성하기  -->
-    <insert id="insertFileList"
+    <insert id="insertFileInfoList"
             parameterType="java.util.List"
             useGeneratedKeys ="true">
 
@@ -43,18 +43,18 @@
         )VALUES
         <foreach collection="list" item="item" separator=",">
             (
-             #{item.storeFileName},
-             #{item.originalFileName},
-             #{item.extensionName},
-             #{item.storeFileSize},
-             #{item.storeFilePath},
-             #{item.boardId},
-             #{item.createTime}
+                         #{item.storeFileName},
+                         #{item.originalFileName},
+                         #{item.extensionName},
+                         #{item.storeFileSize},
+                         #{item.storeFilePath},
+                         #{item.boardId},
+                         #{item.createTime}
             )
         </foreach>
     </insert>
 
-    <insert id="updateFileList"
+    <insert id="updateFileInfoList"
             parameterType="java.util.List"
             useGeneratedKeys ="true">
 
@@ -83,12 +83,12 @@
 
     <select id="getUploadFileList" resultType="UploadFileDto" resultMap="UploadFileDtoResultMap">
         SELECT
-
                 id,
                 original_file_name,
                 store_file_name,
                 store_file_path,
                 store_file_size,
+                extension_name,
                 board_id
 
         FROM
@@ -139,5 +139,14 @@
                 upload_file
         WHERE
                 id = #{id}
+    </delete>
+
+    <delete id="deleteAlldFile" parameterType="int">
+        DELETE
+
+        FROM
+            upload_file
+        WHERE
+            board_id = #{id}
     </delete>
 </mapper>

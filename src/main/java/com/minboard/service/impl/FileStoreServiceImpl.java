@@ -13,6 +13,7 @@ import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
@@ -44,10 +45,12 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
 
-
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             UploadFileVo uploadFileInfo = storeFile(multipartFile, boardId);
+            if(uploadFileInfo == null){
+                return null;
+            }
             storeFileResult.add(uploadFileInfo);
         }
         return storeFileResult;
@@ -68,7 +71,10 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Override
     public UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException {
 
-        fileExtensionInboundCheck(multipartFile);
+        boolean fileCheck = fileExtensionInboundCheck(multipartFile);
+        if (!fileCheck){
+            return null;
+        }
         String originalFilename = multipartFile.getOriginalFilename();
         String extensionName = extractExt(originalFilename);
         String storeFileName = createStoreFileName();
@@ -91,6 +97,9 @@ public class FileStoreServiceImpl implements FileStoreService {
         List<UploadFileUpdateVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFilesUpdate) {
             UploadFileUpdateVo uploadFileInfo = storeFileUpdate(mutipartFile, boardId);
+            if(uploadFileInfo == null){
+                return null;
+            }
             storeFileResult.add(uploadFileInfo);
         }
 
@@ -101,7 +110,10 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Override
     public UploadFileUpdateVo storeFileUpdate(MultipartFile multipartFileUpdate, int boardId) throws IOException {
 
-        fileExtensionInboundCheck(multipartFileUpdate);
+        boolean fileCheck = fileExtensionInboundCheck(multipartFileUpdate);
+        if (!fileCheck){
+            return null;
+        }
         String originalFilename = multipartFileUpdate.getOriginalFilename();
         String extensionName = extractExt(originalFilename);
         String storeFileName = createStoreFileName();
@@ -132,25 +144,27 @@ public class FileStoreServiceImpl implements FileStoreService {
     }
 
     @Override
-    public String fileNameSpecialPatternCheck(String originalFilenameCheck) {
-        String[] invalidName = {"\\\\", "/", ":", "[*]", "[%]", "[?]", "\"", "<", ">","[|]"};
+    public boolean fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException {
 
-                originalFilenameCheck.replace("[%]", "").replaceAll("[\\\\/:*?%\"<>|]", "");
-                System.out.println(originalFilenameCheck);
-
-
-
-        return originalFilenameCheck;
-    }
-
-    @Override
-    public void fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException {
-        List<String> permitImgMimeType = Arrays.asList("image/pjpeg", "image/gif", "image/jpeg", "image/png", "image/x-png", "text/plain", "application/pdf");
+        List<String> permitImgMimeType = Arrays.asList(
+                "application/zip", "application/pdf", "application/msword",
+                "text/plain",
+                "application/x-hwp", "applicaion/haansofthwp", "application/x-tika-msoffice", // .hwp
+                "application/x-tika-ooxml",  // .xlsx, .pptx, .docx\
+                "image/jpeg", "image/gif", "image/png", // 이미지
+                "application/vnd.ms-word",          // .docx 등 워드 관련
+                "application/vnd.ms-excel",         // .xls 등 엑셀 관련
+                "application/vnd.ms-powerpoint",    // .ppt 등 파워포인트 관련
+                "application/vnd.openxmlformats-officedocument",    // .docx, .dotx, .xlsx, .xltx, .pptx, .potx, .ppsx
+                "applicaion/vnd.hancom"     // .hwp 관련
+        );
         InputStream inputStream = multipartFile.getInputStream();
         String mimeType = new Tika().detect(inputStream);
-        if(!permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT))){
-            throw new FileSystemException("파일 형식이 다릅니다.");
+
+        if (!permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT))) {
+            return false;
         }
+        return true;
     }
 
     /** 파일정보 가져오기 **/

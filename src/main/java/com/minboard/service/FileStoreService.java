@@ -45,11 +45,8 @@ public interface FileStoreService {
     /** 업데이트할 파일리스트 가져오기 **/
     List<UploadFileUpdateVo> getUploadFileUpdateList(int id);
 
-    /** 파일이름 특수문자 체크 **/
-    String fileNameSpecialPatternCheck(String OriginalFilename);
-
     /** 파일이름 확장자 허용 체크 **/
-    void fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException;
+    boolean fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException;
 
     /** 파일정보 찾기 **/
     UploadFileDto findByUploadFile(int id);

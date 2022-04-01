@@ -44,10 +44,12 @@ public class BoardController {
     ) throws IOException {
 
         boardService.createBoard(boardSaveVo);
-         if(!CollectionUtils.isEmpty(boardSaveVo.getFileList())) {
+         if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
             List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
                     boardSaveVo.getId());
-            fileStoreService.insertFileInfoList(uploadFileInfoList);
+            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
+                fileStoreService.insertFileInfoList(uploadFileInfoList);
+            }
         }
 //        if(bindingResult.hasErrors()){
 //            log.info("errors={}", bindingResult);
@@ -93,11 +95,14 @@ public class BoardController {
                               BindingResult bindingResult) throws IOException {
 
         boardService.updateBoard(boardUpdateVo);
-        if(!CollectionUtils.isEmpty(boardUpdateVo.getFileList())){
+        if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false){
             List<UploadFileUpdateVo> uploadFileUpdateInfoList =
                     fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
                     boardUpdateVo.getId());
-            fileStoreService.updateFileInfoList(uploadFileUpdateInfoList);
+
+            if(CollectionUtils.isEmpty(uploadFileUpdateInfoList) == false) {
+                fileStoreService.updateFileInfoList(uploadFileUpdateInfoList);
+            }
         }
 //        if(bindingResult.hasErrors()){
 //            log.info("errors={}", bindingResult);

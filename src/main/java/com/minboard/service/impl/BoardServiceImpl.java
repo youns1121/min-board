@@ -74,6 +74,7 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 리스트 **/
     @Override
+    @Transactional(readOnly = true)
     public List<BoardDto> getBoardList(BoardDto boardDto) {
         List<BoardDto> boardList = Collections.emptyList();
         int boardTotalCount = boardMapper.geTotalBoardCount();

@@ -71,5 +71,7 @@
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/new}'|">글작성</button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
   </form>
+  <br/><br/>
+  <div th:fragment="comments" th:replace="html/boardComments :: comments"></div>
 </body>
 </html>

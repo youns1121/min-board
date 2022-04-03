@@ -1,14 +1,14 @@
 package com.minboard.controller;
 
 import com.minboard.dto.BoardDto;
+import com.minboard.dto.CommentsDto;
 import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
-import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.BoardService;
+import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +29,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final FileStoreService fileStoreService;
+    private final CommentService commentService;
 
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
@@ -135,6 +136,23 @@ public class BoardController {
     public void deleteFile(int id){
         fileStoreService.deleteFile(id);
     }
+
+    /** 댓글작성하기 **/
+    @PostMapping("/newComment")
+    public String insertComment(@ModelAttribute("comments") CommentsSaveVo comments){
+        commentService.insertComments(comments.getId());
+    return "html/boardComments";
+    }
+
+    /** 댓글리스트 출력하기 **/
+    @GetMapping("/listComments")
+    public String getCommentsList(@ModelAttribute("comments") CommentsDto commentsDto){
+
+
+        return "html/boardComments";
+    }
+
+
 }
 
 

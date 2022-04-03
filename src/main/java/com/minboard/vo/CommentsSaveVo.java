@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ComentsSaveVo {
+public class CommentsSaveVo {
 
     private int id;
 
@@ -16,17 +16,20 @@ public class ComentsSaveVo {
 
     private int groupNumber;
 
-    private String depts;
+    private String commentsPath;
+
+    private int commentsSort;
 
     private LocalDateTime createTime;
 
     @Builder
-    public ComentsSaveVo(int id, int boardId, String contents, int groupNumber, String depts, LocalDateTime createTime) {
+    public CommentsSaveVo(int id, int boardId, String contents, int groupNumber, String commentsPath, int commentsSort, LocalDateTime createTime) {
         this.id = id;
         this.boardId = boardId;
         this.contents = contents;
         this.groupNumber = groupNumber;
-        this.depts = depts;
+        this.commentsPath = commentsPath;
+        this.commentsSort = commentsSort;
         this.createTime = createTime;
     }
 }

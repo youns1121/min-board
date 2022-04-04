@@ -1,12 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div id="comments" th:fragment="comments">
-  <head>
-    <script type="text/javascript" th:src="@{/script/comments.js}"></script>
-  </head>
-  <form method="POST">
-    <input type="text" id="contents" name="comments">
-    <input type="button" onclick="newComment()" value="댓글작성">
+<div id="commentsTable" th:fragment="commentsList">
+  <form  method="POST" name="commentsList" >
+    <div id = "commentsList">
+    </div>
+    <table class="noListComments">
+      <strong>등록된 댓글이 없습니다.</strong>
+    </table>
   </form>
 </div>
 </html>

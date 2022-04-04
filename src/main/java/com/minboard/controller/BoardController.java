@@ -137,22 +137,26 @@ public class BoardController {
         fileStoreService.deleteFile(id);
     }
 
-    /** 댓글작성하기 **/
-    @PostMapping("/newComment")
-    public String insertComment(@ModelAttribute("comments") CommentsSaveVo comments){
-        commentService.insertComments(comments.getId());
-    return "html/boardComments";
+    /** 댓글작성하기**/
+    @ResponseBody
+    @PostMapping("/comment")
+    public void insertComment(CommentsSaveVo commentsSaveVo){
+        commentService.insertComments(commentsSaveVo);
     }
+
+//    /** 댓글작성하기 **/
+//    @GetMapping("/comment")
+//    public String formComments(Model model, CommentsSaveVo commentsSaveVo) {
+//        model.addAttribute("newComment", commentsSaveVo.builder().build());
+//        return "html/boardComments";
+//    }
 
     /** 댓글리스트 출력하기 **/
-    @GetMapping("/listComments")
-    public String getCommentsList(@ModelAttribute("comments") CommentsDto commentsDto){
-
-
-        return "html/boardComments";
+    @ResponseBody
+    @GetMapping("/commentsList/{id}")
+    public String getCommentsList(@PathVariable("id") int id, Model model){
+        List<CommentsDto> comments = commentService.getBoardCommentsList(id);
+        model.addAttribute("comments", comments);
+        return "html/boardCommentsDetail";
     }
-
-
 }
-
-

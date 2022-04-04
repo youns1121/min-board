@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 public class CommentsDto {
 
     private int id;
@@ -20,6 +21,8 @@ public class CommentsDto {
     private String commentsPath;
 
     private int commentsSort;
+
+    private String delYn;
 
     private LocalDateTime createTime;
 

@@ -22,8 +22,7 @@ function deleteFile(obj) {
 
     $.ajax({
         url : '/board/deleteFile',
-        type : "post",
-        data :  idData,
+        method : "post",
         success : function (returnData){
             console.log(returnData)
         }

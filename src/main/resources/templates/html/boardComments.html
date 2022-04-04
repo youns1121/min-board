@@ -1,12 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div id="comments" th:fragment="comments">
-  <head>
-    <script type="text/javascript" th:src="@{/script/comments.js}"></script>
-  </head>
-  <form method="POST">
-    <input type="text" id="contents" name="comments">
-    <input type="button" onclick="newComment()" value="댓글작성">
+  <form  method="POST" onsubmit="newComment()">
+      <input type="text" name = contents>
+      <input type="button" onclick="addComment()" value="댓글작성">
   </form>
+  <br/><br/>
 </div>
 </html>

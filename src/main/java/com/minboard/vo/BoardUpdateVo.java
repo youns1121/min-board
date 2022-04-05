@@ -26,9 +26,6 @@ public class BoardUpdateVo {
     @Length(min = 20, max = 100, message = "내용은 20자 이상 100자 이하")
     private String contents;
 
-    /** 등록일 **/
-    private LocalDateTime createTime;
-
     /** 수정일 **/
     private LocalDateTime updateTime;
 
@@ -41,12 +38,11 @@ public class BoardUpdateVo {
     private List<MultipartFile> fileList;
 
     @Builder
-    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime createTime, LocalDateTime updateTime,  Integer viewCount, Integer likeCount, List<MultipartFile> fileList) {
+    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,  Integer viewCount, Integer likeCount, List<MultipartFile> fileList) {
         this.id = id;
         this.title = title;
         this.fileList = fileList;
         this.contents = contents;
-        this.createTime = createTime;
         this.updateTime = updateTime.now();
         this.viewCount = viewCount;
         this.likeCount = likeCount;

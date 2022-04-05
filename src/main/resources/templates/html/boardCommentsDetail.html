@@ -1,11 +1,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div id="commentsTable" th:fragment="commentsList">
-  <form  method="POST" name="commentsList" >
-    <div id = "commentsList">
-    </div>
-    <table class="noListComments">
-      <strong>등록된 댓글이 없습니다.</strong>
+  <form  name="commentsList" th:action method="get" >
+    <table>
+          <tr class="loopList" th:each="comments : ${commentsList}">
+              <td>
+                  <p th:class="commentContents + ${comments.id}" style="width: 300px" th:text = "${comments.contents}"></p>
+                  <div id="option">
+                      <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료" onclick="updateComment(this)">
+                      <input th:class = "modify + ${comments.id}" type="hidden" value="취소" onclick="cancelUpdateComment(this)">
+                  </div>
+                  <a th:if="${#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm') < #temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}"
+                     th:text="*{#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}" th:value="수정시간"></a>
+                  <a th:if="${#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm') > #temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}"
+                      th:text="*{#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm')}" th:value="생성시간"></a>
+
+                  <input type="hidden" class="commentId" th:value="${comments.id}" ><br/>
+              </td>
+
+              <td>
+                      <button type="button">답글달기</button>
+              </td>
+              <td>
+                      <button type="button" onclick="getUpdateComment(this)">수정</button>
+              </td>
+              <td>
+                      <button type="button" onclick="deleteComment(this)">삭제</button>
+              </td>
+          </tr>
     </table>
   </form>
 </div>

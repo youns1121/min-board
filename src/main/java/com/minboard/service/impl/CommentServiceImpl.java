@@ -4,6 +4,7 @@ import com.minboard.dto.CommentsDto;
 import com.minboard.mapper.CommentsMapper;
 import com.minboard.service.CommentService;
 import com.minboard.vo.CommentsSaveVo;
+import com.minboard.vo.CommentsUpdateVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,5 +27,26 @@ public class CommentServiceImpl implements CommentService {
 
         List<CommentsDto> boardCommentsList = commentsMapper.getBoardCommentsList(boardId);
         return boardCommentsList;
+    }
+
+    @Override
+    public CommentsDto getUpdateComments(int id) {
+        CommentsDto getUpdateComment = commentsMapper.getUpdateComments(id);
+        return getUpdateComment;
+    }
+
+    @Override
+    public void updateComments(CommentsUpdateVo commentsUpdateVo) {
+        commentsMapper.updateComments(commentsUpdateVo);
+    }
+
+    @Override
+    public void deleteComment(int id) {
+        commentsMapper.deleteComment(id);
+    }
+
+    @Override
+    public void deleteAllComment(int boardId) {
+        commentsMapper.deleteAllComment(boardId);
     }
 }

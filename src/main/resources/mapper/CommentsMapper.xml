@@ -7,12 +7,18 @@
 
     <resultMap id="CommentsDtoResultMap" type="CommentsDto">
         <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
         <result property="delYn" column="del_yn"/>
         <result property="boardId" column="board_id"/>
     </resultMap>
 
+    <resultMap id="CommentsUpdateVoResultMap" type="CommentsUpdateVo">
+        <result property="createTime" column="create_time"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="boardId" column="board_id"/>
+    </resultMap>
 
-    <!--- 생성하기  -->
+    <!--- 댓글 생성하기  -->
     <insert id="insertComments"
             parameterType="CommentsSaveVo"
             useGeneratedKeys ="true"
@@ -30,27 +36,82 @@
                    )
     </insert>
 
+    <!--댓글 전체보기-->
     <select id="getBoardCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
         SELECT
                id,
                contents,
                del_yn,
                create_time,
+               update_time,
                board_id
 
         FROM
                comments
 
         WHERE
-               board_id = #{id}
+               board_id = #{id} AND del_yn = 'N'
+
     </select>
+
+    <!--댓글 수정하기-->
+    <update id="updateComments" parameterType="CommentsUpdateVo">
+        UPDATE
+                comments
+
+        SET
+                contents = #{contents},
+                update_time = #{updateTime}
+
+        WHERE
+                id = #{id} AND del_yn = 'N'
+    </update>
+
+    <!--댓글 수정 페이지-->
+    <select id="getUpdateComments" resultType="CommentsDto" resultMap="CommentsDtoResultMap">
+        SELECT
+                id,
+                contents,
+                create_time,
+                del_yn,
+                board_id
+
+        FROM
+                comments
+
+        WHERE
+                id = #{id} AND del_yn = 'N'
+
+    </select>
+
+    <!--댓글 삭제하기-->
+    <update id="deleteComment" parameterType="int">
+        UPDATE
+            comments
+
+        SET
+            del_yn = 'Y'
+
+        WHERE
+            id = #{id} AND del_yn = 'N'
+    </update>
+
+    <!--게시글의 모든댓글 삭제하기-->
+    <update id="deleteAllComment" parameterType="int">
+        UPDATE
+            comments
+
+        SET
+            del_yn = 'Y'
+
+        WHERE
+            board_id = #{boardId} AND del_yn = 'N'
+    </update>
 
     <select id="getBoardCommentsTotalCount" resultType="Integer">
         SELECT count(*)
         FROM comments
         WHERE board_id = #{boardId} AND del_yn = 'N'
     </select>
-
-
 
 </mapper>

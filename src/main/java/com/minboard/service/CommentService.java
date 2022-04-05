@@ -2,6 +2,7 @@ package com.minboard.service;
 
 import com.minboard.dto.CommentsDto;
 import com.minboard.vo.CommentsSaveVo;
+import com.minboard.vo.CommentsUpdateVo;
 
 import java.util.List;
 
@@ -11,4 +12,15 @@ public interface CommentService {
 
     List<CommentsDto> getBoardCommentsList(int boardId);
 
+    /** 댓글 수정 페이지 **/
+    CommentsDto getUpdateComments(int id);
+
+    /** 댓글 수정하기 **/
+    void updateComments(CommentsUpdateVo commentsUpdateVo);
+
+    /** 댓글 삭제하기 **/
+    void deleteComment(int id);
+
+    /** 게시글의 모든댓글 삭제하기 **/
+    void deleteAllComment(int boardId);
 }

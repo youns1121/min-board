@@ -1,7 +1,23 @@
 
-function addComment() {
-    let contents = $('input[name="newComment"]').val()
+$(document).ready(function(){
     let id = parseInt($('#id').val())
+    $.ajax({
+        type: 'GET',
+        url : '/board/commentsList/'+ id,
+        success: function(data){
+            $("#commentsTable").append(data)
+        },
+        error:function(){
+            alert('초기 댓글리스트 불러오기 실패');
+        }
+    })
+});
+
+
+function addComment() {
+    let id = parseInt($('#id').val())
+
+    let contents = $('input[name="commentContents"]').val()
     let formData =
         {
             boardId: id,
@@ -14,64 +30,91 @@ function addComment() {
         data :  formData,
     }).done(function(resp){
         alert("댓글작성이 완료되었습니다.");
-        $('input[name="comments"]').val("")
-        location.reload()
+        $('input[name="commentContents"]').val("")
+        $.ajax({
+            type: 'GET',
+            url : '/board/commentsList/'+ id,
+            success: function(data){
+                location.reload()
+            },
+            error:function(){
+                alert('댓글리스트 불러오기 실패');
+            }
+        })
     })
 }
 
-$(document).ready(function(){
-    let id = parseInt($('#id').val())
+function getUpdateComment(obj){
+     let id = parseInt($(obj).parent().parent().find('.commentId').val())
+    $.ajax({
+        url: '/board/comment/update/' + id,
+        method: "GET",
+        data: id,
+        success: function(returnData){
+            $(obj).parent().parent().find('[class^=commentContents]').wrap('<input class="commentContents" style="width: 300px">').val(returnData);
+            $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
+            $(obj).parent().parent().find('[class^=commentContents]').val(returnData)
+        },
+        error:function(){
+            alert('수정 실패');
+        }
+    })
+}
+
+function updateComment(obj){
+    let id = parseInt($(obj).parent().parent().find('.commentId').val())
+    let inputData = $(obj).parent().parent().find('input').val()
+
+    let formData ={
+        id : id,
+        contents : inputData
+    }
 
     $.ajax({
-        type: 'GET',
-        url : '/board/view/'+ id,
-        data : id,
-        success: function(data){   //데이터 주고받기 성공했을 경우 실행할 결과
-            alert(data);
-        },
-        error:function(){   //데이터 주고받기가 실패했을 경우 실행할 결과
-            alert('실패');
+        url: '/board/comment/update',
+        method: "POST",
+        data:formData,
+        success: function (returnData){
+            location.reload()
         }
     })
-});
-
-
-function drawReply(replys) {
-    $("#cnt").text("등록된 댓글 - " + replys.length)
-    var html = '';
-    html += '<form class="form-inline" action="writeReply" method="post"><input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "0"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-
-    replys.forEach(function(reply){
-        if (reply.replyIdx == 0) {
-            var rc = 0;
-            replys.forEach(function(i){
-                if (reply.idx == i.replyIdx) rc++;
-            })
-            html += '<div class="row"><div class="col-sm-12">';
-            html += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
-            html += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-            html += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
-        }
-    })
-    // $("#replyArea").append(html);
-    // replys.forEach(function(reply){
-    //     if (reply.replyIdx != 0) {
-    //         var rc = 0;
-    //         replys.forEach(function(i){
-    //             if (reply.idx == i.replyIdx) rc++;
-    //         })
-    //         var subHtml = '';
-    //         subHtml = '<div class="row"><div class="col-sm-12 subReply">';
-    //         subHtml += '<form class="form-inline" action="writeReply" method="post"><label for="pwd" class="mr-sm-2">' + reply.contents + '(' + rc + ')' + '</label>'
-    //         subHtml += '<input type="hidden" name="idx" value = "' + IDX + '"><input type="hidden" name="replyIdx" value = "' + reply.idx + '"><input type="text" class="form-control mb-2 mr-sm-2" id="contents" placeholder="답글" name="contents"><button type="submit" class="btn btn-primary mb-2">등록</button></form>';
-    //         subHtml += '<div class="row"><div class="col-sm-12 sub' + reply.idx + '"></div></div></div></div>';
-    //         $(".sub" + reply.replyIdx).append(subHtml);
-    //     }
-    // })
 }
 
-// $.ajax({
-//     url: "/board/view/"+id,
-//     success: function(replys){
-//         drawReply(replys)
-//     }});
+
+function cancelUpdateComment(){
+    let id = parseInt($('#id').val())
+    $.ajax({
+        type: 'GET',
+        url : '/board/commentsList/'+ id,
+        success: function(data){
+            location.reload()
+        },
+        error:function(){
+            alert('댓글리스트 불러오기 실패');
+        }
+    })
+}
+
+function deleteComment(obj){
+    let id = parseInt($(obj).parent().parent().find('.commentId').val())
+    let formData={
+        id : id
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/board/commentDelete',
+        data: formData,
+        success: function(data){
+            $(obj).parent().parent('tr').remove()
+            alert("댓글삭제 완료")
+        },
+        error:function(){
+            alert('댓글리스트 불러오기 실패');
+       }
+    })
+}
+
+
+
+

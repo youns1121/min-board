@@ -8,6 +8,7 @@ import com.minboard.service.BoardService;
 import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
 import com.minboard.vo.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -144,19 +145,40 @@ public class BoardController {
         commentService.insertComments(commentsSaveVo);
     }
 
-//    /** 댓글작성하기 **/
-//    @GetMapping("/comment")
-//    public String formComments(Model model, CommentsSaveVo commentsSaveVo) {
-//        model.addAttribute("newComment", commentsSaveVo.builder().build());
-//        return "html/boardComments";
-//    }
-
-    /** 댓글리스트 출력하기 **/
-    @ResponseBody
+    /** 게시물 모든댓글 리스트 출력하기 **/
     @GetMapping("/commentsList/{id}")
     public String getCommentsList(@PathVariable("id") int id, Model model){
-        List<CommentsDto> comments = commentService.getBoardCommentsList(id);
-        model.addAttribute("comments", comments);
+        List<CommentsDto> commentsList = commentService.getBoardCommentsList(id);
+        model.addAttribute("commentsList", commentsList);
         return "html/boardCommentsDetail";
     }
+
+    /**댓글 수정하기 **/
+    @ResponseBody
+    @PostMapping("/comment/update")
+    public void updateComment(CommentsUpdateVo commentsUpdateVo){
+        commentService.updateComments(commentsUpdateVo);
+    }
+
+    /**댓글 수정 페이지 **/
+    @ResponseBody
+    @GetMapping("/comment/update/{id}")
+    public String getUpdateComment(@PathVariable("id") int id, Model model){
+
+        CommentsDto geUpdateComment = commentService.getUpdateComments(id);
+        model.addAttribute("geUpdateComment", geUpdateComment);
+        return geUpdateComment.getContents();
+    }
+
+    /**댓글 삭제 하기 **/
+    @ResponseBody
+    @PostMapping("/commentDelete")
+    public void deleteCommit(int id){
+        commentService.deleteComment(id);
+    }
+
+
+
+
+
 }

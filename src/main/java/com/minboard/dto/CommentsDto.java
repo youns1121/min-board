@@ -26,4 +26,6 @@ public class CommentsDto {
 
     private LocalDateTime createTime;
 
+    private LocalDateTime updateTime;
+
 }

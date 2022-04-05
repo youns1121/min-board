@@ -4,6 +4,7 @@ package com.minboard.service.impl;
 import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.BoardMapper;
+import com.minboard.mapper.CommentsMapper;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
@@ -24,6 +25,7 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
     private final UploadFileMapper fileMapper;
+    private final CommentsMapper commentsMapper;
 
     @Value("${custom.path.uploadPath}")
     private String uploadPath;
@@ -61,6 +63,7 @@ public class BoardServiceImpl implements BoardService {
                 file.delete();
             }
         }
+        commentsMapper.deleteAllComment(id);
         boardMapper.deleteBoard(id);
         fileMapper.deleteAlldFile(id);
 

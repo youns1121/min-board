@@ -6,6 +6,8 @@
 <mapper namespace="com.minboard.mapper.CommentsMapper">
 
     <resultMap id="CommentsDtoResultMap" type="CommentsDto">
+        <result property="commentGroup" column="comment_group"/>
+        <result property="commentDepth" column="comment_depth" />
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="delYn" column="del_yn"/>
@@ -26,10 +28,14 @@
         INSERT INTO
             comments(
                         contents,
+                        comment_group,
+                        comment_depth,
                         create_time,
                         board_id
         )VALUES(
                         #{contents},
+                        #{commentGroup},
+                        #{commentDepth},
                         #{createTime},
                         #{boardId}
 
@@ -42,6 +48,8 @@
                id,
                contents,
                del_yn,
+               comment_group,
+               comment_depth,
                create_time,
                update_time,
                board_id
@@ -108,6 +116,32 @@
             board_id = #{boardId} AND del_yn = 'N'
     </update>
 
+    <!--댓글의 답글 작성하기-->
+    <insert id="insertCommentsReply"
+            keyProperty="id"
+            parameterType="CommentsReplySaveVo"
+            useGeneratedKeys ="true"
+    >
+        INSERT INTO
+            comments(
+
+                    contents,
+                    create_time,
+                    board_id,
+                    comment_group,
+                    comment_depth
+        )VALUES(
+                   #{contents},
+                   #{createTime},
+                   #{boardId},
+                   #{commentGroup},
+                   #{commentDepth}
+               )
+
+    </insert>
+
+
+    <!--댓글갯수 카운트-->
     <select id="getBoardCommentsTotalCount" resultType="Integer">
         SELECT count(*)
         FROM comments

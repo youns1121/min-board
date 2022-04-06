@@ -3,6 +3,7 @@ package com.minboard.service.impl;
 import com.minboard.dto.CommentsDto;
 import com.minboard.mapper.CommentsMapper;
 import com.minboard.service.CommentService;
+import com.minboard.vo.CommentsReplySaveVo;
 import com.minboard.vo.CommentsSaveVo;
 import com.minboard.vo.CommentsUpdateVo;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteAllComment(int boardId) {
         commentsMapper.deleteAllComment(boardId);
+    }
+
+    @Override
+    public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
+        commentsMapper.insertCommentsReply(commentsReplySaveVo);
     }
 }

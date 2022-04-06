@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 public class CommentsDto {
 
     private int id;
@@ -18,9 +17,11 @@ public class CommentsDto {
 
     private int groupNumber;
 
-    private String commentsPath;
-
     private int commentsSort;
+
+    private int commentGroup;
+
+    private int commentDepth;
 
     private String delYn;
 

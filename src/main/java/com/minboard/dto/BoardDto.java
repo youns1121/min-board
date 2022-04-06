@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 
 @Getter
-@Setter
+//@Setter
 public class BoardDto extends CommonPageDto {
 
     private UploadFileDto uploadFileDto;
@@ -40,6 +41,9 @@ public class BoardDto extends CommonPageDto {
     /** 게시글 좋아요수 **/
     private Integer likeCount;
 
+    /** 파일업로드 **/
+    List<UploadFileDto> uploadFileDtoList;
 
-
+    /** 댓글 **/
+    List<CommentsDto> commentsDtoList;
 }

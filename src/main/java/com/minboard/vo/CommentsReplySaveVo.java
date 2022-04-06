@@ -1,14 +1,12 @@
 package com.minboard.vo;
 
-
 import lombok.Builder;
 import lombok.Getter;
-
 
 import java.time.LocalDateTime;
 
 @Getter
-public class CommentsSaveVo {
+public class CommentsReplySaveVo {
 
     private int id;
 
@@ -16,20 +14,21 @@ public class CommentsSaveVo {
 
     private String contents;
 
-    private Integer commentGroup;
+    private int commentGroup;
 
-    private Integer commentDepth;
+    private int commentDepth;
 
     private LocalDateTime createTime;
 
 
     @Builder
-    public CommentsSaveVo(int boardId, String contents, Integer commentGroup,
-                          Integer commentDepth, LocalDateTime createTime) {
+    public CommentsReplySaveVo(int boardId, String contents, int commentGroup,
+                               int commentDepth, LocalDateTime createTime) {
+
         this.boardId = boardId;
         this.contents = contents;
         this.commentGroup = commentGroup;
-        this.commentDepth = commentDepth;
+        this.commentDepth = ++commentDepth;
         this.createTime = createTime.now();
     }
 }

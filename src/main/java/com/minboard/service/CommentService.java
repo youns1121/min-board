@@ -1,6 +1,7 @@
 package com.minboard.service;
 
 import com.minboard.dto.CommentsDto;
+import com.minboard.vo.CommentsReplySaveVo;
 import com.minboard.vo.CommentsSaveVo;
 import com.minboard.vo.CommentsUpdateVo;
 
@@ -23,4 +24,7 @@ public interface CommentService {
 
     /** 게시글의 모든댓글 삭제하기 **/
     void deleteAllComment(int boardId);
+
+    /** 댓글의 답변 작성하기 **/
+    void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo);
 }

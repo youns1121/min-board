@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class DownloadFileDto {
     private String resource;
     private String contentDisposition;

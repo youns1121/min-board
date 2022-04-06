@@ -42,7 +42,16 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public BoardDto getDetailViewBoard(int id) {
         BoardDto detailViewBoard = boardMapper.getDetailViewBoard(id);
+
         return detailViewBoard;
+    }
+
+    /** 게시물 상세보기의 모든정보  **/
+    @Override
+    @Transactional(readOnly = true)
+    public BoardDto getDetailViewBoardAllInfo(int boardId) {
+        BoardDto detailViewBoardAllInfo = boardMapper.getDetailViewBoardAllInfo(boardId);
+        return detailViewBoardAllInfo;
     }
 
     /** 게시물 수정 상세보기 **/

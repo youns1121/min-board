@@ -22,6 +22,25 @@
         <result property="id" column="id"/>
     </resultMap>
 
+    <resultMap id="getDetailViewBoardAllInfoResultMap" type="BoardDto">
+        <result property="id" column="id"/>
+        <result property="title" column="title" />
+        <result property="contents" column="contents" />
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="likeCount" column="like_count"/>
+        <collection property="uploadFileDtoList" ofType="UploadFileDto">
+            <result property="storeFileName" column="store_file_name" />
+            <result property="originalFileName" column="original_file_name" />
+            <result property="extensionName" column="extension_name" />
+            <result property="storeFileSize" column="store_file_size" />
+        </collection>
+    </resultMap>
+
+
+
     <!--- 게시물 전체보기  -->
     <select id="getBoardPagingList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         select
@@ -66,6 +85,28 @@
         where
               id = #{id}
           and del_yn = 'N'
+    </select>
+
+    <!--    게시판의 모든정보 상세보기-->
+    <select id="getDetailViewBoardAllInfo" resultType="BoardDto" resultMap="getDetailViewBoardAllInfoResultMap" >
+        select
+                bo.id,
+                bo.title,
+                bo.contents,
+                bo.create_time,
+                bo.update_time,
+                uf.id,
+                uf.store_file_name,
+                uf.original_file_name,
+                uf.extension_name,
+                uf.store_file_size,
+                uf.create_time
+        from
+                board AS bo
+                LEFT JOIN upload_file AS uf ON bo.id = uf.board_id
+        WHERE
+                bo.id = #{id} AND
+                del_yn = 'N'
     </select>
 
     <!--게시판 수정 상세보기 -->

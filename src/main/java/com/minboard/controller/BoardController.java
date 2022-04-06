@@ -173,12 +173,18 @@ public class BoardController {
     /**댓글 삭제 하기 **/
     @ResponseBody
     @PostMapping("/commentDelete")
+
     public void deleteCommit(int id){
         commentService.deleteComment(id);
     }
 
+    /** 댓글의 답변 작성하기 **/
+    @ResponseBody
+    @PostMapping("/comment/reply")
+    public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo){
 
+        commentService.insertCommentsReply(commentsReplySaveVo);
+    }
 
-
-
+    /** 댓글의 답변 삭제하기 **/
 }

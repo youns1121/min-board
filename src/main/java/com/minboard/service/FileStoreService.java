@@ -15,7 +15,8 @@ public interface FileStoreService {
     /** 파일 전체경로 가져오기 **/
     String getFullPath(String filePath);
 
-    /** 파일리스트 저장하기 **/
+    /** 파일리스트 저장하기
+     * @return**/
     List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException;
 
     /** 파일업로드 리스트 정보 입력하기 **/
@@ -24,7 +25,8 @@ public interface FileStoreService {
     /** 파일업로드 리스트 정보 수정하기 **/
     void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList);
 
-    /** 단일파일 저장하기 **/
+    /** 단일파일 저장하기
+     * @return**/
     UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException;
 
     /** 파일리스트 수정하기 **/
@@ -44,6 +46,9 @@ public interface FileStoreService {
 
     /** 업데이트할 파일리스트 가져오기 **/
     List<UploadFileUpdateVo> getUploadFileUpdateList(int id);
+
+    /** 파일이름 특수문자 체크 **/
+//    String fileNameSpecialPatternCheck(String OriginalFilename);
 
     /** 파일이름 확장자 허용 체크 **/
     boolean fileExtensionInboundCheck(MultipartFile multipartFile) throws IOException;

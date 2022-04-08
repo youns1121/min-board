@@ -42,8 +42,7 @@ public class BoardController {
     /** 게시물 생성하기 **/
     @ResponseBody
     @PostMapping("/new")
-    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo, BindingResult bindingResult
-    ) throws IOException {
+    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
 
         boardService.createBoard(boardSaveVo);
          if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
@@ -53,10 +52,6 @@ public class BoardController {
                 fileStoreService.insertFileInfoList(uploadFileInfoList);
             }
         }
-//        if(bindingResult.hasErrors()){
-//            log.info("errors={}", bindingResult);
-//            return "html/boardNew";
-//        }
         return boardSaveVo.getId().toString();
     }
 
@@ -93,8 +88,8 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/update")
     public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
-                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo,
-                              BindingResult bindingResult) throws IOException {
+                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
+                              ) throws IOException {
 
         boardService.updateBoard(boardUpdateVo);
         if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false){
@@ -106,10 +101,6 @@ public class BoardController {
                 fileStoreService.updateFileInfoList(uploadFileUpdateInfoList);
             }
         }
-//        if(bindingResult.hasErrors()){
-//            log.info("errors={}", bindingResult);
-//            return "html/boardEdit";
-//        }
         return boardUpdateVo.getId().toString();
     }
 
@@ -145,10 +136,10 @@ public class BoardController {
         commentService.insertComments(commentsSaveVo);
     }
 
-    /** 게시물 모든댓글 리스트 출력하기 **/
+    /** 게시물의 계층형 댓글전체 보기 **/
     @GetMapping("/commentsList/{id}")
-    public String getCommentsList(@PathVariable("id") int id, Model model){
-        List<CommentsDto> commentsList = commentService.getBoardCommentsList(id);
+    public String getBoardHierarchicalCommentsList(@PathVariable("id") int id, Model model){
+        List<CommentsDto> commentsList = commentService.getBoardHierarchicalCommentsList(id);
         model.addAttribute("commentsList", commentsList);
         return "html/boardCommentsDetail";
     }
@@ -173,7 +164,6 @@ public class BoardController {
     /**댓글 삭제 하기 **/
     @ResponseBody
     @PostMapping("/commentDelete")
-
     public void deleteCommit(int id){
         commentService.deleteComment(id);
     }
@@ -182,9 +172,6 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/comment/reply")
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo){
-
         commentService.insertCommentsReply(commentsReplySaveVo);
     }
-
-    /** 댓글의 답변 삭제하기 **/
 }

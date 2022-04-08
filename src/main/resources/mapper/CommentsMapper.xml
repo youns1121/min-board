@@ -62,6 +62,59 @@
 
     </select>
 
+    <!-- 댓글 계층형 전체보기 -->
+    <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
+        WITH RECURSIVE CTE AS (
+            SELECT
+                    id
+                    ,contents
+                    ,comment_group
+                    ,comment_depth
+                    ,create_time
+                    ,update_time
+                    ,del_yn
+                    ,CAST(id as CHAR(100)) path
+            FROM
+                    comments
+            WHERE
+                    comment_group = 0
+              AND board_id  = #{boardId}
+              AND del_yn = 'N'
+
+            UNION ALL
+
+            SELECT
+                     t.id
+                     ,t.contents
+                     ,t.comment_group
+                     ,t.comment_depth
+                     ,t.create_time
+                     ,t.update_time
+                     ,t.del_yn
+                     ,CONCAT(t2.path, ',', t.id) AS path
+            FROM
+                     comments AS t
+                     INNER JOIN CTE AS t2 ON t.comment_group = t2.id
+        )
+        SELECT
+                     id
+                     ,CONCAT(REPEAT('Re) ', comment_depth), contents) AS contents
+                     ,comment_group
+                     ,comment_depth
+                     ,create_time
+                     ,update_time
+                     ,del_yn
+                     ,path
+
+        FROM CTE
+
+        WHERE del_yn = 'N'
+
+        ORDER BY path
+
+    </select>
+
+
     <!--댓글 수정하기-->
     <update id="updateComments" parameterType="CommentsUpdateVo">
         UPDATE
@@ -139,7 +192,6 @@
                )
 
     </insert>
-
 
     <!--댓글갯수 카운트-->
     <select id="getBoardCommentsTotalCount" resultType="Integer">

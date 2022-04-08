@@ -62,12 +62,15 @@
               <br/>
           </tr>
           <tr th:each="uploadFile : ${uploadFileList}">
-              <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
+              <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|"
+                 th:text="${uploadFile.originalFileName}">
+              </a>
               <br/>
           </tr>
       </div>
     </fieldset>
-      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정</button>
+      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정
+      </button>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/new}'|">글작성</button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>

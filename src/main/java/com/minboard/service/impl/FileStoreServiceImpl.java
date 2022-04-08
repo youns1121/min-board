@@ -39,7 +39,8 @@ public class FileStoreServiceImpl implements FileStoreService {
         return uploadPath + fileName;
     }
 
-    /** 파일리스트 저장하기 **/
+    /** 파일리스트 저장하기
+     * @return**/
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
 
@@ -65,12 +66,13 @@ public class FileStoreServiceImpl implements FileStoreService {
         uploadFileMapper.updateFileInfoList(uploadFileList);
     }
 
-    /** 단일파일 저장하기 **/
+    /** 단일파일 저장하기
+     * @return**/
     @Override
     public UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException {
 
         boolean fileCheck = fileExtensionInboundCheck(multipartFile);
-        if (!fileCheck){
+        if (fileCheck == false){
             return null;
         }
         String originalFilename = multipartFile.getOriginalFilename();
@@ -109,7 +111,7 @@ public class FileStoreServiceImpl implements FileStoreService {
     public UploadFileUpdateVo storeFileUpdate(MultipartFile multipartFileUpdate, int boardId) throws IOException {
 
         boolean fileCheck = fileExtensionInboundCheck(multipartFileUpdate);
-        if (!fileCheck){
+        if (fileCheck == false){
             return null;
         }
         String originalFilename = multipartFileUpdate.getOriginalFilename();

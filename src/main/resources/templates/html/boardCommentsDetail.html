@@ -2,31 +2,48 @@
 
 <div id="commentsTable" th:fragment="commentsList">
   <form name="commentsList" th:action method="get" >
-    <table id="loopsTable">
-          <tr class="loopList" th:each="comments : ${commentsList}">
+    <table id="loopsTable" style="width: 500px">
+          <tr class="loopList" th:each="comments, index : ${commentsList}">
               <td>
-                  <p th:class="commentContents + ${comments.id}" style="width: 300px" th:data-group="${comments.commentGroup}" th:data-depth="${comments.commentDepth}" th:text = "${comments.contents}"></p>
+                  <a th:text="${index.index}+1">#</a>
+              </td>
+              <td class="contents">
+                  <p th:class="commentContents + ${comments.id}" style="width: 300px"
+                     th:data-group="${comments.commentGroup}"
+                     th:data-depth="${comments.commentDepth}"
+                     th:text = "${comments.contents}" >
+                  </p>
+
                   <div id="option">
-                      <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료" onclick="updateComment(this)">
-                      <input th:class = "modify + ${comments.id}" type="hidden" value="취소" onclick="cancelUpdateComment(this)">
+                      <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료"
+                             onclick="updateComment(this)"
+                      >
+                      <input th:class = "modify + ${comments.id}" type="hidden" value="취소"
+                             onclick="cancelUpdateComment(this)"
+                      >
                   </div>
-                  <a th:if="${#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm') < #temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}"
-                     th:text="*{#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}" th:value="수정시간"></a>
-                  <a th:if="${#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm') > #temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}"
-                      th:text="*{#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm')}" th:value="생성시간"></a>
+                  <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') == null}"
+                     th:text="*{#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm')}" th:value="생성시간">
+                  </a>
+                  <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') != null}"
+                     style="color: forestgreen; font-weight:bold" th:text="수정시간 ">
+                  </a>
+                  <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') != null}"
+                     th:text="*{#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}" th:value="수정시간">
+                  </a>
 
                   <input type="hidden" class="commentId" th:value="${comments.id}" ><br/>
+                  <div class="optionButton">
+                      <button type="button" th:id="commentReply + ${comments.id}" th:data-group="${comments.commentGroup}"
+                              th:data-depth="${comments.commentDepth}"
+                              th:value="${comments.id}"
+                              onclick="getCommentReply(this)">답글달기
+                      </button>
+                      <button type="button" class="modifyButton" onclick="getUpdateComment(this)">수정</button>
+                      <button type="button" onclick="deleteComment(this)">삭제</button>
+                  </div>
               </td>
 
-              <td>
-                      <button type="button" th:id="commentReply + ${comments.id}" th:data-group="${comments.commentGroup}" th:data-depth="${comments.commentDepth}" th:value="${comments.id}" onclick="getCommentReply(this)">답글달기</button>
-              </td>
-              <td>
-                  <button type="button" onclick="getUpdateComment(this)">수정</button>
-              </td>
-              <td>
-                  <button type="button" onclick="deleteComment(this)">삭제</button>
-              </td>
           </tr>
     </table>
   </form>

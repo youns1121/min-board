@@ -30,6 +30,12 @@ public class CommentServiceImpl implements CommentService {
         return boardCommentsList;
     }
 
+    @Override /** 게시물의 계층형 댓글전체 보기 **/
+    public List<CommentsDto> getBoardHierarchicalCommentsList(int boardId) {
+        List<CommentsDto> hierarchicalCommentsAll = commentsMapper.getBoardHierarchicalCommentsList(boardId);
+        return hierarchicalCommentsAll;
+    }
+
     @Override
     public CommentsDto getUpdateComments(int id) {
         CommentsDto getUpdateComment = commentsMapper.getUpdateComments(id);

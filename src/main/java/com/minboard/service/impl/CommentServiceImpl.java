@@ -8,7 +8,6 @@ import com.minboard.vo.CommentsSaveVo;
 import com.minboard.vo.CommentsUpdateVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void insertComments(CommentsSaveVo commentsSaveVo) {
         commentsMapper.insertComments(commentsSaveVo);
-        commentsMapper.insertCommentsSetGroup(commentsSaveVo.getId());
+        commentsMapper.insertCommentsSetGroup(commentsSaveVo);
     }
 
     @Override
@@ -60,19 +59,28 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
-        commentsReplySaveVo.sortIncrease();
-        commentsReplySaveVo.commentDepthIncrease();
-        int sortValue = commentsMapper.findBySameGroupYn(commentsReplySaveVo);
-        if (sortValue > 0){
-            commentsReplySaveVo.sortIncrease();
-//            commentsMapper.CommentsReplySortUpdate(commentsReplySaveVo);
+//        commentsReplySaveVo.sortIncrease();
+//        commentsReplySaveVo.commentDepthIncrease();
+//        int sortValue = commentsMapper.findBySameGroupYn(commentsReplySaveVo);
+//        if (sortValue > 0){
+//            commentsReplySaveVo.sortIncrease();
+////            commentsMapper.CommentsReplySortUpdate(commentsReplySaveVo);
+//        }
+//        if(commentsReplySaveVo.getSort() <= sortValue){
+//            commentsReplySaveVo.sortIncrease(sortValue);
+//        }
+        int calculationResult = commentsMapper.hierarchicalCalculationFormula(commentsReplySaveVo);
+
+        if (calculationResult == 0){
+            int addSortValue = commentsMapper.calculationFormulaResultZero(commentsReplySaveVo);
+            commentsReplySaveVo.setSort(addSortValue);
+            commentsMapper.insertResultZero(commentsReplySaveVo);
         }
-        if(commentsReplySaveVo.getSort() <= sortValue){
-            commentsReplySaveVo.sortIncrease(sortValue);
+
+        if(calculationResult != 0){
+            commentsReplySaveVo.setSort(calculationResult);
+            commentsMapper.calculationFormulaResultNotZero(commentsReplySaveVo);
+            commentsMapper.insertResultNotZero(commentsReplySaveVo);
         }
-
-
-
-        commentsMapper.insertCommentsReply(commentsReplySaveVo);
     }
 }

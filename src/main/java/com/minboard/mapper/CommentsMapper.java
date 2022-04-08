@@ -42,7 +42,20 @@ public interface CommentsMapper {
 
     void CommentsReplySortUpdate(CommentsReplySaveVo commentsReplySaveVo);
 
-    void insertCommentsSetGroup(int id);
+    void insertCommentsSetGroup(CommentsSaveVo commentsSaveVo);
+
+    /** 계층형 공식계산 **/
+    int hierarchicalCalculationFormula(CommentsReplySaveVo commentsReplySaveVo);
+
+    /** 공식결과값이 0일때 **/
+    int calculationFormulaResultZero(CommentsReplySaveVo commentsReplySaveVo);
+
+    /** 결과값0 입력 **/
+    void insertResultZero(CommentsReplySaveVo commentsReplySaveVo);
+
+    void calculationFormulaResultNotZero(CommentsReplySaveVo commentsReplySaveVo);
+
+    void insertResultNotZero(CommentsReplySaveVo commentsReplySaveVo);
 
 
 }

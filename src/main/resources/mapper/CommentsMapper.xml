@@ -31,12 +31,14 @@
                         contents,
                         comment_group,
                         comment_depth,
+                        sort,
                         create_time,
                         board_id
         )VALUES(
                         #{contents},
                         #{commentGroup},
                         #{commentDepth},
+                        #{sort},
                         #{createTime},
                         #{boardId}
 
@@ -60,60 +62,8 @@
 
         WHERE
                board_id = #{id} AND del_yn = 'N'
-
     </select>
 
-    <!-- 댓글 계층형 전체보기 -->
-<!--    <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >-->
-<!--        WITH RECURSIVE CTE AS (-->
-<!--            SELECT-->
-<!--                    id-->
-<!--                    ,contents-->
-<!--                    ,comment_group-->
-<!--                    ,comment_depth-->
-<!--                    ,create_time-->
-<!--                    ,update_time-->
-<!--                    ,del_yn-->
-<!--                    ,CAST(id as CHAR(100)) path-->
-<!--            FROM-->
-<!--                    comments-->
-<!--            WHERE-->
-<!--                    comment_group = 0-->
-<!--              AND board_id  = #{boardId}-->
-<!--              AND del_yn = 'N'-->
-
-<!--            UNION ALL-->
-
-<!--            SELECT-->
-<!--                     t.id-->
-<!--                     ,t.contents-->
-<!--                     ,t.comment_group-->
-<!--                     ,t.comment_depth-->
-<!--                     ,t.create_time-->
-<!--                     ,t.update_time-->
-<!--                     ,t.del_yn-->
-<!--                     ,CONCAT(t2.path, ',', t.id) AS path-->
-<!--            FROM-->
-<!--                     comments AS t-->
-<!--                     INNER JOIN CTE AS t2 ON t.comment_group = t2.id-->
-<!--        )-->
-<!--        SELECT-->
-<!--                     id-->
-<!--                     ,CONCAT(REPEAT('Re) ', comment_depth), contents) AS contents-->
-<!--                     ,comment_group-->
-<!--                     ,comment_depth-->
-<!--                     ,create_time-->
-<!--                     ,update_time-->
-<!--                     ,del_yn-->
-<!--                     ,path-->
-
-<!--        FROM CTE-->
-
-<!--        WHERE del_yn = 'N'-->
-
-<!--        ORDER BY path-->
-
-<!--    </select>-->
 
     <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
             SELECT
@@ -238,15 +188,25 @@
 
     </insert>
 
-    <update id="insertCommentsSetGroup" parameterType="CommentsReplySaveVo">
-        update
+<!--    <update id="insertCommentsSetGroup" parameterType="CommentsReplySaveVo">-->
+<!--        update-->
+<!--            comments-->
+<!--        set sort = sort + 1-->
+<!--        where-->
+<!--            comment_group = #{commentGroup}-->
+<!--          and sort > #{sort}-->
+<!--          and board_id = #{boardId};-->
+<!--    </update>-->
+
+    <insert id="insertCommentsSetGroup" parameterType="CommentsSaveVo">
+        UPDATE
             comments
-        set sort = sort + 1
+        set comment_group = #{id}
         where
-            comment_group = #{comment_group}
-          and sort > #{sort}
-          and board_id = #{boardId};
-    </update>
+            board_id = #{boardId}
+          AND id = #{id}
+          AND del_yn = 'N';
+    </insert>
 
     <!--댓글갯수 카운트-->
     <select id="getBoardCommentsTotalCount" resultType="Integer">
@@ -254,5 +214,74 @@
         FROM comments
         WHERE board_id = #{boardId} AND del_yn = 'N'
     </select>
+
+    <select id="hierarchicalCalculationFormula" resultType="int" >
+        SELECT
+               IFNULL(MIN(sort),0)
+        FROM
+                comments
+        WHERE
+                comment_group = ${commentGroup}
+        AND sort &gt; ${sort}
+        AND comment_depth &lt;= ${commentDepth};
+
+    </select>
+
+    <select id="calculationFormulaResultZero" resultType="int">
+        SELECT
+                IFNULL(MAX(SORT),0) + 1
+        FROM
+                comments
+        WHERE
+                comment_group = ${commentGroup};
+    </select>
+
+    <insert id="insertResultZero" parameterType="CommentsReplySaveVo">
+        INSERT INTO
+            comments(
+                    contents,
+                    create_time,
+                    board_id,
+                    sort,
+                    comment_group,
+                    comment_depth
+            )VALUES(
+                   #{contents},
+                   #{createTime},
+                   #{boardId},
+                   #{sort},
+                   #{commentGroup},
+                   #{commentDepth} + 1
+               )
+    </insert>
+
+    <update id="calculationFormulaResultNotZero" parameterType="CommentsReplySaveVo">
+        UPDATE
+                comments
+        SET
+                sort = sort + 1
+        WHERE
+                comment_group =  #{commentGroup}  AND sort &gt;=  #{sort};
+    </update>
+
+    <insert id="insertResultNotZero" parameterType="CommentsReplySaveVo">
+        INSERT INTO
+                    comments(
+                    contents,
+                    create_time,
+                    board_id,
+                    sort,
+                    comment_group,
+                    comment_depth
+        )VALUES(
+                   #{contents},
+                   #{createTime},
+                   #{boardId},
+                   #{sort},
+                   #{commentGroup},
+                   #{commentDepth} + 1
+               )
+    </insert>
+
 
 </mapper>

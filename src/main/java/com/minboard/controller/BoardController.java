@@ -48,6 +48,7 @@ public class BoardController {
     /** 게시물 리스트 **/
     @GetMapping("/list")
     public String getBoardPagingList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
+
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("boardList", boardList);
         return "html/boardList";
@@ -56,6 +57,7 @@ public class BoardController {
     /** 게시물 상세페이지 **/
     @GetMapping("/view/{id}")
     public String getDetailBoardView(@PathVariable("id") int id, Model model) {
+
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
         model.addAttribute("detailViewBoard", detailViewBoard);

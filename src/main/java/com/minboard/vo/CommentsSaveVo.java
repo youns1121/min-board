@@ -18,6 +18,8 @@ public class CommentsSaveVo {
 
     private Integer commentGroup;
 
+    private Integer sort;
+
     private Integer commentDepth;
 
     private LocalDateTime createTime;
@@ -25,10 +27,11 @@ public class CommentsSaveVo {
 
     @Builder
     public CommentsSaveVo(int boardId, String contents, Integer commentGroup,
-                          Integer commentDepth, LocalDateTime createTime) {
+                          Integer sort, Integer commentDepth, LocalDateTime createTime) {
         this.boardId = boardId;
         this.contents = contents;
         this.commentGroup = commentGroup;
+        this.sort = sort;
         this.commentDepth = commentDepth;
         this.createTime = createTime.now();
     }

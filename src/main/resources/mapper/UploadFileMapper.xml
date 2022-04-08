@@ -29,7 +29,8 @@
     <!--- 생성하기  -->
     <insert id="insertFileInfoList"
             parameterType="java.util.List"
-            useGeneratedKeys ="true">
+            useGeneratedKeys ="true"
+            keyProperty="id">
 
         INSERT INTO
             upload_file(

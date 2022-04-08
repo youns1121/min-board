@@ -17,7 +17,7 @@ public class CommentsDto {
 
     private int commentDepth;
 
-    private String sort;
+    private int sort;
 
     private String delYn;
 

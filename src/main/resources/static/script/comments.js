@@ -36,11 +36,14 @@ function addComment() {
     let contentsLength = $('input[name="commentContents"]').val().trim().length
     let dataGroup = parseInt($('input[name="commentContents"]').data('group'))
     let dataDepth = parseInt($('input[name="commentContents"]').data('depth'))
+    let dataSort = parseInt($('input[name="commentContents"]').data('sort'))
+
     let formData = {
             boardId: id,
             contents : contents,
             commentGroup : dataGroup,
-            commentDepth : dataDepth
+            commentDepth : dataDepth,
+            sort : dataSort
         }
 
     if(contentsLength < 1){

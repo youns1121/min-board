@@ -23,8 +23,8 @@ public class CommentsReplySaveVo {
     private LocalDateTime createTime;
 
 
-    public void sortIncrease(){
-        this.sort++;
+    public void setSort(int calculationResult){
+        this.sort = calculationResult;
     }
     public void commentDepthIncrease(){
         this.commentDepth++;

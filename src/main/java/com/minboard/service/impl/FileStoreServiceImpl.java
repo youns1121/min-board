@@ -8,7 +8,6 @@ import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.UrlResource;
@@ -23,7 +22,6 @@ import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FileStoreServiceImpl implements FileStoreService {
@@ -46,11 +44,10 @@ public class FileStoreServiceImpl implements FileStoreService {
 
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
-            UploadFileVo uploadFileInfo = storeFile(multipartFile, boardId);
-            if(uploadFileInfo == null){
-                return null;
+            UploadFileVo storeFile = storeFile(multipartFile, boardId);
+            if(storeFile != null){
+                storeFileResult.add(storeFile);
             }
-            storeFileResult.add(uploadFileInfo);
         }
         return storeFileResult;
     }
@@ -96,11 +93,11 @@ public class FileStoreServiceImpl implements FileStoreService {
 
         List<UploadFileUpdateVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFilesUpdate) {
-            UploadFileUpdateVo uploadFileInfo = storeFileUpdate(mutipartFile, boardId);
-            if(uploadFileInfo == null){
+            UploadFileUpdateVo uploadFile = storeFileUpdate(mutipartFile, boardId);
+            if(uploadFile == null){
                 return null;
             }
-            storeFileResult.add(uploadFileInfo);
+            storeFileResult.add(uploadFile);
         }
 
         return storeFileResult;
@@ -161,7 +158,7 @@ public class FileStoreServiceImpl implements FileStoreService {
         InputStream inputStream = multipartFile.getInputStream();
         String mimeType = new Tika().detect(inputStream);
 
-        if (!permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT))) {
+        if (permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT)) == false) {
             return false;
         }
         return true;

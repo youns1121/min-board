@@ -14,6 +14,8 @@ public interface UploadFileMapper {
      * @param uploadFileList**/
     void insertFileInfoList(List<UploadFileVo> uploadFileList);
 
+
+
     /** 파일업로드 리스트 정보수정하기 **/
     void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList);
 

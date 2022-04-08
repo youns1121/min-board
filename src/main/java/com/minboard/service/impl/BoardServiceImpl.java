@@ -8,14 +8,19 @@ import com.minboard.mapper.CommentsMapper;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
+import com.minboard.service.FileStoreService;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
+import com.minboard.vo.UploadFileUpdateVo;
+import com.minboard.vo.UploadFileVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    private final FileStoreServiceImpl fileStoreService;
     private final BoardMapper boardMapper;
     private final UploadFileMapper fileMapper;
     private final CommentsMapper commentsMapper;
@@ -32,9 +38,30 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 생성 **/
     @Override
-    @Transactional
     public void createBoard(BoardSaveVo boardSaveVo) {
         boardMapper.createBoard(boardSaveVo);
+    }
+
+    @Override
+    public void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException {
+        if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
+            List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
+                    boardSaveVo.getId());
+            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
+                fileStoreService.insertFileInfoList(uploadFileInfoList);
+            }
+        }
+    }
+
+    @Override
+    public void updateBoardFile(BoardUpdateVo boardUpdateVo) throws IOException {
+        if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false) {
+            List<UploadFileUpdateVo> uploadFileInfoList = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
+                    boardUpdateVo.getId());
+            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
+                fileStoreService.updateFileInfoList(uploadFileInfoList);
+            }
+        }
     }
 
     /** 게시물 상세보기 **/
@@ -66,7 +93,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteBoard(int id) {
         List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
-        for(int i=0; i < uploadFileList.size(); i++){
+        int uploadFileListSize= uploadFileList.size();
+        for(int i=0; i < uploadFileListSize; i++){
             File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." + uploadFileList.get(i).getExtensionName());
             if(file.exists()){
                 file.delete();

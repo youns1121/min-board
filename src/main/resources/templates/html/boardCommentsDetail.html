@@ -11,6 +11,7 @@
                   <p th:class="commentContents + ${comments.id}" style="width: 300px"
                      th:data-group="${comments.commentGroup}"
                      th:data-depth="${comments.commentDepth}"
+                     th:data-sort="${comments.commentDepth}"
                      th:text = "${comments.contents}" >
                   </p>
 
@@ -36,6 +37,7 @@
                   <div class="optionButton">
                       <button type="button" th:id="commentReply + ${comments.id}" th:data-group="${comments.commentGroup}"
                               th:data-depth="${comments.commentDepth}"
+                              th:data-sort="${comments.sort}"
                               th:value="${comments.id}"
                               onclick="getCommentReply(this)">답글달기
                       </button>

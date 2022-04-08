@@ -25,6 +25,7 @@
             parameterType="CommentsSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
+
         INSERT INTO
             comments(
                         contents,
@@ -63,55 +64,97 @@
     </select>
 
     <!-- 댓글 계층형 전체보기 -->
+<!--    <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >-->
+<!--        WITH RECURSIVE CTE AS (-->
+<!--            SELECT-->
+<!--                    id-->
+<!--                    ,contents-->
+<!--                    ,comment_group-->
+<!--                    ,comment_depth-->
+<!--                    ,create_time-->
+<!--                    ,update_time-->
+<!--                    ,del_yn-->
+<!--                    ,CAST(id as CHAR(100)) path-->
+<!--            FROM-->
+<!--                    comments-->
+<!--            WHERE-->
+<!--                    comment_group = 0-->
+<!--              AND board_id  = #{boardId}-->
+<!--              AND del_yn = 'N'-->
+
+<!--            UNION ALL-->
+
+<!--            SELECT-->
+<!--                     t.id-->
+<!--                     ,t.contents-->
+<!--                     ,t.comment_group-->
+<!--                     ,t.comment_depth-->
+<!--                     ,t.create_time-->
+<!--                     ,t.update_time-->
+<!--                     ,t.del_yn-->
+<!--                     ,CONCAT(t2.path, ',', t.id) AS path-->
+<!--            FROM-->
+<!--                     comments AS t-->
+<!--                     INNER JOIN CTE AS t2 ON t.comment_group = t2.id-->
+<!--        )-->
+<!--        SELECT-->
+<!--                     id-->
+<!--                     ,CONCAT(REPEAT('Re) ', comment_depth), contents) AS contents-->
+<!--                     ,comment_group-->
+<!--                     ,comment_depth-->
+<!--                     ,create_time-->
+<!--                     ,update_time-->
+<!--                     ,del_yn-->
+<!--                     ,path-->
+
+<!--        FROM CTE-->
+
+<!--        WHERE del_yn = 'N'-->
+
+<!--        ORDER BY path-->
+
+<!--    </select>-->
+
     <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
-        WITH RECURSIVE CTE AS (
             SELECT
-                    id
-                    ,contents
-                    ,comment_group
-                    ,comment_depth
-                    ,create_time
-                    ,update_time
-                    ,del_yn
-                    ,CAST(id as CHAR(100)) path
+                id
+                 ,contents
+                 ,comment_group
+                 ,sort
+                 ,comment_depth
+                 ,create_time
+                 ,update_time
+                 ,board_id
+                 ,del_yn
             FROM
-                    comments
+                comments
             WHERE
-                    comment_group = 0
-              AND board_id  = #{boardId}
-              AND del_yn = 'N'
+                       board_id  = #{id}
+                      AND del_yn = 'N'
+            ORDER BY comment_group ASC , sort ASC;
 
-            UNION ALL
+    </select>
 
-            SELECT
-                     t.id
-                     ,t.contents
-                     ,t.comment_group
-                     ,t.comment_depth
-                     ,t.create_time
-                     ,t.update_time
-                     ,t.del_yn
-                     ,CONCAT(t2.path, ',', t.id) AS path
-            FROM
-                     comments AS t
-                     INNER JOIN CTE AS t2 ON t.comment_group = t2.id
-        )
+    <update id="CommentsReplySortUpdate" parameterType="CommentsReplySaveVo">
+        update
+            comments
+        set
+            sort = #{sort} + 1
+        where comment_group = #{commentGroup}
+          and sort > #{sort}
+          and board_id = ${boardId}
+    </update>
+
+    <select id="findBySameGroupYn" resultType="int" >
         SELECT
-                     id
-                     ,CONCAT(REPEAT('Re) ', comment_depth), contents) AS contents
-                     ,comment_group
-                     ,comment_depth
-                     ,create_time
-                     ,update_time
-                     ,del_yn
-                     ,path
-
-        FROM CTE
-
-        WHERE del_yn = 'N'
-
-        ORDER BY path
-
+                max(sort)
+        FROM
+                comments
+        WHERE
+                board_id  = ${boardId}
+                AND comment_group = #{commentGroup}
+                AND comment_depth = #{commentDepth}
+                AND del_yn = 'N'
     </select>
 
 
@@ -181,17 +224,29 @@
                     contents,
                     create_time,
                     board_id,
+                    sort,
                     comment_group,
                     comment_depth
         )VALUES(
                    #{contents},
                    #{createTime},
                    #{boardId},
+                   #{sort},
                    #{commentGroup},
                    #{commentDepth}
                )
 
     </insert>
+
+    <update id="insertCommentsSetGroup" parameterType="CommentsReplySaveVo">
+        update
+            comments
+        set sort = sort + 1
+        where
+            comment_group = #{comment_group}
+          and sort > #{sort}
+          and board_id = #{boardId};
+    </update>
 
     <!--댓글갯수 카운트-->
     <select id="getBoardCommentsTotalCount" resultType="Integer">

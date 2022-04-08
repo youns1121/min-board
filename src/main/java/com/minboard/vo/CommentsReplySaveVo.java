@@ -18,17 +18,33 @@ public class CommentsReplySaveVo {
 
     private int commentDepth;
 
+    private int sort;
+
     private LocalDateTime createTime;
+
+
+    public void sortIncrease(){
+        this.sort++;
+    }
+    public void commentDepthIncrease(){
+        this.commentDepth++;
+    }
+    public void sortIncrease(int sort){
+        this.sort = sort + 1;
+    }
 
 
     @Builder
     public CommentsReplySaveVo(int boardId, String contents, int commentGroup,
-                               int commentDepth, LocalDateTime createTime) {
+                               int commentDepth, int sort, LocalDateTime createTime) {
 
         this.boardId = boardId;
         this.contents = contents;
         this.commentGroup = commentGroup;
-        this.commentDepth = ++commentDepth;
+        this.sort = sort;
+        this.commentDepth = commentDepth;
         this.createTime = createTime.now();
     }
+
+
 }

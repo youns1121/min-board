@@ -64,7 +64,7 @@ function addComment() {
 }
 
 function getCommentReply(obj){
-    let id = parseInt($(obj).val())
+    let id = parseInt($(obj).data('group'))
 
     $('.optionButton').hide()
 
@@ -84,13 +84,19 @@ function addCommentReply(obj){
     let id = parseInt($(obj).val())
     let contents = $(obj).siblings('input').val()
     let boardId = parseInt($('#id').val())
-    let dataDepth = $('#commentReply'+id).data('depth')
+    let dataGroup =  parseInt($(obj).val())
+    let dataDepth = $(obj).parents('td').find('p').data('depth')
+    let dataSort = $(obj).parents('td').find('p').data('sort')
+
+
+
 
     let formData ={
-        commentGroup : id,
+        commentGroup : dataGroup,
         contents : contents,
         boardId : boardId,
-        commentDepth : dataDepth
+        commentDepth : dataDepth,
+        sort : dataSort
     }
 
     $.ajax({

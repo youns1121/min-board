@@ -10,7 +10,6 @@ import java.util.List;
 
 
 @Getter
-//@Setter
 public class BoardDto extends CommonPageDto {
 
     private UploadFileDto uploadFileDto;

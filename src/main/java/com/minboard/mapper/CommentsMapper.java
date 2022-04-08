@@ -38,4 +38,11 @@ public interface CommentsMapper {
     /** 댓글의 답변 작성하기 **/
     void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo);
 
+    int findBySameGroupYn(CommentsReplySaveVo commentsReplySaveVo);
+
+    void CommentsReplySortUpdate(CommentsReplySaveVo commentsReplySaveVo);
+
+    void insertCommentsSetGroup(int id);
+
+
 }

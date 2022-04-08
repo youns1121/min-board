@@ -8,14 +8,11 @@ import com.minboard.service.BoardService;
 import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
 import com.minboard.vo.*;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,15 +40,8 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/new")
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
-
+        boardService.saveBoardFile(boardSaveVo);
         boardService.createBoard(boardSaveVo);
-         if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
-            List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
-                    boardSaveVo.getId());
-            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
-                fileStoreService.insertFileInfoList(uploadFileInfoList);
-            }
-        }
         return boardSaveVo.getId().toString();
     }
 
@@ -91,16 +81,8 @@ public class BoardController {
                               @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
                               ) throws IOException {
 
+        boardService.updateBoardFile(boardUpdateVo);
         boardService.updateBoard(boardUpdateVo);
-        if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false){
-            List<UploadFileUpdateVo> uploadFileUpdateInfoList =
-                    fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
-                    boardUpdateVo.getId());
-
-            if(CollectionUtils.isEmpty(uploadFileUpdateInfoList) == false) {
-                fileStoreService.updateFileInfoList(uploadFileUpdateInfoList);
-            }
-        }
         return boardUpdateVo.getId().toString();
     }
 

@@ -17,6 +17,8 @@ public class CommentsDto {
 
     private int commentDepth;
 
+    private String sort;
+
     private String delYn;
 
     private LocalDateTime createTime;

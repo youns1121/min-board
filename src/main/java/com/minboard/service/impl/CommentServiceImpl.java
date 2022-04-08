@@ -21,6 +21,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void insertComments(CommentsSaveVo commentsSaveVo) {
         commentsMapper.insertComments(commentsSaveVo);
+        commentsMapper.insertCommentsSetGroup(commentsSaveVo.getId());
     }
 
     @Override
@@ -59,6 +60,19 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
+        commentsReplySaveVo.sortIncrease();
+        commentsReplySaveVo.commentDepthIncrease();
+        int sortValue = commentsMapper.findBySameGroupYn(commentsReplySaveVo);
+        if (sortValue > 0){
+            commentsReplySaveVo.sortIncrease();
+//            commentsMapper.CommentsReplySortUpdate(commentsReplySaveVo);
+        }
+        if(commentsReplySaveVo.getSort() <= sortValue){
+            commentsReplySaveVo.sortIncrease(sortValue);
+        }
+
+
+
         commentsMapper.insertCommentsReply(commentsReplySaveVo);
     }
 }

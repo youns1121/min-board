@@ -36,7 +36,9 @@ public class BoardSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList, UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
+    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList,
+                       UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
+
         this.title = title;
         this.contents = contents;
         this.fileList = fileList;

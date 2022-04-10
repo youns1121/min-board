@@ -40,8 +40,8 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/new")
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
-        boardService.saveBoardFile(boardSaveVo);
         boardService.createBoard(boardSaveVo);
+        boardService.saveBoardFile(boardSaveVo);
         return boardSaveVo.getId().toString();
     }
 
@@ -133,16 +133,6 @@ public class BoardController {
     @PostMapping("/comment/update")
     public void updateComment(CommentsUpdateVo commentsUpdateVo){
         commentService.updateComments(commentsUpdateVo);
-    }
-
-    /**댓글 수정 페이지 **/
-    @ResponseBody
-    @GetMapping("/comment/update/{id}")
-    public String getUpdateComment(@PathVariable("id") int id, Model model){
-
-        CommentsDto geUpdateComment = commentService.getUpdateComments(id);
-        model.addAttribute("geUpdateComment", geUpdateComment);
-        return geUpdateComment.getContents();
     }
 
     /**댓글 삭제 하기 **/

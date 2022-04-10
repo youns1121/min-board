@@ -58,6 +58,7 @@ public class BoardServiceImpl implements BoardService {
         if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false) {
             List<UploadFileUpdateVo> uploadFileInfoList = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
                     boardUpdateVo.getId());
+
             if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
                 fileStoreService.updateFileInfoList(uploadFileInfoList);
             }
@@ -95,7 +96,8 @@ public class BoardServiceImpl implements BoardService {
         List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
         int uploadFileListSize= uploadFileList.size();
         for(int i=0; i < uploadFileListSize; i++){
-            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." + uploadFileList.get(i).getExtensionName());
+            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." +
+                    uploadFileList.get(i).getExtensionName());
             if(file.exists()){
                 file.delete();
             }

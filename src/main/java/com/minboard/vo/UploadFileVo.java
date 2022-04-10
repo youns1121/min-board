@@ -12,6 +12,9 @@ import java.util.List;
 @Getter
 public class UploadFileVo {
 
+
+    private int id;
+
     /** 서버에 저장 될 파일명**/
     private String storeFileName;
 
@@ -34,7 +37,9 @@ public class UploadFileVo {
     private LocalDateTime createTime;
 
     @Builder
-    public UploadFileVo(String storeFileName, int boardId, String originalFileName, String extensionName, Long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+    public UploadFileVo(int id, String storeFileName, int boardId, String originalFileName, String extensionName,
+                        Long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+        this.id = id;
         this.storeFileName = storeFileName;
         this.boardId = boardId;
         this.originalFileName = originalFileName;

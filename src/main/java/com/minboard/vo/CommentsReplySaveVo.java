@@ -26,13 +26,6 @@ public class CommentsReplySaveVo {
     public void setSort(int calculationResult){
         this.sort = calculationResult;
     }
-    public void commentDepthIncrease(){
-        this.commentDepth++;
-    }
-    public void sortIncrease(int sort){
-        this.sort = sort + 1;
-    }
-
 
     @Builder
     public CommentsReplySaveVo(int boardId, String contents, int commentGroup,

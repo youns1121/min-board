@@ -11,13 +11,8 @@ public interface CommentService {
 
     void insertComments(CommentsSaveVo commentsSaveVo);
 
-    List<CommentsDto> getBoardCommentsList(int boardId);
-
     /** 게시물의 계층형 댓글전체 보기 **/
     List<CommentsDto> getBoardHierarchicalCommentsList(int boardId);
-
-    /** 댓글 수정 페이지 **/
-    CommentsDto getUpdateComments(int id);
 
     /** 댓글 수정하기 **/
     void updateComments(CommentsUpdateVo commentsUpdateVo);

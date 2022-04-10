@@ -15,8 +15,7 @@ public interface FileStoreService {
     /** 파일 전체경로 가져오기 **/
     String getFullPath(String filePath);
 
-    /** 파일리스트 저장하기
-     * @return**/
+    /** 파일리스트 저장하기 **/
     List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException;
 
     /** 파일업로드 리스트 정보 입력하기 **/

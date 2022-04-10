@@ -45,26 +45,6 @@
                    )
     </insert>
 
-    <!--댓글 전체보기-->
-    <select id="getBoardCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
-        SELECT
-               id,
-               contents,
-               del_yn,
-               comment_group,
-               comment_depth,
-               create_time,
-               update_time,
-               board_id
-
-        FROM
-               comments
-
-        WHERE
-               board_id = #{id} AND del_yn = 'N'
-    </select>
-
-
     <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
             SELECT
                 id
@@ -121,23 +101,6 @@
                 id = #{id} AND del_yn = 'N'
     </update>
 
-    <!--댓글 수정 페이지-->
-    <select id="getUpdateComments" resultType="CommentsDto" resultMap="CommentsDtoResultMap">
-        SELECT
-                id,
-                contents,
-                create_time,
-                del_yn,
-                board_id
-
-        FROM
-                comments
-
-        WHERE
-                id = #{id} AND del_yn = 'N'
-
-    </select>
-
     <!--댓글 삭제하기-->
     <update id="deleteComment" parameterType="int">
         UPDATE
@@ -188,16 +151,6 @@
 
     </insert>
 
-<!--    <update id="insertCommentsSetGroup" parameterType="CommentsReplySaveVo">-->
-<!--        update-->
-<!--            comments-->
-<!--        set sort = sort + 1-->
-<!--        where-->
-<!--            comment_group = #{commentGroup}-->
-<!--          and sort > #{sort}-->
-<!--          and board_id = #{boardId};-->
-<!--    </update>-->
-
     <insert id="insertCommentsSetGroup" parameterType="CommentsSaveVo">
         UPDATE
             comments
@@ -207,13 +160,6 @@
           AND id = #{id}
           AND del_yn = 'N';
     </insert>
-
-    <!--댓글갯수 카운트-->
-    <select id="getBoardCommentsTotalCount" resultType="Integer">
-        SELECT count(*)
-        FROM comments
-        WHERE board_id = #{boardId} AND del_yn = 'N'
-    </select>
 
     <select id="hierarchicalCalculationFormula" resultType="int" >
         SELECT
@@ -245,14 +191,13 @@
                     sort,
                     comment_group,
                     comment_depth
-            )VALUES(
+        )VALUES(
                    #{contents},
                    #{createTime},
                    #{boardId},
                    #{sort},
                    #{commentGroup},
-                   #{commentDepth} + 1
-               )
+                   #{commentDepth} + 1)
     </insert>
 
     <update id="calculationFormulaResultNotZero" parameterType="CommentsReplySaveVo">

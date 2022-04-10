@@ -17,29 +17,16 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentsMapper commentsMapper;
 
-    @Override
+    @Override /** 댓글작성 **/
     public void insertComments(CommentsSaveVo commentsSaveVo) {
         commentsMapper.insertComments(commentsSaveVo);
         commentsMapper.insertCommentsSetGroup(commentsSaveVo);
-    }
-
-    @Override
-    public List<CommentsDto> getBoardCommentsList(int boardId) {
-
-        List<CommentsDto> boardCommentsList = commentsMapper.getBoardCommentsList(boardId);
-        return boardCommentsList;
     }
 
     @Override /** 게시물의 계층형 댓글전체 보기 **/
     public List<CommentsDto> getBoardHierarchicalCommentsList(int boardId) {
         List<CommentsDto> hierarchicalCommentsAll = commentsMapper.getBoardHierarchicalCommentsList(boardId);
         return hierarchicalCommentsAll;
-    }
-
-    @Override
-    public CommentsDto getUpdateComments(int id) {
-        CommentsDto getUpdateComment = commentsMapper.getUpdateComments(id);
-        return getUpdateComment;
     }
 
     @Override
@@ -59,28 +46,27 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
-//        commentsReplySaveVo.sortIncrease();
-//        commentsReplySaveVo.commentDepthIncrease();
-//        int sortValue = commentsMapper.findBySameGroupYn(commentsReplySaveVo);
-//        if (sortValue > 0){
-//            commentsReplySaveVo.sortIncrease();
-////            commentsMapper.CommentsReplySortUpdate(commentsReplySaveVo);
-//        }
-//        if(commentsReplySaveVo.getSort() <= sortValue){
-//            commentsReplySaveVo.sortIncrease(sortValue);
-//        }
+
         int calculationResult = commentsMapper.hierarchicalCalculationFormula(commentsReplySaveVo);
 
         if (calculationResult == 0){
-            int addSortValue = commentsMapper.calculationFormulaResultZero(commentsReplySaveVo);
-            commentsReplySaveVo.setSort(addSortValue);
-            commentsMapper.insertResultZero(commentsReplySaveVo);
+            calculationResultZero(commentsReplySaveVo);
         }
 
         if(calculationResult != 0){
             commentsReplySaveVo.setSort(calculationResult);
-            commentsMapper.calculationFormulaResultNotZero(commentsReplySaveVo);
-            commentsMapper.insertResultNotZero(commentsReplySaveVo);
+            calculationResultNotZero(commentsReplySaveVo);
         }
+    }
+
+    public void calculationResultZero(CommentsReplySaveVo commentsReplySaveVo){
+        int addSortValue = commentsMapper.calculationFormulaResultZero(commentsReplySaveVo);
+        commentsReplySaveVo.setSort(addSortValue);
+        commentsMapper.insertResultZero(commentsReplySaveVo);
+    }
+
+    public void calculationResultNotZero(CommentsReplySaveVo commentsReplySaveVo){
+        commentsMapper.calculationFormulaResultNotZero(commentsReplySaveVo);
+        commentsMapper.insertResultNotZero(commentsReplySaveVo);
     }
 }

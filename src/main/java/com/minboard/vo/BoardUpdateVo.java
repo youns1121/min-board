@@ -38,7 +38,9 @@ public class BoardUpdateVo {
     private List<MultipartFile> fileList;
 
     @Builder
-    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,  Integer viewCount, Integer likeCount, List<MultipartFile> fileList) {
+    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,  Integer viewCount,
+                         Integer likeCount, List<MultipartFile> fileList) {
+
         this.id = id;
         this.title = title;
         this.fileList = fileList;

@@ -169,6 +169,4 @@
             del_yn = 'N'
             and id = #{id}
     </update>
-
-
 </mapper>

@@ -32,7 +32,9 @@ public class UploadFileUpdateVo {
     private LocalDateTime createTime;
 
     @Builder
-    public UploadFileUpdateVo(Integer id, Integer boardId, String storeFileName, String originalFileName, String extensionName, Long storeFileSize, String storeFilePath, LocalDateTime createTime) {
+    public UploadFileUpdateVo(Integer id, Integer boardId, String storeFileName,
+                              String originalFileName, String extensionName, Long storeFileSize,
+                              String storeFilePath, LocalDateTime createTime) {
         this.id = id;
         this.boardId = boardId;
         this.storeFileName = storeFileName;

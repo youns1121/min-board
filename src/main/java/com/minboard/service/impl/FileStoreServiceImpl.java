@@ -42,6 +42,8 @@ public class FileStoreServiceImpl implements FileStoreService {
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
 
+
+
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             UploadFileVo storeFile = storeFile(multipartFile, boardId);
@@ -66,7 +68,8 @@ public class FileStoreServiceImpl implements FileStoreService {
     /** 단일파일 저장하기
      * @return**/
     @Override
-    public UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException {
+    public UploadFileVo storeFile(MultipartFile multipartFile, int boardId)
+            throws IOException {
 
         boolean fileCheck = fileExtensionInboundCheck(multipartFile);
         if (fileCheck == false){
@@ -87,9 +90,9 @@ public class FileStoreServiceImpl implements FileStoreService {
                 .build();
     }
 
-    /** 파일리스트 수정하기 **/
     @Override
-    public List<UploadFileUpdateVo> storeFilesUpdate(List<MultipartFile> multipartFilesUpdate, int boardId) throws IOException {
+    public List<UploadFileUpdateVo> storeFilesUpdate(List<MultipartFile> multipartFilesUpdate, int boardId)
+            throws IOException {
 
         List<UploadFileUpdateVo> storeFileResult = new ArrayList<>();
         for (MultipartFile mutipartFile : multipartFilesUpdate) {
@@ -103,7 +106,6 @@ public class FileStoreServiceImpl implements FileStoreService {
         return storeFileResult;
     }
 
-    /** 단일파일 수정하기 **/
     @Override
     public UploadFileUpdateVo storeFileUpdate(MultipartFile multipartFileUpdate, int boardId) throws IOException {
 
@@ -158,7 +160,7 @@ public class FileStoreServiceImpl implements FileStoreService {
         InputStream inputStream = multipartFile.getInputStream();
         String mimeType = new Tika().detect(inputStream);
 
-        if (permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT)) == false) {
+        if(permitImgMimeType.contains(mimeType.toLowerCase(Locale.ROOT)) == false) {
             return false;
         }
         return true;

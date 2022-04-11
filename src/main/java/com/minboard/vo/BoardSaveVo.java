@@ -29,10 +29,10 @@ public class BoardSaveVo {
 
     private UploadFileVo uploadFileVo;
 
-    /** 등록일 */
+    /** 등록시간 */
     private LocalDateTime createTime;
 
-    /** 수정일 */
+    /** 수정시간 */
     private LocalDateTime updateTime;
 
     @Builder

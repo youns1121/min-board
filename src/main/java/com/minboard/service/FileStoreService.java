@@ -24,8 +24,7 @@ public interface FileStoreService {
     /** 파일업로드 리스트 정보 수정하기 **/
     void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList);
 
-    /** 단일파일 저장하기
-     * @return**/
+    /** 단일파일 저장하기 **/
     UploadFileVo storeFile(MultipartFile multipartFile, int boardId) throws IOException;
 
     /** 파일리스트 수정하기 **/

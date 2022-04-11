@@ -32,6 +32,7 @@ public class BoardController {
     /** 게시물 생성페이지 **/
     @GetMapping("/new")
     public String formBoard(Model model, BoardSaveVo boardSaveVo) {
+
         model.addAttribute("board", boardSaveVo.builder().build());
         return "html/boardNew";
     }
@@ -40,6 +41,7 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/new")
     public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+
         boardService.createBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
         return boardSaveVo.getId().toString();
@@ -65,8 +67,7 @@ public class BoardController {
         return "html/boardDetail";
     }
 
-    /** 첨부파일 다운로드
-     * @return**/
+    /** 첨부파일 다운로드 **/
     @GetMapping("/attach/{fileId}")
     public ResponseEntity<String> downloadAttach(@PathVariable int fileId) throws MalformedURLException {
 
@@ -103,6 +104,7 @@ public class BoardController {
     /** 게시물 삭제하기 **/
     @PostMapping("/delete")
     public String deleteBoard(int id) {
+
         boardService.deleteBoard(id);
         return "redirect:/board/list";
     }
@@ -123,6 +125,7 @@ public class BoardController {
     /** 게시물의 계층형 댓글전체 보기 **/
     @GetMapping("/commentsList/{id}")
     public String getBoardHierarchicalCommentsList(@PathVariable("id") int id, Model model){
+
         List<CommentsDto> commentsList = commentService.getBoardHierarchicalCommentsList(id);
         model.addAttribute("commentsList", commentsList);
         return "html/boardCommentsDetail";

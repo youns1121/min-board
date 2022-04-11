@@ -39,6 +39,4 @@ public interface BoardService {
 
     /** 게시물 수정 **/
     void updateBoard(BoardUpdateVo boardUpdateVo);
-
-
 }

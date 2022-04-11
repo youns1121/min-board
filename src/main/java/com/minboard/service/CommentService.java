@@ -25,9 +25,4 @@ public interface CommentService {
 
     /** 댓글의 답변 작성하기 **/
     void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo);
-
-
-
-
-
 }

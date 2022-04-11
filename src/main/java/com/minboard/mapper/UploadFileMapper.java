@@ -11,10 +11,8 @@ import java.util.List;
 public interface UploadFileMapper {
 
     /** 파일업로드 리스트 정보 입력하기
-     * @param uploadFileList**/
+     * **/
     void insertFileInfoList(List<UploadFileVo> uploadFileList);
-
-
 
     /** 파일업로드 리스트 정보수정하기 **/
     void updateFileInfoList(List<UploadFileUpdateVo> uploadFileList);

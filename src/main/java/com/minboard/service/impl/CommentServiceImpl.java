@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
         commentsMapper.deleteAllComment(boardId);
     }
 
-    @Override
+    @Override /** 계층형 댓글 계산공식 **/
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
 
         int calculationResult = commentsMapper.hierarchicalCalculationFormula(commentsReplySaveVo);

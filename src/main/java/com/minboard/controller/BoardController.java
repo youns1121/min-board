@@ -29,36 +29,32 @@ public class BoardController {
     private final FileStoreService fileStoreService;
     private final CommentService commentService;
 
-    /** 게시물 생성페이지 **/
     @GetMapping("/new")
-    public String formBoard(Model model, BoardSaveVo boardSaveVo) {
+    public String boardSave(Model model, BoardSaveVo boardSaveVo) {
 
         model.addAttribute("board", boardSaveVo.builder().build());
         return "html/boardNew";
     }
 
-    /** 게시물 생성하기 **/
     @ResponseBody
     @PostMapping("/new")
-    public String createBoard(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+    public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
 
         boardService.createBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
         return boardSaveVo.getId().toString();
     }
 
-    /** 게시물 리스트 **/
     @GetMapping("/list")
-    public String getBoardPagingList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
+    public String boardList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
 
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("boardList", boardList);
         return "html/boardList";
     }
 
-    /** 게시물 상세페이지 **/
     @GetMapping("/view/{id}")
-    public String getDetailBoardView(@PathVariable("id") int id, Model model) {
+    public String boardDetails(@PathVariable("id") int id, Model model) {
 
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
@@ -69,7 +65,7 @@ public class BoardController {
 
     /** 첨부파일 다운로드 **/
     @GetMapping("/attach/{fileId}")
-    public ResponseEntity<String> downloadAttach(@PathVariable int fileId) throws MalformedURLException {
+    public ResponseEntity<String> boardFileDownload(@PathVariable int fileId) throws MalformedURLException {
 
         DownloadFileDto downloadFileInfo = fileStoreService.downloadAttachedFile(fileId);
         return ResponseEntity.ok()
@@ -77,10 +73,9 @@ public class BoardController {
                 .body(downloadFileInfo.getResource());
     }
 
-    /** 게시물 수정하기 **/
     @ResponseBody
     @PostMapping("/update")
-    public String updateBoard(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
+    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
                               @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
                               ) throws IOException {
 
@@ -89,9 +84,8 @@ public class BoardController {
         return boardUpdateVo.getId().toString();
     }
 
-    /** 게시물 수정페이지 **/
     @GetMapping("/update/{id}")
-    public String getDetailViewUpdateBoard(@PathVariable("id") int id, Model model) {
+    public String boardModify(@PathVariable("id") int id, Model model) {
 
         BoardDto boardUpdateVo = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
@@ -101,54 +95,48 @@ public class BoardController {
         return "html/boardEdit";
     }
 
-    /** 게시물 삭제하기 **/
     @PostMapping("/delete")
-    public String deleteBoard(int id) {
+    public String boardRemove(int id) {
 
         boardService.deleteBoard(id);
         return "redirect:/board/list";
     }
 
-    /** 단일 파일삭제 **/
     @PostMapping("/deleteFile")
-    public void deleteFile(int id){
+    public void boardFileRemove(int id){
         fileStoreService.deleteFile(id);
     }
 
-    /** 댓글작성하기**/
     @ResponseBody
     @PostMapping("/comment")
-    public void insertComment(CommentsSaveVo commentsSaveVo){
+    public void CommentsAdd(CommentsSaveVo commentsSaveVo){
         commentService.insertComments(commentsSaveVo);
     }
 
-    /** 게시물의 계층형 댓글전체 보기 **/
+
     @GetMapping("/commentsList/{id}")
-    public String getBoardHierarchicalCommentsList(@PathVariable("id") int id, Model model){
+    public String boardCommentsList(@PathVariable("id") int id, Model model){
 
         List<CommentsDto> commentsList = commentService.getBoardHierarchicalCommentsList(id);
         model.addAttribute("commentsList", commentsList);
         return "html/boardCommentsDetail";
     }
 
-    /**댓글 수정하기 **/
     @ResponseBody
     @PostMapping("/comment/update")
-    public void updateComment(CommentsUpdateVo commentsUpdateVo){
+    public void boardCommentsModify(CommentsUpdateVo commentsUpdateVo){
         commentService.updateComments(commentsUpdateVo);
     }
 
-    /**댓글 삭제 하기 **/
     @ResponseBody
     @PostMapping("/commentDelete")
-    public void deleteCommit(int id){
+    public void boardCommentsRemove(int id){
         commentService.deleteComment(id);
     }
 
-    /** 댓글의 답변 작성하기 **/
     @ResponseBody
     @PostMapping("/comment/reply")
-    public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo){
+    public void commentsReplyAdd(CommentsReplySaveVo commentsReplySaveVo){
         commentService.insertCommentsReply(commentsReplySaveVo);
     }
 }

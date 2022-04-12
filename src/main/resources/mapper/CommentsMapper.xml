@@ -101,7 +101,7 @@
     </update>
 
     <!--댓글 삭제하기-->
-    <update id="deleteComment" parameterType="int">
+    <update id="deleteComment" parameterType="CommentsDto">
         UPDATE comments
 
         SET
@@ -166,8 +166,9 @@
                 comments
         WHERE
                 comment_group = ${commentGroup}
-          AND sort &gt; ${sort}
-          AND comment_depth &lt;= ${commentDepth};
+          AND sort > ${sort}
+          AND comment_depth <![CDATA[ <= ]]> ${commentDepth};
+
 
     </select>
 
@@ -198,21 +199,20 @@
     </insert>
 
     <insert id="insertResultNotZero" parameterType="CommentsReplySaveVo">
-        INSERT INTO
-            comments(
-            contents,
-            create_time,
-            board_id,
-            sort,
-            comment_group,
-            comment_depth
+        INSERT INTO comments(
+                    contents,
+                    create_time,
+                    board_id,
+                    sort,
+                    comment_group,
+                    comment_depth
         )VALUES(
-                   #{contents},
-                   #{createTime},
-                   #{boardId},
-                   #{sort},
-                   #{commentGroup},
-                   #{commentDepth} + 1
+                       #{contents},
+                       #{createTime},
+                       #{boardId},
+                       #{sort},
+                       #{commentGroup},
+                       #{commentDepth} + 1
                )
     </insert>
 
@@ -222,8 +222,20 @@
         SET
                 sort = sort + 1
         WHERE
-                comment_group =  #{commentGroup}  AND sort &gt;=  #{sort};
+                comment_group =  #{commentGroup}  AND sort <![CDATA[ >= ]]>  #{sort};
     </update>
+
+    <update id="decreaseSort" parameterType="CommentsDto">
+        UPDATE
+                comments
+        SET
+                sort = sort - 1
+
+        WHERE
+                comment_group =  ${commentGroup}  AND sort > ${sort};
+
+    </update>
+
 
 
 </mapper>

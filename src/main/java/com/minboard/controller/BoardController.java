@@ -130,8 +130,9 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping("/commentDelete")
-    public void boardCommentsRemove(int id){
-        commentService.deleteComment(id);
+    public void boardCommentsRemove(CommentsDto commentsDto){
+        commentService.deleteComment(commentsDto);
+
     }
 
     @ResponseBody

@@ -18,7 +18,7 @@ public interface CommentService {
     void updateComments(CommentsUpdateVo commentsUpdateVo);
 
     /** 댓글 삭제하기 **/
-    void deleteComment(int id);
+    void deleteComment(CommentsDto commentsDto);
 
     /** 게시글의 모든댓글 삭제하기 **/
     void deleteAllComment(int boardId);

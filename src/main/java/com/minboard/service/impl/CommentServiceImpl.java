@@ -35,8 +35,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(int id) {
-        commentsMapper.deleteComment(id);
+    public void deleteComment(CommentsDto commentsDto) {
+        commentsMapper.deleteComment(commentsDto);
+        commentsMapper.decreaseSort(commentsDto);
     }
 
     @Override

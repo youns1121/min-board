@@ -49,8 +49,6 @@
                title,
                create_time,
                update_time,
-               view_count,
-               like_count,
                del_yn
         from
              board b,
@@ -169,4 +167,24 @@
             del_yn = 'N'
             and id = #{id}
     </update>
+
+    <select id="countComments" resultType="int">
+        SELECT
+            count(*) AS commentsCount
+        FROM
+            board AS b
+                JOIN comments AS c ON b.id = c.board_id
+        WHERE
+            c.del_yn = 'N' AND c.board_id = #{boardId}
+    </select>
+
+    <select id="countAttachedFile" resultType="int" >
+        SELECT
+            count(*) AS attachedFileCount
+        FROM
+            board AS b
+                JOIN upload_file AS u ON b.id = u.board_id
+        WHERE
+            u.del_yn = 'N' AND u.board_id = #{boardId}
+    </select>
 </mapper>

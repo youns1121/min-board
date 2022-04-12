@@ -37,8 +37,8 @@
               <th>제목</th>
               <th>작성자</th>
               <th>작성일</th>
-              <th>조회</th>
-              <th>좋아요</th>
+              <th>댓글수</th>
+              <th>첨부파일수</th>
             </tr>
           </thead>
       <th:block layout:fragment="content">
@@ -54,8 +54,8 @@
               <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                   th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}">
               </td>
-              <td th:text="${board.viewCount}"></td>
-              <td th:text="${board.likeCount}"></td>
+              <td ></td>
+              <td ></td>
             </tr>
             <tr th:if="${#lists.isEmpty(boardList)}">
               <td colspan="5">조회된 결과가 없습니다.</td>

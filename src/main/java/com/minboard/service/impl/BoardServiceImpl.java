@@ -73,14 +73,6 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
-    /** 게시물 상세보기의 모든정보  **/
-    @Override
-    @Transactional(readOnly = true)
-    public BoardDto getDetailViewBoardAllInfo(int boardId) {
-        BoardDto detailViewBoardAllInfo = boardMapper.getDetailViewBoardAllInfo(boardId);
-        return detailViewBoardAllInfo;
-    }
-
     /** 게시물 수정 상세보기 **/
     @Override
     @Transactional(readOnly = true)
@@ -117,11 +109,13 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public List<BoardDto> getBoardList(BoardDto boardDto) {
+
         List<BoardDto> boardList = Collections.emptyList();
         int boardTotalCount = boardMapper.geTotalBoardCount();
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);
+
         if(boardTotalCount > 0){
             boardList = boardMapper.getBoardPagingList(boardDto);
         }

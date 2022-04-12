@@ -167,8 +167,12 @@ function cancelCommentReply(obj){
 
 function deleteComment(obj) {
     let id = parseInt($(obj).parent().parent().find('.commentId').val())
+    let dataGroup = parseInt($(obj).siblings()[0].dataset['group'])
+    let dataSort = parseInt($(obj).siblings()[0].dataset['sort'])
     let formData = {
-        id: id
+        id: id,
+        commentGroup : dataGroup,
+        sort : dataSort
     }
 
     $.ajax({

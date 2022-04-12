@@ -21,7 +21,7 @@ public interface CommentsMapper {
     void updateComments(CommentsUpdateVo commentsUpdateVo);
 
     /** 댓글 삭제하기 **/
-    void deleteComment(int id);
+    void deleteComment(CommentsDto commentsDto);
 
     /** 게시글의 모든댓글 삭제하기 **/
     void deleteAllComment(int boardId);
@@ -43,6 +43,10 @@ public interface CommentsMapper {
 
     /** 결과값 0 아닌값 입력 **/
     void insertResultNotZero(CommentsReplySaveVo commentsReplySaveVo);
+
+    void decreaseSort(CommentsDto commentsDto);
+
+
 
 
 }

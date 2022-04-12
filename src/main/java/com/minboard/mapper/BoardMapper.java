@@ -35,4 +35,8 @@ public interface BoardMapper {
 
     /** 게시물 수정 **/
     void updateBoard(BoardUpdateVo boardUpdateVo); // 게시물 수정
+
+    int countComments(int id);
+
+    int countAttachedFile(int id);
 }

@@ -31,18 +31,28 @@ public class BoardDto extends CommonPageDto {
     @NotBlank(message = "내용은 필수값 입니다.")
     private String contents;
 
-    /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
-    private String delYn;
+    /** 게시글 댓글 갯수 **/
+    private Integer commentsCount;
 
-    /** 게시글 조회수 **/
-    private Integer viewCount;
-
-    /** 게시글 좋아요수 **/
-    private Integer likeCount;
+    /** 게시글 첨부파일 갯수 **/
+    private Integer attachedFileCount;
 
     /** 파일업로드 **/
     List<UploadFileDto> uploadFileDtoList;
 
     /** 댓글 **/
     List<CommentsDto> commentsDtoList;
+
+    /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
+    private String delYn;
+
+
+    public BoardDto(Integer commentsCount, Integer attachedFileCount){
+        this.commentsCount = commentsCount;
+        this.attachedFileCount = attachedFileCount;
+    }
+
+    public static BoardDto countOf(Integer commentsCount, Integer attachedFileCount){
+        return new BoardDto(commentsCount, attachedFileCount);
+    }
 }

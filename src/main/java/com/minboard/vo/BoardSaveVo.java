@@ -29,6 +29,12 @@ public class BoardSaveVo {
 
     private UploadFileVo uploadFileVo;
 
+    private Integer boardSort;
+
+    private Integer boardDepth;
+
+    private Integer boardGroup;
+
     /** 등록시간 */
     private LocalDateTime createTime;
 
@@ -37,12 +43,16 @@ public class BoardSaveVo {
 
     @Builder
     public BoardSaveVo(String title, String contents, List<MultipartFile> fileList,
+                       Integer boardSort, Integer boardDepth, Integer boardGroup,
                        UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
 
         this.title = title;
         this.contents = contents;
         this.fileList = fileList;
         this.uploadFileVo = uploadFileVo;
+        this.boardSort = boardSort;
+        this.boardDepth = boardDepth;
+        this.boardGroup = boardGroup;
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
     }

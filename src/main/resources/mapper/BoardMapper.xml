@@ -8,6 +8,9 @@
     <resultMap id="boardDtoResultMap" type="BoardDto">
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="boardGroup" column="board_group"/>
+        <result property="boardDepth" column="board_depth"/>
+        <result property="boardSort" column="board_sort"/>
         <result property="delYn" column="del_yn"/>
         <result property="viewCount" column="view_count"/>
         <result property="likeCount" column="like_count"/>
@@ -42,7 +45,7 @@
 
 
     <!--- 게시물 전체보기  -->
-    <select id="getBoardPagingList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
+    <select id="selectBoardList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         select
                id,
                (@rownum := @rownum + 1) as num,
@@ -62,49 +65,29 @@
     </select>
 
     <!--총 게시물 수-->
-    <select id="geTotalBoardCount" resultType="int">
+    <select id="totalCountBoard" resultType="int">
         select count(*)
         from board
         where del_yn = 'N'
     </select>
 
     <!--    게시판 상세보기-->
-    <select id="getDetailViewBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
+    <select id="selectBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
         select
                id,
                title,
                contents,
+               board_group,
+               board_sort,
+               board_depth,
                create_time,
                update_time,
-               view_count,
-               like_count
+               del_yn
         from
              board
         where
               id = #{id}
           and del_yn = 'N'
-    </select>
-
-    <!--    게시판의 모든정보 상세보기-->
-    <select id="getDetailViewBoardAllInfo" resultType="BoardDto" resultMap="getDetailViewBoardAllInfoResultMap" >
-        select
-                bo.id,
-                bo.title,
-                bo.contents,
-                bo.create_time,
-                bo.update_time,
-                uf.id,
-                uf.store_file_name,
-                uf.original_file_name,
-                uf.extension_name,
-                uf.store_file_size,
-                uf.create_time
-        from
-                board AS bo
-                LEFT JOIN upload_file AS uf ON bo.id = uf.board_id
-        WHERE
-                bo.id = #{id} AND
-                del_yn = 'N'
     </select>
 
     <!--게시판 수정 상세보기 -->
@@ -125,23 +108,28 @@
     </select>
 
     <!--- 생성하기  -->
-    <insert id="createBoard"
+    <insert id="insertBoard"
             parameterType="BoardSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        INSERT INTO
-            board(
+        INSERT INTO board(
                   title,
                   contents,
+                  board_group,
+                  board_sort,
+                  board_depth,
                   create_time,
                   update_time
-            )values(
-                #{title},
-                #{contents},
-                #{createTime},
-                #{updateTime}
-            )
+                )values(
+                    #{title},
+                    #{contents},
+                    #{boardGroup},
+                    #{boardSort},
+                    #{boardDepth},
+                    #{createTime},
+                    #{updateTime}
+                )
     </insert>
 
     <!--수정하기-->

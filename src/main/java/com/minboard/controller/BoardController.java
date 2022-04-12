@@ -29,15 +29,14 @@ public class BoardController {
     private final FileStoreService fileStoreService;
     private final CommentService commentService;
 
-    @GetMapping("/new")
+    @GetMapping(value={"/new", "/reply"}  )
     public String boardSave(Model model, BoardSaveVo boardSaveVo) {
-
         model.addAttribute("board", boardSaveVo.builder().build());
         return "html/boardNew";
     }
 
     @ResponseBody
-    @PostMapping("/new")
+    @PostMapping(value = {"/new", "/reply"})
     public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
 
         boardService.createBoard(boardSaveVo);
@@ -55,7 +54,6 @@ public class BoardController {
 
     @GetMapping("/view/{id}")
     public String boardDetails(@PathVariable("id") int id, Model model) {
-
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
         model.addAttribute("detailViewBoard", detailViewBoard);
@@ -132,7 +130,6 @@ public class BoardController {
     @PostMapping("/commentDelete")
     public void boardCommentsRemove(CommentsDto commentsDto){
         commentService.deleteComment(commentsDto);
-
     }
 
     @ResponseBody
@@ -140,4 +137,5 @@ public class BoardController {
     public void commentsReplyAdd(CommentsReplySaveVo commentsReplySaveVo){
         commentService.insertCommentsReply(commentsReplySaveVo);
     }
+
 }

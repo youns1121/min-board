@@ -222,6 +222,7 @@
         SET
                 sort = sort + 1
         WHERE
+
                 comment_group =  #{commentGroup}  AND sort <![CDATA[ >= ]]>  #{sort};
     </update>
 

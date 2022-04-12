@@ -126,7 +126,6 @@ function uploadUpdateFile() {
         contentType: false,
         processData: false,
         cache: false,
-        type: "POST",
         data: formData,
         success: function (returnData) {
             alert('등록되었습니다.')

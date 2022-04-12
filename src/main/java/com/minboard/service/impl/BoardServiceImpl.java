@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
     /** 게시물 생성 **/
     @Override
     public void createBoard(BoardSaveVo boardSaveVo) {
-        boardMapper.createBoard(boardSaveVo);
+        boardMapper.insertBoard(boardSaveVo);
     }
 
     @Override
@@ -68,8 +68,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public BoardDto getDetailViewBoard(int id) {
-        BoardDto detailViewBoard = boardMapper.getDetailViewBoard(id);
-
+        BoardDto detailViewBoard = boardMapper.selectBoard(id);
         return detailViewBoard;
     }
 
@@ -77,7 +76,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public BoardUpdateVo getDetailViewUpdateBoard(int id) {
-        BoardUpdateVo detailViewUpdateBoard = boardMapper.getDetailViewUpdateBoard(id);
+        BoardUpdateVo detailViewUpdateBoard = boardMapper.selectUpdateBoard(id);
         return detailViewUpdateBoard;
     }
 
@@ -111,13 +110,13 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDto> getBoardList(BoardDto boardDto) {
 
         List<BoardDto> boardList = Collections.emptyList();
-        int boardTotalCount = boardMapper.geTotalBoardCount();
+        int boardTotalCount = boardMapper.totalCountBoard();
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);
 
         if(boardTotalCount > 0){
-            boardList = boardMapper.getBoardPagingList(boardDto);
+            boardList = boardMapper.selectBoardList(boardDto);
         }
         return boardList;
     }
@@ -125,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
     /** 게시물 전체 갯수 **/
     @Override
     public int geTotalBoardCount() {
-        int successCount = boardMapper.geTotalBoardCount();
+        int successCount = boardMapper.totalCountBoard();
         return successCount;
     }
 }

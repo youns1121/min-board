@@ -24,9 +24,6 @@ public class BoardDto extends CommonPageDto {
     @NotBlank(message = "제목은 필수값 입니다.")
     private String title;
 
-    /** 게시글 작성자 **/
-    private String author;
-
     /** 게시글 내용 **/
     @NotBlank(message = "내용은 필수값 입니다.")
     private String contents;
@@ -43,16 +40,22 @@ public class BoardDto extends CommonPageDto {
     /** 댓글 **/
     List<CommentsDto> commentsDtoList;
 
+    private Integer boardSort;
+
+    private Integer boardDepth;
+
+    private Integer boardGroup;
+
     /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;
 
 
-    public BoardDto(Integer commentsCount, Integer attachedFileCount){
-        this.commentsCount = commentsCount;
-        this.attachedFileCount = attachedFileCount;
-    }
+//    public BoardDto(Integer commentsCount, Integer attachedFileCount){
+//        this.commentsCount = commentsCount;
+//        this.attachedFileCount = attachedFileCount;
+//    }
 
-    public static BoardDto countOf(Integer commentsCount, Integer attachedFileCount){
-        return new BoardDto(commentsCount, attachedFileCount);
-    }
+//    public static BoardDto countOf(Integer commentsCount, Integer attachedFileCount){
+//        return new BoardDto(commentsCount, attachedFileCount);
+//    }
 }

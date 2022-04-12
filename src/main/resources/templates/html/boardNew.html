@@ -21,7 +21,7 @@
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
 </head>
 <body>
-    <form id="frm" th:object="${board}" th:action="@{/board/new}" method="post" enctype="multipart/form-data">
+    <form id="frm" th:object="${board}" th:action method="post" enctype="multipart/form-data">
         <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
         <fieldset class="field">

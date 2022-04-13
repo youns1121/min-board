@@ -79,10 +79,11 @@ function updateAttachedExtenSionCheck(){
 function uploadNewFile(){
     let formData = new FormData();
     let inputFile = $("input[type='file']")
+    let inputFileLength = inputFile.length
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
 
-    for(var i = 0;  i < inputFile.length; i++){
+    for(var i = 0;  i < inputFileLength; i++){
         if(!(inputFile[i].value == "")){
             formData.append('fileList', inputFile[i].files[0])
         }

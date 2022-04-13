@@ -19,11 +19,13 @@ public interface BoardService {
     /** 게시물 상세보기 **/
     BoardDto getDetailViewBoard(int id);
 
+    BoardDto selectBoardReply(int id);
+
     /** 게시물 수정 상세보기 **/
     BoardUpdateVo getDetailViewUpdateBoard(int id);
 
     /** 게시물 생성 **/
-    void createBoard(BoardSaveVo boardSaveVo);
+    void saveBoard(BoardSaveVo boardSaveVo);
 
     /** 게시물의 파일 저장 **/
     void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException;
@@ -36,4 +38,6 @@ public interface BoardService {
 
     /** 게시물 수정 **/
     void updateBoard(BoardUpdateVo boardUpdateVo);
+
+    void saveBoardReply(BoardSaveVo boardSaveVo);
 }

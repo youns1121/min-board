@@ -79,7 +79,7 @@
             th:data-group="${detailViewBoard.boardGroup}"
             th:data-sort="${detailViewBoard.boardSort}"
             th:data-depth="${detailViewBoard.boardDepth}"
-            onclick="addReply(this)">답글작성
+            th:onclick="|location.href='@{/board/reply/{id}(id = ${id})}'|">답글작성
     </button>
 
   </form>

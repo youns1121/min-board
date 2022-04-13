@@ -6,14 +6,15 @@
 <mapper namespace="com.minboard.mapper.BoardMapper">
 
     <resultMap id="boardDtoResultMap" type="BoardDto">
+        <result property="id" column="id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="boardGroup" column="board_group"/>
         <result property="boardDepth" column="board_depth"/>
         <result property="boardSort" column="board_sort"/>
         <result property="delYn" column="del_yn"/>
-        <result property="viewCount" column="view_count"/>
-        <result property="likeCount" column="like_count"/>
+        <result property="commentsCount" column="comments_count"/>
+        <result property="fileCount" column="file_count"/>
     </resultMap>
 
     <resultMap id="boardUpdateVoResultMap" type="BoardUpdateVo">
@@ -46,22 +47,40 @@
 
     <!--- 게시물 전체보기  -->
     <select id="selectBoardList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
-        select
-               id,
-               (@rownum := @rownum + 1) as num,
-               title,
-               create_time,
-               update_time,
-               del_yn
-        from
-             board b,
-             (select @rownum := 0) as num_table
-        where
-              del_yn = 'N'
+        SELECT
+                b.id,
+                (@rownum := @rownum + 1) as num,
+                b.title,
+                b.board_group,
+                b.board_sort,
+                b.board_depth,
+                (select
+                     count(board_id)
+                 from comments
+                 where
+                     comments.board_id = b.id) as comments_count,
+                (select
+                     count(board_id)
+                 from upload_file
+                 where
+                     upload_file.board_id = b.id) as file_count,
+                b.create_time,
+                b.update_time,
+                b.del_yn
+
+        FROM
+                board as b
+                    left join comments c on b.id = c.board_id,
+                    (select @rownum := 0) as num_table
+        WHERE
+                b.del_yn = 'N'
+        group by b.id
         order by
-                num desc,
-                create_time desc
-        limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage}
+                board_group desc,
+                board_sort asc,
+                num desc
+
+        limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
 
     <!--총 게시물 수-->
@@ -87,6 +106,21 @@
              board
         where
               id = #{id}
+          and del_yn = 'N'
+    </select>
+
+    <select id="selectBoardReply" resultType="BoardDto" resultMap="boardDtoResultMap" >
+        select
+            id,
+            title,
+            board_group,
+            board_sort,
+            board_depth,
+            del_yn
+        from
+            board
+        where
+            id = #{id}
           and del_yn = 'N'
     </select>
 
@@ -145,6 +179,14 @@
           and id = #{id}
     </update>
 
+    <update id="updateBoardGroupSet" parameterType="int">
+        UPDATE  board
+        SET
+                board_group = #{id}
+        WHERE
+              id = #{id} AND del_yn = 'N'
+    </update>
+
     <!--삭제하기-->
     <update id="deleteBoard" parameterType="int">
         update
@@ -175,4 +217,73 @@
         WHERE
             u.del_yn = 'N' AND u.board_id = #{boardId}
     </select>
+
+    <select id="hierarchicalCalculationFormula" resultType="int" >
+        SELECT
+                IFNULL(MIN(board_sort),0)
+        FROM
+                board
+        WHERE
+              board_group = ${boardGroup}
+          AND board_sort > ${boardSort}
+          AND board_depth <![CDATA[ <= ]]> ${boardDepth}
+          AND del_yn = 'N';
+    </select>
+
+    <select id="calculationFormulaResultZero" resultType="int">
+        SELECT
+            IFNULL(MAX(board_sort),0) + 1
+        FROM
+            board
+        WHERE
+            board_group = ${boardGroup} AND del_yn = 'N';
+    </select>
+
+    <insert id="insertBoareReply"
+            parameterType="BoardSaveVo"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        INSERT INTO board(
+                    title,
+                    contents,
+                    board_group,
+                    board_sort,
+                    board_depth,
+                    create_time,
+                    update_time
+        )values(
+                   #{title},
+                   #{contents},
+                   #{boardGroup},
+                   #{boardSort},
+                   #{boardDepth}+1,
+                   #{createTime},
+                   #{updateTime}
+               )
+    </insert>
+
+    <update id="calculationFormulaResultNotZero" parameterType="BoardSaveVo">
+        UPDATE
+            board
+        SET
+            board_sort = board_sort + 1
+        WHERE
+
+            board_group =  #{boardGroup}
+          AND board_sort <![CDATA[ >= ]]>  #{boardSort}
+          AND del_yn = 'N';
+    </update>
+
+    <update id="decreaseSort" parameterType="BoardDto">
+        UPDATE
+            board
+        SET
+            board_sort = board_sort - 1
+
+        WHERE
+            board_group = ${boardGroup} AND board_sort > ${boardSort}
+    </update>
+
+
 </mapper>

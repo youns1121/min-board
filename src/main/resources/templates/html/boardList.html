@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
-</head>
+</head>-
 <body>
     <div class="container" style="max-width: 600px">
     <h2>게시물 목록</h2>
@@ -54,8 +54,8 @@
               <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                   th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}">
               </td>
-              <td ></td>
-              <td ></td>
+              <td th:text="${board.commentsCount}" style="cursor:pointer" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
+              <td th:text="${board.fileCount}" style="cursor:pointer" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
             </tr>
             <tr th:if="${#lists.isEmpty(boardList)}">
               <td colspan="5">조회된 결과가 없습니다.</td>

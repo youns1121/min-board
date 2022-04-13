@@ -4,9 +4,9 @@ import com.minboard.dto.BoardDto;
 import com.minboard.dto.CommentsDto;
 import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
-import com.minboard.service.BoardService;
 import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
+import com.minboard.service.impl.BoardServiceImpl;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -25,30 +25,49 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
 
-    private final BoardService boardService;
+    private final BoardServiceImpl boardService;
     private final FileStoreService fileStoreService;
     private final CommentService commentService;
 
-    @GetMapping(value={"/new", "/reply"}  )
+    @GetMapping("/new")
     public String boardSave(Model model, BoardSaveVo boardSaveVo) {
-        model.addAttribute("board", boardSaveVo.builder().build());
+        model.addAttribute("board",boardSaveVo);
         return "html/boardNew";
     }
 
     @ResponseBody
-    @PostMapping(value = {"/new", "/reply"})
+    @PostMapping("/new")
     public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
 
-        boardService.createBoard(boardSaveVo);
+        boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
         return boardSaveVo.getId().toString();
     }
+
+    @ResponseBody
+    @PostMapping("/reply")
+    public String boardReplySave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+
+        boardService.saveBoardReply(boardSaveVo);
+        boardService.saveBoardFile(boardSaveVo);
+        return boardSaveVo.getId().toString();
+    }
+
+    @GetMapping("/reply/{id}")
+    public String boardReply(BoardSaveVo boardSaveVo, Model model){
+        BoardDto detailViewBoard = boardService.selectBoardReply(boardSaveVo.getId());
+        model.addAttribute("board", detailViewBoard);
+        return "html/boardReply";
+    }
+
 
     @GetMapping("/list")
     public String boardList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
 
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
+
         model.addAttribute("boardList", boardList);
+
         return "html/boardList";
     }
 
@@ -137,5 +156,4 @@ public class BoardController {
     public void commentsReplyAdd(CommentsReplySaveVo commentsReplySaveVo){
         commentService.insertCommentsReply(commentsReplySaveVo);
     }
-
 }

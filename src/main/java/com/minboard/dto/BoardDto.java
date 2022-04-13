@@ -29,10 +29,9 @@ public class BoardDto extends CommonPageDto {
     private String contents;
 
     /** 게시글 댓글 갯수 **/
-    private Integer commentsCount;
+    private int commentsCount;
 
-    /** 게시글 첨부파일 갯수 **/
-    private Integer attachedFileCount;
+    private int fileCount;
 
     /** 파일업로드 **/
     List<UploadFileDto> uploadFileDtoList;
@@ -48,14 +47,4 @@ public class BoardDto extends CommonPageDto {
 
     /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;
-
-
-//    public BoardDto(Integer commentsCount, Integer attachedFileCount){
-//        this.commentsCount = commentsCount;
-//        this.attachedFileCount = attachedFileCount;
-//    }
-
-//    public static BoardDto countOf(Integer commentsCount, Integer attachedFileCount){
-//        return new BoardDto(commentsCount, attachedFileCount);
-//    }
 }

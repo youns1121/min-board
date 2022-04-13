@@ -36,4 +36,20 @@ public interface BoardMapper {
     int countComments(int id);
 
     int countAttachedFile(int id);
+
+    void updateBoardGroupSet(int boardId);
+
+    int hierarchicalCalculationFormula(BoardSaveVo boardSaveVo);
+
+    int calculationFormulaResultZero(BoardSaveVo boardSaveVo);
+
+    void insertBoareReply(BoardSaveVo boardSaveVo);
+
+    void calculationFormulaResultNotZero(BoardSaveVo boardSaveVo);
+
+    BoardDto selectBoardReply(int id);
+
+    void decreaseSort(BoardDto boardDto);
+
+
 }

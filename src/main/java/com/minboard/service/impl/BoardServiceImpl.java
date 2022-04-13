@@ -37,9 +37,13 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 생성 **/
     @Override
-    public void createBoard(BoardSaveVo boardSaveVo) {
+    public void saveBoard(BoardSaveVo boardSaveVo) {
+
+        boardSaveVo.setBoardSortDepth(boardSaveVo);
         boardMapper.insertBoard(boardSaveVo);
+        boardMapper.updateBoardGroupSet(boardSaveVo.getId());
     }
+
 
     @Override
     public void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException {
@@ -72,6 +76,13 @@ public class BoardServiceImpl implements BoardService {
         return detailViewBoard;
     }
 
+    @Override
+    public BoardDto selectBoardReply(int id) {
+
+        BoardDto boardReply = boardMapper.selectBoardReply(id);
+        return boardReply;
+    }
+
     /** 게시물 수정 상세보기 **/
     @Override
     @Transactional(readOnly = true)
@@ -93,6 +104,8 @@ public class BoardServiceImpl implements BoardService {
             }
         }
         commentsMapper.deleteAllComment(id);
+        BoardDto boardReply = boardMapper.selectBoardReply(id);
+        boardMapper.decreaseSort(boardReply);
         boardMapper.deleteBoard(id);
         fileMapper.deleteAlldFile(id);
 
@@ -127,4 +140,30 @@ public class BoardServiceImpl implements BoardService {
         int successCount = boardMapper.totalCountBoard();
         return successCount;
     }
+
+    @Override
+    public void saveBoardReply(BoardSaveVo boardSaveVo){
+        int calculationResult = boardMapper.hierarchicalCalculationFormula(boardSaveVo);
+
+        if(calculationResult == 0){
+            calculationResultZero(boardSaveVo);
+        }
+
+        if(calculationResult != 0){
+            boardSaveVo.setBoardSort(calculationResult);
+            calculationResultNotZero(boardSaveVo);
+        }
+    }
+
+    public void calculationResultZero(BoardSaveVo boardSaveVo){
+        int addSortValue = boardMapper.calculationFormulaResultZero(boardSaveVo);
+        boardSaveVo.setBoardSort(addSortValue);
+        boardMapper.insertBoareReply(boardSaveVo);
+    }
+
+    public void calculationResultNotZero(BoardSaveVo boardSaveVo){
+        boardMapper.calculationFormulaResultNotZero(boardSaveVo);
+        boardMapper.insertBoareReply(boardSaveVo);
+    }
+
 }

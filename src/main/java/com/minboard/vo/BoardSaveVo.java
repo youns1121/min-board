@@ -41,11 +41,23 @@ public class BoardSaveVo {
     /** 수정시간 */
     private LocalDateTime updateTime;
 
+    public void setBoardSortDepth(BoardSaveVo boardSaveVo){
+        if(boardSaveVo.getBoardSort() == null && boardSaveVo.getBoardDepth() == null){
+          this.boardSort = 0;
+          this.boardDepth = 0;
+        }
+    }
+
+    public void setBoardSort(int sortValue){
+        this.boardSort = sortValue;
+    }
+
     @Builder
-    public BoardSaveVo(String title, String contents, List<MultipartFile> fileList,
+    public BoardSaveVo(Integer id, String title, String contents, List<MultipartFile> fileList,
                        Integer boardSort, Integer boardDepth, Integer boardGroup,
                        UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime) {
 
+        this.id = id;
         this.title = title;
         this.contents = contents;
         this.fileList = fileList;

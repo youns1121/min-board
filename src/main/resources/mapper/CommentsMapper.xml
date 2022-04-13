@@ -75,19 +75,6 @@
           and board_id = ${boardId}
     </update>
 
-    <select id="findBySameGroupYn" resultType="int" >
-        SELECT
-                max(sort)
-        FROM
-                comments
-        WHERE
-                board_id  = ${boardId}
-                AND comment_group = #{commentGroup}
-                AND comment_depth = #{commentDepth}
-                AND del_yn = 'N'
-    </select>
-
-
     <!--댓글 수정하기-->
     <update id="updateComments" parameterType="CommentsUpdateVo">
         UPDATE comments
@@ -149,7 +136,7 @@
 
     </insert>
 
-    <insert id="insertCommentsSetGroup" parameterType="CommentsSaveVo">
+    <update id="insertCommentsSetGroup" parameterType="CommentsSaveVo">
         UPDATE
             comments
         set comment_group = #{id}
@@ -157,7 +144,7 @@
             board_id = #{boardId}
           AND id = #{id}
           AND del_yn = 'N';
-    </insert>
+    </update>
 
     <select id="hierarchicalCalculationFormula" resultType="int" >
         SELECT
@@ -168,8 +155,6 @@
                 comment_group = ${commentGroup}
           AND sort > ${sort}
           AND comment_depth <![CDATA[ <= ]]> ${commentDepth};
-
-
     </select>
 
     <select id="calculationFormulaResultZero" resultType="int">

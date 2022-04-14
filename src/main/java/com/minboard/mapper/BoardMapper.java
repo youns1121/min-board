@@ -1,5 +1,6 @@
 package com.minboard.mapper;
 
+import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 
 import com.minboard.vo.BoardSaveVo;
@@ -15,17 +16,26 @@ public interface BoardMapper {
     /** 게시물 리스트 **/
     List<BoardDto> selectBoardList(BoardDto boardDto);
 
+    /** 관리자 게시물 리스트 **/
+    List<BoardDto> selectBoardAdminList(BoardDto boardDto);
+
+
     /** 게시물 총 갯수 **/
     int totalCountBoard();
 
     /** 게시물 상세보기 **/
     BoardDto selectBoard(int id);
 
+    /** 관리자 게시물 상세보기 **/
+    BoardAdminDto selectBoardAdmin(int id);
+
     /** 게시물 수정 상세보기 **/
     BoardUpdateVo selectUpdateBoard(int id);
 
     /** 게시물 생성 **/
     void insertBoard(BoardSaveVo boardSaveVo);
+
+    void insertBoardAdmin(BoardSaveVo boardSaveVo);
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);

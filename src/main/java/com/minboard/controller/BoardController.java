@@ -41,7 +41,7 @@ public class BoardController {
 
         boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
-        return boardSaveVo.getId().toString();
+        return boardSaveVo.getBoardId().toString();
     }
 
     @ResponseBody
@@ -61,8 +61,8 @@ public class BoardController {
     }
 
 
-    @GetMapping("/list")
-    public String boardList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
+    @GetMapping("/category/{categoryCode}")
+    public String boardFreeList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
 
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
 
@@ -70,6 +70,7 @@ public class BoardController {
 
         return "html/boardList";
     }
+
 
     @GetMapping("/view/{id}")
     public String boardDetails(@PathVariable("id") int id, Model model) {

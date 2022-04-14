@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+  table, th, td {
+    border: 1px solid #bcbcbc;
+    text-align: center;
+  }
+  table {
+    width: 1000px;
+    height: 500px;
+  }
+
+</style>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+</head>
+<body>
+<form id="boardAdminDetails" th:object="${selectBoardAdmin}" th:action method="POST">
+<table>
+  <tr>
+    <th>제목</th>
+    <td>
+      <input type="text" th:field="*{title}" readonly style="width: 400px;">
+    </td>
+  </tr>
+  <tr>
+    <th>내용</th>
+    <td>
+      <input type="text" th:field="*{contents}" readonly style="width: 900px; height: 100px">
+    </td>
+  </tr>
+  <tr>
+    <th>댓글 기능</th>
+    <div id="comments">
+      <td>
+        <label><input name="comments" class="on" type="radio" value="Y"
+                      th:checked="${selectBoardAdmin.commentsYn eq 'Y'}">사용</label>
+        <label><input name="comments" class="off" type="radio" value="N"
+                      th:checked="${selectBoardAdmin.commentsYn eq 'N'}" >사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>답글 기능</th>
+    <div id="reply">
+      <td>
+        <label><input name="reply" class="on" type="radio" value="Y"
+                      th:checked="${selectBoardAdmin.commentsYn eq 'Y'}">사용</label>
+        <label><input name="reply" class="off" type="radio" value="N"
+                      th:checked="${selectBoardAdmin.commentsYn eq 'N'}">사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>첨부파일 기능</th>
+    <div id="file">
+      <td>
+        <label><input name="file" class="on" type="radio" value="Y"
+                    th:checked="${selectBoardAdmin.attachdFileYn eq 'Y'}">사용</label>
+        <label><input name="file" class="off" type="radio" value="N"
+                    th:checked="${selectBoardAdmin.attachdFileYn eq 'N'}">사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>첨부파일 최대 갯수</th>
+    <div id="fileMaxCount">
+      <td>
+        <span th:each="num : ${#numbers.sequence(1, 6)}">
+          <label><input name="fileMaxCount" type="radio" th:value="${num}"
+                        th:checked="${selectBoardAdmin.attachdFileCount eq num}"
+                        th:text="${num}+개"></label>
+        </span>
+      </td>
+    </div>
+  </tr>
+</table>
+<br/>
+<button type="button" th:onclick="|location.href='@{/admin}'|">저장</button>
+<button type="button" th:onclick="|location.href='@{/admin}'|">목록</button>
+
+</form>
+</body>
+</html>

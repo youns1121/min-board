@@ -15,24 +15,23 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
-</head>-
+    <script type="text/javascript" th:src="@{/script/common.js}"></script>
+    <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+</head>
 <body>
     <div class="container" style="max-width: 600px">
-    <h2>게시물 목록</h2>
   <div class="row">
+      <h1><span th:text="${boardList[0].cateogryName}"></span></h1>
       <button type="button" class="writeButton" th:onclick="|location.href='@{/board/new}'|" >글쓰기</button>
+      <button type="button" class="admin" th:onclick="|location.href='@{/admin}'|">관리자 페이지</button>
   </div>
-  <div style="float: right">
-      <button type="button" class="signUp" th:onclick="|location.href='@{/member/signup}'|">회원가입</button>
-      <button type="button" class="signIn" th:onclick="|location.href='@{/member/signin}'|">로그인</button>
-  </div>
-
+  <br/>
   <div>
       <h2 th:text="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></h2>
       <fieldset>
         <table class="table">
           <thead>
-            <tr cros>
+            <tr>
               <th>번호</th>
               <th>제목</th>
               <th>작성자</th>

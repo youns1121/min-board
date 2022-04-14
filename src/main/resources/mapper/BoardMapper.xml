@@ -13,8 +13,24 @@
         <result property="boardDepth" column="board_depth"/>
         <result property="boardSort" column="board_sort"/>
         <result property="delYn" column="del_yn"/>
+        <result property="boardId" column="board_id"/>
         <result property="commentsCount" column="comments_count"/>
         <result property="fileCount" column="file_count"/>
+        <result property="categoryName" column="category_name" />
+        <result property="categoryCode" column="category_code" />
+    </resultMap>
+
+    <resultMap id="boardAdminDtoResultMap" type="BoardAdminDto">
+        <result property="id" column="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="attachdFileCount" column="attached_file_count"/>
+        <result property="commentsYn" column="comments_yn"/>
+        <result property="commentsCount" column="comments_count"/>
+        <result property="attachdFileYn" column="attached_file_yn"/>
+        <result property="replyYn" column="reply_yn" />
+        <result property="boardId" column="board_id"/>
+        <result property="delYn" column="del_yn"/>
     </resultMap>
 
     <resultMap id="boardUpdateVoResultMap" type="BoardUpdateVo">
@@ -50,6 +66,7 @@
         SELECT
                 b.id,
                 (@rownum := @rownum + 1) as num,
+                b.category_name,
                 b.title,
                 b.board_group,
                 b.board_sort,
@@ -58,7 +75,8 @@
                      count(board_id)
                  from comments
                  where
-                     comments.board_id = b.id) as comments_count,
+                     comments.board_id = b.id
+                   and comments.del_yn = 'N') as comments_count,
                 (select
                      count(board_id)
                  from upload_file
@@ -73,7 +91,7 @@
                     left join comments c on b.id = c.board_id,
                     (select @rownum := 0) as num_table
         WHERE
-                b.del_yn = 'N'
+                b.del_yn = 'N' and b.category_code = #{categoryCode}
         group by b.id
         order by
                 board_group desc,
@@ -82,6 +100,46 @@
 
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
+
+    <!--- 관리자 게시물 전체보기  -->
+    <select id="selectBoardAdminList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
+        SELECT
+            ba.id,
+            (@rownum := @rownum + 1) as num,
+            ba.title,
+            (select
+                 count(board_id)
+             from comments
+             where
+                 comments.board_id = ba.board_id
+               and comments.del_yn = 'N'
+            ) as comments_count,
+            (select
+                 count(board_id)
+             from upload_file
+             where
+                 upload_file.board_id = ba.board_id
+            ) as file_count,
+            ba.create_time,
+            ba.update_time,
+            ba.del_yn
+
+        FROM
+            board_admin as ba
+                join board as b on ba.board_id = b.id
+                left join comments as c on ba.board_id = c.board_id,
+            (select @rownum := 0) as num_table
+
+        WHERE
+                ba.del_yn = 'N'
+        group by
+                 ba.id
+        order by
+                 num desc
+
+            limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
+    </select>
+
 
     <!--총 게시물 수-->
     <select id="totalCountBoard" resultType="int">
@@ -106,6 +164,27 @@
              board
         where
               id = #{id}
+          and del_yn = 'N'
+    </select>
+
+    <!-- 관리자 게시판 상세보기-->
+    <select id="selectBoardAdmin" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap" >
+        select
+            id,
+            title,
+            contents,
+            attached_file_yn,
+            attached_file_count,
+            comments_yn,
+            reply_yn,
+            create_time,
+            update_time,
+            board_id,
+            del_yn
+        from
+            board_admin
+        where
+            id = #{id}
           and del_yn = 'N'
     </select>
 
@@ -153,6 +232,8 @@
                   board_group,
                   board_sort,
                   board_depth,
+                  category_code,
+                  category_name,
                   create_time,
                   update_time
                 )values(
@@ -161,9 +242,31 @@
                     #{boardGroup},
                     #{boardSort},
                     #{boardDepth},
+                    #{categoryCode},
+                    #{categoryName},
                     #{createTime},
                     #{updateTime}
                 )
+    </insert>
+
+    <insert id="insertBoardAdmin"
+            parameterType="BoardSaveVo"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        INSERT INTO board_admin(
+                   title,
+                   contents,
+                   create_time,
+                   update_time,
+                   board_id
+        )values(
+                   #{title},
+                   #{contents},
+                   #{createTime},
+                   #{updateTime},
+                   #{boardId}
+               )
     </insert>
 
     <!--수정하기-->

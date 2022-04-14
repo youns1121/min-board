@@ -82,6 +82,9 @@ function uploadNewFile(){
     let inputFileLength = inputFile.length
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
+    formData.append('categoryCode', parseInt($('.selectbox-control').val()))
+    formData.append('categoryName', $('.selectbox-control option:selected').text())
+
 
     for(var i = 0;  i < inputFileLength; i++){
         if(!(inputFile[i].value == "")){

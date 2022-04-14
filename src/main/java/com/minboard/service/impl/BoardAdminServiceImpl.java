@@ -1,6 +1,7 @@
 package com.minboard.service.impl;
 
 
+import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.BoardMapper;
@@ -25,10 +26,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardServiceImpl implements BoardService {
+public class BoardAdminServiceImpl implements BoardService {
 
     private final FileStoreServiceImpl fileStoreService;
-    private final BoardAdminServiceImpl boardAdminService;
     private final BoardMapper boardMapper;
     private final UploadFileMapper fileMapper;
     private final CommentsMapper commentsMapper;
@@ -39,13 +39,8 @@ public class BoardServiceImpl implements BoardService {
     /** 게시물 생성 **/
     @Override
     public void saveBoard(BoardSaveVo boardSaveVo) {
-
-        boardSaveVo.setBoardSortDepth(boardSaveVo);
-        boardMapper.insertBoard(boardSaveVo);
-        boardMapper.updateBoardGroupSet(boardSaveVo.getId());
         BoardDto board = boardMapper.selectBoard(boardSaveVo.getId());
-        boardSaveVo.setBoardAdmin(board);
-        boardMapper.insertBoardAdmin(boardSaveVo);
+
     }
 
 
@@ -78,6 +73,11 @@ public class BoardServiceImpl implements BoardService {
     public BoardDto getDetailViewBoard(int id) {
         BoardDto detailViewBoard = boardMapper.selectBoard(id);
         return detailViewBoard;
+    }
+
+    public BoardAdminDto selectBoardAdmin(int id){
+        BoardAdminDto selectBoardAdmin = boardMapper.selectBoardAdmin(id);
+        return selectBoardAdmin;
     }
 
     @Override
@@ -136,6 +136,19 @@ public class BoardServiceImpl implements BoardService {
             boardList = boardMapper.selectBoardList(boardDto);
         }
         return boardList;
+    }
+
+    public List<BoardDto> selectBoardAdminList(BoardDto boardDto){
+        List<BoardDto> boardAdminDtoList = Collections.emptyList();
+        int boardTotalCount = boardMapper.totalCountBoard();
+        PaginationInfo paginationInfo = new PaginationInfo(boardDto);
+        paginationInfo.setTotalRecordCount(boardTotalCount);
+        boardDto.setPaginationInfo(paginationInfo);
+
+        if(boardTotalCount > 0){
+            boardAdminDtoList = boardMapper.selectBoardAdminList(boardDto);
+        }
+        return  boardAdminDtoList;
     }
 
     /** 게시물 전체 갯수 **/

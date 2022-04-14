@@ -19,13 +19,25 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
+    <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
 </head>
+<br/>
 <body>
     <form id="frm" th:object="${board}" th:action method="post" enctype="multipart/form-data">
         <div class="field-error" th:errors="*{title}">제목 오류 메시지</div>
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
         <fieldset class="field">
             <legend>글쓰기</legend>
+
+            <div>
+                <select class="selectbox-control">
+                    <option th:each="category : ${T(com.minboard.enums.CategoryEnum).values()}"
+                            th:name="category"
+                            th:value="${category.getCategoryCode()}"
+                            th:text="${category.getCategoryName()}">
+                    </option>
+                </select>
+            </div>
             <div>
                 <tr>
                     <th>제목</th>

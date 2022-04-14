@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+  <script type="text/javascript" th:src="@{/script/header.js}"></script>
+</head>
+<body>
+<div id="category" th:fragment="category">
+  <form>
+    <div>
+      <button type="button" id="notice"  value="0">공지게시판</button>
+      <button type="button" id="free" th:onclick="|location.href='@{/category/1}'|" value="1">자유게시판</button>
+      <button type="button" value="2">파일게시판</button>
+      <button type="button" th:value="3">댓글게시판</button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

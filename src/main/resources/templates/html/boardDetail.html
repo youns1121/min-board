@@ -18,6 +18,7 @@
   <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
   <script type="text/javascript" th:src="@{/script/comments.js}"></script>
   <script type="text/javascript" th:src="@{/script/reply.js}"></script>
+  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
 </head>
 <body>
   <form class="detailView" th:object="${detailViewBoard}" enctype="multipart/form-data" th:action method="get" >

@@ -62,8 +62,9 @@ public class BoardController {
 
 
     @GetMapping("/category/{categoryCode}")
-    public String boardFreeList(@ModelAttribute("boardDto") BoardDto boardDto, Model model) {
+    public String boardFreeList(@PathVariable("categoryCode") int categoryCode, BoardDto boardDto, Model model) {
 
+        boardDto.setCategoryCode(categoryCode);
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
 
         model.addAttribute("boardList", boardList);

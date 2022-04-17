@@ -44,7 +44,8 @@
           <tbody>
           <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board : ${boardList}">
             <td th:text="${board.num}"></td>
-            <td th:text="${board.title}" style="cursor:pointer" th:onclick="|location.href='@{/admin/{id}(id = ${board.id})}'|"></td>
+            <td th:text="${board.title}" style="cursor:pointer"
+                th:onclick="|location.href='@{/admin/{id}(id = ${board.id})}'|"></td>
             <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                 th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red">
             </td>

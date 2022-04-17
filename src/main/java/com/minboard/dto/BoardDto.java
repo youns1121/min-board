@@ -57,4 +57,8 @@ public class BoardDto extends CommonPageDto {
 
     /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;
+
+    public void setCategoryCode(int categoryCode){
+        this.categoryCode = categoryCode;
+    }
 }

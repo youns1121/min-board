@@ -41,7 +41,7 @@ public class BoardController {
 
         boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
-        return boardSaveVo.getBoardId().toString();
+        return boardSaveVo.getId().toString();
     }
 
     @ResponseBody
@@ -108,7 +108,7 @@ public class BoardController {
 
         BoardDto boardUpdateVo = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
-        model.addAttribute("uploadFileUpdateVo", UploadFileUpdateVo.builder().build());
+//        model.addAttribute("uploadFileUpdateVo", UploadFileUpdateVo.builder().build());
         model.addAttribute("boardUpdateVo", boardUpdateVo);
         model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardEdit";
@@ -118,7 +118,7 @@ public class BoardController {
     public String boardRemove(int id) {
 
         boardService.deleteBoard(id);
-        return "redirect:/board/list";
+        return "redirect:/admin";
     }
 
     @PostMapping("/deleteFile")

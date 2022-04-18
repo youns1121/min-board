@@ -70,6 +70,8 @@ function uploadFile(){
 
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
+    formData.append('categoryName', $('#categoryName').text())
+    formData.append('categoryCode', $('#categoryCode').val())
     formData.append('boardGroup', dataGroup)
     formData.append('boardSort', dataSort)
     formData.append('boardDepth', dataDepth)

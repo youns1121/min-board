@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<style>
+    fieldset {
+        width: 500px;
+        height: 400px;
+    }
+
+    .field-error{
+        border-color: #dc3545;
+        color: #dc3545;
+    }
+
+</style>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" th:src="@{/script/main.js}"></script>
+    <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
+</head>
+<br/>
+<body>
+    <form id="frm" th:object="${boardAdmin}" th:action method="post" enctype="multipart/form-data">
+
+        <fieldset class="field">
+            <legend>글쓰기</legend>
+
+            <div>
+                <select class="selectbox-control">
+                    <option th:each="category : ${boardCategory}"
+                            th:name="${category.categoryName}"
+                            th:text="${category.categoryName}">
+                    </option>
+                </select>
+            </div>
+            <div>
+                <tr>
+                    <th>제목</th>
+                    <td>
+                        <input type="text" class="inputForm" style="width: 400px;" th:field="*{title}">
+                    </td>
+                </tr>
+                <br/>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <input type="text" class="inputForm" rows="3" style="width: 400px; height: 150px;" th:field="*{contents}" >
+                    </td>
+                </tr>
+                <br/>
+                <tr>
+                    <td>
+                        <div id="Files0">
+                                <input type='file' class="file" name='fileList' />
+                                <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
+                        </div>
+                        <div id="file-list"></div>
+                    </td>
+                </tr>
+            </div>
+        </fieldset>
+            <button type="button" id="buttonCreate" onclick="createFn()">저장</button>
+            <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/admin}'|">목록</button>
+    </form>
+</body>
+</html>

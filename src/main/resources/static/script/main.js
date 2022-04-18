@@ -115,7 +115,7 @@ function uploadUpdateFile() {
     let inputFile = $("input[type='file']")
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
-    let id = parseInt($("input[type='hidden']").attr('value'))
+    let id = parseInt($('#id').val())
     formData.append('id', id)
 
     for (var i = 0; i < inputFile.length; i++) {

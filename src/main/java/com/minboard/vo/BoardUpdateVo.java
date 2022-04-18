@@ -17,6 +17,8 @@ public class BoardUpdateVo {
     /** Board Table PK **/
     private Integer id;
 
+    private Integer boardId;
+
     /** 게시글 제목 **/
     @NotBlank(message = "제목은 필수값 입니다.")
     private String title;
@@ -38,16 +40,16 @@ public class BoardUpdateVo {
     private List<MultipartFile> fileList;
 
     @Builder
-    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,  Integer viewCount,
-                         Integer likeCount, List<MultipartFile> fileList) {
+    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,Integer boardId,
+                         List<MultipartFile> fileList) {
 
         this.id = id;
+        this.boardId = boardId;
         this.title = title;
         this.fileList = fileList;
         this.contents = contents;
         this.updateTime = updateTime.now();
-        this.viewCount = viewCount;
-        this.likeCount = likeCount;
+
     }
 }
 

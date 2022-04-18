@@ -19,7 +19,7 @@ function boardPageMove(obj){
         error : function(data){
             alert('error');
 
-        }//error
-    })//ajax
+        }
+    })
 }
 

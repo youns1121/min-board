@@ -39,6 +39,8 @@ public class BoardSaveVo {
 
     private Integer boardId;
 
+    private Integer boardAdminId;
+
     private String categoryName;
 
     private Integer categoryCode;
@@ -73,7 +75,7 @@ public class BoardSaveVo {
     public BoardSaveVo(Integer id, String title, String contents, List<MultipartFile> fileList,
                        Integer boardSort, Integer boardDepth, Integer boardGroup,
                        UploadFileVo uploadFileVo, LocalDateTime createTime, LocalDateTime updateTime,
-                       Integer boardId, String categoryName, Integer categoryCode) {
+                       Integer boardId, Integer boardAdminId, String categoryName, Integer categoryCode) {
 
         this.id = id;
         this.title = title;
@@ -86,6 +88,7 @@ public class BoardSaveVo {
         this.createTime = createTime.now();
         this.updateTime = updateTime.now();
         this.boardId = boardId;
+        this.boardAdminId = boardAdminId;
         this.categoryName = categoryName;
         this.categoryCode = categoryCode;
     }

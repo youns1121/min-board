@@ -29,6 +29,14 @@
       <legend>수정하기</legend>
         <div>
           <tr>
+            <th>카테고리: </th>
+            <td>
+              <span id="categoryName" th:text="${boardUpdateVo.categoryName}"></span>
+              <input id="categoryCode" type="hidden" th:value="${boardUpdateVo.categoryCode}">
+            </td>
+            <br/>
+          </tr>
+          <tr>
             <td>
               <label>작성일:</label>
             </td>
@@ -36,7 +44,6 @@
               <label th:text="${#temporals.format(boardUpdateVo.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
             </td>
           </tr>
-          <br/>
           <br/>
           <tr>
             <td>
@@ -79,7 +86,7 @@
     </fieldset>
       <button type="button" id="updateButton" onclick="updateFn()" >저장</button>
       <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
-      <button type="button" th:onclick="|location.href='@{/board/list}'|">목록</button>
+      <button type="button" th:onclick="|location.href='/board/category/${boardUpdateVo.categoryCode}'|">목록</button>
   </form>
 </body>
 </html>

@@ -21,12 +21,21 @@
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
     <script type="text/javascript" th:src="@{/script/reply.js}"></script>
     <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+    <br/>
 </head>
 <body>
 <form id="frm" th:object="${board}" th:action method="post" enctype="multipart/form-data">
     <fieldset class="field">
         <legend>답글 쓰기</legend>
         <div>
+            <tr>
+                <th>카테고리: </th>
+                <td>
+                    <span id="categoryName" th:text="${board.categoryName}"></span>
+                    <input id="categoryCode" type="hidden" th:value="${board.categoryCode}">
+                </td>
+            </tr>
+            <br/>
             <tr>
                 <th>제목</th>
                 <td>

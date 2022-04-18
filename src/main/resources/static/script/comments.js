@@ -19,7 +19,7 @@ function getBoardHierarchicalCommentsAll(){
     let boardId = parseInt($('#id').val())
 
     $.ajax({
-        method: "POST",
+        method: "GET",
         url: '/board/commentsList/' + boardId,
     }).done(function (returnData) {
         $('#commentsTable').html(returnData)

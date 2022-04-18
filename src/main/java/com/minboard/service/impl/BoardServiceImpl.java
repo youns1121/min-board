@@ -28,7 +28,6 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final FileStoreServiceImpl fileStoreService;
-    private final BoardAdminServiceImpl boardAdminService;
     private final BoardMapper boardMapper;
     private final UploadFileMapper fileMapper;
     private final CommentsMapper commentsMapper;
@@ -43,9 +42,6 @@ public class BoardServiceImpl implements BoardService {
         boardSaveVo.setBoardSortDepth(boardSaveVo);
         boardMapper.insertBoard(boardSaveVo);
         boardMapper.updateBoardGroupSet(boardSaveVo.getId());
-        BoardDto board = boardMapper.selectBoard(boardSaveVo.getId());
-        boardSaveVo.setBoardAdmin(board);
-        boardMapper.insertBoardAdmin(boardSaveVo);
     }
 
 
@@ -127,7 +123,7 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDto> getBoardList(BoardDto boardDto) {
 
         List<BoardDto> boardList = Collections.emptyList();
-        int boardTotalCount = boardMapper.totalCountBoard();
+        int boardTotalCount = boardMapper.totalCountCategoryBoard(boardDto.getCategoryCode());
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);

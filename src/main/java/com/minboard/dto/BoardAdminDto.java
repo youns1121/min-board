@@ -21,10 +21,11 @@ public class BoardAdminDto extends CommonPageDto {
     /** 게시글 내용 **/
     private String contents;
 
-    /** 게시글 댓글 갯수 **/
+    private String categoryName;
+
     private int commentsCount;
 
-    private int attachdFileCount;
+    private int attachedFileCount;
 
     private int boardId;
 
@@ -32,7 +33,7 @@ public class BoardAdminDto extends CommonPageDto {
 
     private String replyYn;
 
-    private String attachdFileYn;
+    private String attachedFileYn;
 
     /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;

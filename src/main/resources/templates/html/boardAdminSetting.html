@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<style>
+  table, th, td {
+    border: 1px solid #bcbcbc;
+    text-align: center;
+  }
+  table {
+    width: 1000px;
+    height: 500px;
+  }
+
+</style>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/admin.js}"></script>
+  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+</head>
+<body>
+<br/>
+<form id="boardAdminDetails" th:object="${boardAdmin}" th:action method="POST">
+<table>
+  <tr>
+    <th>카테고리명</th>
+    <td>
+      <input type="text" th:field="*{categoryName}"  style="width: 200px;">
+    </td>
+  </tr>
+  <tr>
+    <th>설명</th>
+    <td>
+      <input type="text" th:field="*{contents}"  style="width: 400px; height: 50px">
+    </td>
+  </tr>
+  <tr>
+    <th>댓글 기능</th>
+    <div id="comments">
+      <td>
+        <label><input  name="commentsYn" class="on" type="radio" value="Y" checked>사용</label>
+        <label><input name="commentsYn" class="off" type="radio" value="N">사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>답글 기능</th>
+    <div id="reply">
+      <td>
+        <label><input name="replyYn" class="on" type="radio" value="Y" checked>사용</label>
+        <label><input name="replyYn" class="off" type="radio" value="N">사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>첨부파일 기능</th>
+    <div id="file">
+      <td>
+        <label><input name="attachedFileYn" class="on" type="radio" value="Y" checked>사용</label>
+        <label><input  name="attachedFileYn" class="off" type="radio" value="N">사용안함</label>
+      </td>
+    </div>
+  </tr>
+  <tr>
+    <th>첨부파일 최대 갯수</th>
+    <div id="fileMaxCount">
+      <td>
+        <span th:each="num : ${#numbers.sequence(1, 6)}">
+          <label><input  name="attachedFileCount" type="radio" th:value="${num}" th:text="${num}"
+                         th:checked="${num} eq 6">개</label>
+
+        </span>
+      </td>
+    </div>
+  </tr>
+</table>
+<br/>
+<button type="button" onclick="createAdminFn()">저장</button>
+<button type="button" th:onclick="|location.href='@{/admin}'|">목록</button>
+
+</form>
+</body>
+</html>

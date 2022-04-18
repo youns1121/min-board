@@ -19,6 +19,7 @@
   <script type="text/javascript" th:src="@{/script/comments.js}"></script>
   <script type="text/javascript" th:src="@{/script/reply.js}"></script>
   <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+  <br/>
 </head>
 <body>
   <form class="detailView" th:object="${detailViewBoard}" enctype="multipart/form-data" th:action method="get" >
@@ -26,6 +27,15 @@
     <fieldset id="field">
       <legend>상세보기</legend>
       <div>
+        <tr>
+          <td>
+            <label>카테고리:</label>
+          </td>
+          <td>
+            <label th:text="*{categoryName}"></label>
+          </td>
+        </tr>
+        <br/>
         <tr>
           <td>
             <label>작성일:</label>
@@ -73,7 +83,8 @@
     </fieldset>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정
       </button>
-      <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
+      <button type="button" class="btn btn-primary"
+              th:onclick="|location.href='/board/category/${detailViewBoard.categoryCode}'|">목록</button>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/new}'|">글작성</button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
     <button type="button" class="replyButton"

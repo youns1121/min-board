@@ -47,11 +47,15 @@ public class BoardDto extends CommonPageDto {
 
     private int boardId;
 
+    private String categoryName;
+
+    private int attachedFileCount;
+
     private String commentsYn;
 
-    private String attachFileYn;
+    private String replyYn;
 
-    private String categoryName;
+    private String attachedFileYn;
 
     private Integer categoryCode;
 

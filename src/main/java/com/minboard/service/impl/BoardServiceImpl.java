@@ -35,6 +35,12 @@ public class BoardServiceImpl implements BoardService {
     @Value("${custom.path.uploadPath}")
     private String uploadPath;
 
+
+    public List<BoardDto> selectBoardCategoryList(BoardDto boardDto){
+        List<BoardDto> categoryList = boardMapper.selectBoardCategoryList(boardDto);
+        return categoryList;
+    }
+
     /** 게시물 생성 **/
     @Override
     public void saveBoard(BoardSaveVo boardSaveVo) {
@@ -123,7 +129,7 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDto> getBoardList(BoardDto boardDto) {
 
         List<BoardDto> boardList = Collections.emptyList();
-        int boardTotalCount = boardMapper.totalCountCategoryBoard(boardDto.getCategoryCode());
+        int boardTotalCount = boardMapper.totalCountCategoryBoard(boardDto.getCategoryNumber());
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);
@@ -132,6 +138,21 @@ public class BoardServiceImpl implements BoardService {
             boardList = boardMapper.selectBoardList(boardDto);
         }
         return boardList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<BoardDto> selectBoardAllList(BoardDto boardDto){
+
+        List<BoardDto> boardAllList = Collections.emptyList();
+        int boardTotalCount = boardMapper.totalCountBoard();
+        PaginationInfo paginationInfo = new PaginationInfo(boardDto);
+        paginationInfo.setTotalRecordCount(boardTotalCount);
+        boardDto.setPaginationInfo(paginationInfo);
+
+        if(boardTotalCount > 0){
+            boardAllList = boardMapper.selectBoardAllList(boardDto);
+        }
+        return boardAllList;
     }
 
     /** 게시물 전체 갯수 **/

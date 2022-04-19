@@ -1,9 +1,6 @@
 package com.minboard.controller;
 
-import com.minboard.dto.BoardDto;
-import com.minboard.dto.CommentsDto;
-import com.minboard.dto.DownloadFileDto;
-import com.minboard.dto.UploadFileDto;
+import com.minboard.dto.*;
 import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
 import com.minboard.service.impl.BoardServiceImpl;
@@ -30,7 +27,9 @@ public class BoardController {
     private final CommentService commentService;
 
     @GetMapping("/new")
-    public String boardSave(Model model, BoardSaveVo boardSaveVo) {
+    public String boardSave(Model model, BoardSaveVo boardSaveVo, BoardDto boardDto) {
+        List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("board",boardSaveVo);
         return "html/boardNew";
     }
@@ -61,13 +60,27 @@ public class BoardController {
     }
 
 
-    @GetMapping("/category/{categoryCode}")
-    public String boardFreeList(@PathVariable("categoryCode") int categoryCode, BoardDto boardDto, Model model) {
+    @GetMapping("/category/{categoryNumber}")
+    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber, BoardDto boardDto, Model model) {
 
-        boardDto.setCategoryCode(categoryCode);
+        boardDto.setCategoryNumber(categoryNumber);
+        List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
 
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardList", boardList);
+
+        return "html/boardList";
+    }
+
+    @GetMapping("/category")
+    public String boardCategoryList(BoardDto boardDto, Model model) {
+
+        List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
+        List<BoardDto> boardList = boardService.selectBoardAllList(boardDto);
+
+        model.addAttribute("boardList", boardList);
+        model.addAttribute("categoryList", categoryList);
 
         return "html/boardList";
     }

@@ -8,13 +8,18 @@
                   <a th:text="${index.index}+1">#</a>
               </td>
               <td class="contents">
-                  <p th:class="commentContents + ${comments.id}" style="width: 300px"
+                  <span th:class="commentContents + ${comments.id}"
+                     th:style="${comments.commentDepth ne 0}
+                     ? 'width: 300px; color: red; font-style: italic; padding-left:'+ ${comments.commentDepth * 20}+'px'
+                     : 'width: 300px'"
                      th:data-group="${comments.commentGroup}"
                      th:data-depth="${comments.commentDepth}"
-                     th:data-sort="${comments.sort}"
-                     th:text = "${comments.contents}" >
-                  </p>
+                     th:data-sort="${comments.sort}">
+                  <span th:if="${comments.commentDepth ne 0}" th:text="ㄴRe"></span>
 
+                  </span>
+                  <span th:class="commentsContents" th:text = "${comments.contents}">
+                  </span>
                   <div id="option">
                       <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료"
                              onclick="updateComment(this)"
@@ -39,7 +44,7 @@
                               th:data-depth="${comments.commentDepth}"
                               th:data-sort="${comments.sort}"
                               th:value="${comments.id}"
-                              onclick="getCommentReply(this)">답글달기
+                              onclick="getCommentReply(this)">답변작성
                       </button>
                       <button type="button" class="modifyButton" onclick="getUpdateComment(this)">수정</button>
                       <button type="button" onclick="deleteComment(this)">삭제</button>

@@ -23,6 +23,8 @@ public class BoardAdminDto extends CommonPageDto {
 
     private String categoryName;
 
+    private Integer categoryNumber;
+
     private int commentsCount;
 
     private int attachedFileCount;

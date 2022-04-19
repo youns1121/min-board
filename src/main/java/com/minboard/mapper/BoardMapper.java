@@ -14,8 +14,9 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
-    /** 게시물 리스트 **/
     List<BoardDto> selectBoardList(BoardDto boardDto);
+
+    List<BoardDto> selectBoardAllList(BoardDto boardDto);
 
     /** 관리자 게시물 리스트 **/
     List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto);
@@ -66,5 +67,5 @@ public interface BoardMapper {
 
     void decreaseSort(BoardDto boardDto);
 
-
+    List<BoardDto> selectBoardCategoryList(BoardDto boardDto);
 }

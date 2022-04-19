@@ -19,11 +19,6 @@ public class BoardAdminController {
 
     private final BoardAdminService boardAdminService;
 
-
-
-
-
-
     @ResponseBody
     @PostMapping("/new")
     public String boardAdminSave(@ModelAttribute("boardAdmin") BoardAdminSaveVo boardAdminSaveVo){
@@ -40,7 +35,6 @@ public class BoardAdminController {
         model.addAttribute("boardAdmin", boardAdminSaveVo);
         return "html/boardAdminNew";
     }
-
 
     @ResponseBody
     @PostMapping("/setting")

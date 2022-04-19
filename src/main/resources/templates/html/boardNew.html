@@ -27,16 +27,15 @@
         <div class="field-error" th:errors="*{contents}">내용 오류 메시지</div>
         <fieldset class="field">
             <legend>글쓰기</legend>
-
-            <div>
+            <td>카테고리</td>
+            <span>
                 <select class="selectbox-control">
-                    <option th:each="category : ${T(com.minboard.enums.CategoryEnum).values()}"
-                            th:name="category"
-                            th:value="${category.getCategoryCode()}"
-                            th:text="${category.getCategoryName()}">
+                    <option th:each="category : ${categoryList}"
+                            th:value="${category.id}"
+                            th:text="${category.categoryName}">
                     </option>
                 </select>
-            </div>
+            </span>
             <div>
                 <tr>
                     <th>제목</th>

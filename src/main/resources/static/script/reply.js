@@ -71,13 +71,10 @@ function uploadFile(){
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
     formData.append('categoryName', $('#categoryName').text())
-    formData.append('categoryCode', $('#categoryCode').val())
+    formData.append('boardAdminId', $('#buttonCreate').val())
     formData.append('boardGroup', dataGroup)
     formData.append('boardSort', dataSort)
     formData.append('boardDepth', dataDepth)
-
-
-
 
     for(var i = 0;  i < inputFileLength; i++){
         if(!(inputFile[i].value == "")){

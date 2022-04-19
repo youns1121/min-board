@@ -16,10 +16,9 @@ public class BoardAdminSaveVo {
     /** Board Table PK **/
     private Integer id;
 
-
     private String categoryName;
 
-    private Integer categoryCode;
+    private Integer categoryNumber;
 
     private String title;
 
@@ -40,12 +39,12 @@ public class BoardAdminSaveVo {
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardAdminSaveVo(String categoryName, Integer categoryCode, String attachedFileYn, String commentsYn,
+    public BoardAdminSaveVo(String categoryName, String attachedFileYn, String commentsYn,
                             String replyYn, Integer attachedFileCount, String contents,
                             LocalDateTime createTime, LocalDateTime updateTime, String title) {
 
         this.categoryName = categoryName;
-        this.categoryCode = categoryCode;
+        this.categoryNumber = (int)(Math.random() * 10000);
         this.attachedFileYn = attachedFileYn;
         this.commentsYn = commentsYn;
         this.title = title;

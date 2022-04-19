@@ -30,10 +30,7 @@
         <div>
             <tr>
                 <th>카테고리: </th>
-                <td>
-                    <span id="categoryName" th:text="${board.categoryName}"></span>
-                    <input id="categoryCode" type="hidden" th:value="${board.categoryCode}">
-                </td>
+                <span id="categoryName" th:text="${board.categoryName}"></span>
             </tr>
             <br/>
             <tr>
@@ -67,6 +64,7 @@
             th:data-group="${board.getBoardGroup()}"
             th:data-sort="${board.getBoardSort()}"
             th:data-depth="${board.getBoardDepth()}"
+            th:value="${board.boardAdminId}"
             onclick="createFnReply()">저장</button>
     <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">목록</button>
 </form>

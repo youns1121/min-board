@@ -25,16 +25,16 @@
     <form id="frm" th:object="${boardAdmin}" th:action method="post" enctype="multipart/form-data">
 
         <fieldset class="field">
-            <legend>글쓰기</legend>
-
-            <div>
+            <legend>관리자 글쓰기</legend>
+            <td>카테고리</td>
+            <span>
                 <select class="selectbox-control">
                     <option th:each="category : ${boardCategory}"
-                            th:name="${category.categoryName}"
+                            th:value="${category.categoryNumber}"
                             th:text="${category.categoryName}">
                     </option>
                 </select>
-            </div>
+            </span>
             <div>
                 <tr>
                     <th>제목</th>

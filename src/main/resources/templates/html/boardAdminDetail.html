@@ -23,6 +23,11 @@
 <form id="boardAdminDetails" th:object="${boardAdmin}" th:action method="POST">
   <table>
     <tr>
+      <th>카테고리 번호</th>
+      <td th:text="*{categoryNumber}"  style="width: 200px;">
+      </td>
+    </tr>
+    <tr>
       <th>카테고리명</th>
       <td>
         <input type="text" th:field="*{categoryName}" readonly  style="width: 200px;">

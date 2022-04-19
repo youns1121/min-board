@@ -47,7 +47,11 @@ public class BoardDto extends CommonPageDto {
 
     private int boardId;
 
+    private int boardAdminId;
+
     private String categoryName;
+
+    private int categoryNumber;
 
     private int attachedFileCount;
 
@@ -57,12 +61,9 @@ public class BoardDto extends CommonPageDto {
 
     private String attachedFileYn;
 
-    private Integer categoryCode;
-
-    /** 게시글 삭제여부, Y : 삭제, N : 미삭제 **/
     private String delYn;
 
-    public void setCategoryCode(int categoryCode){
-        this.categoryCode = categoryCode;
+    public void setCategoryNumber(int categoryNumber) {
+        this.categoryNumber = categoryNumber;
     }
 }

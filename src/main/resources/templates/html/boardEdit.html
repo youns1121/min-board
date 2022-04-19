@@ -22,6 +22,7 @@
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
   <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
   <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+  <br/>
 </head>
 <body>
   <form class="boardEdit" th:object="${boardUpdateVo}" th:action="@{/board/update}" enctype="multipart/form-data" method="post" >
@@ -32,7 +33,6 @@
             <th>카테고리: </th>
             <td>
               <span id="categoryName" th:text="${boardUpdateVo.categoryName}"></span>
-              <input id="categoryCode" type="hidden" th:value="${boardUpdateVo.categoryCode}">
             </td>
             <br/>
           </tr>
@@ -86,7 +86,7 @@
     </fieldset>
       <button type="button" id="updateButton" onclick="updateFn()" >저장</button>
       <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
-      <button type="button" th:onclick="|location.href='/board/category/${boardUpdateVo.categoryCode}'|">목록</button>
+      <button type="button" th:onclick="|location.href='/board/category/${boardUpdateVo.categoryNumber}'|">목록</button>
   </form>
 </body>
 </html>

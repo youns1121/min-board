@@ -82,7 +82,7 @@ function uploadNewFile(){
     let inputFileLength = inputFile.length
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
-    formData.append('categoryCode', parseInt($('.selectbox-control').val()))
+    formData.append('boardAdminId', parseInt($('.selectbox-control').val()))
     formData.append('categoryName', $('.selectbox-control option:selected').text())
 
 

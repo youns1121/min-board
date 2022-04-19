@@ -71,7 +71,7 @@ function getCommentReply(obj){
 
     $('.optionButton').hide()
 
-    $(obj).parents('tr').find('[class=contents] p').after(
+    $(obj).parents('tr').find('.commentsContents').after(
         '<div id="commentReply">'+
         '<input type="text" name ="commentReplyContents">' +
         '<button type="button" id="commentReplyButton" onclick="addCommentReply(this)">저장</button>' +
@@ -88,11 +88,8 @@ function addCommentReply(obj){
     let contents = $(obj).siblings('input').val()
     let boardId = parseInt($('#id').val())
     let dataGroup =  parseInt($(obj).val())
-    let dataDepth = $(obj).parents('td').find('p').data('depth')
-    let dataSort = $(obj).parents('td').find('p').data('sort')
-
-
-
+    let dataDepth = $(obj).parents('td').find('span').data('depth')
+    let dataSort = $(obj).parents('td').find('span').data('sort')
 
     let formData ={
         commentGroup : dataGroup,
@@ -119,12 +116,15 @@ function addCommentReply(obj){
 
 function getUpdateComment(obj){
 
-    let returnData = $(obj).parents('tr').children('td').find('p').text()
+    let returnData = $(obj).parents('tr').children('td').find('.commentsContents').text()
+    $(obj).parents('tr').children('td').find('.commentsContents').hide()
+    // $('[class^=commentContents]').hide()
 
     $('.optionButton').hide()
+    $(obj).parent().parent().find('span[class=commentContents]').unwrap()
     $(obj).parent().parent().find('[class^=commentContents]').wrap('<input class="commentContents" style="width: 300px">').val(returnData);
     $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
-    $(obj).parent().parent().find('[class^=commentContents]').val(returnData)
+    $(obj).parent().parent().find('input[class=commentContents]').val(returnData)
 }
 
 function updateComment(obj) {

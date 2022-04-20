@@ -27,8 +27,11 @@ public class BoardController {
     private final CommentService commentService;
 
     @GetMapping("/new")
-    public String boardSave(Model model, BoardSaveVo boardSaveVo, BoardDto boardDto) {
+    public String boardSave(Model model, BoardSaveVo boardSaveVo, BoardDto boardDto,
+                            @RequestParam("categorynumber") String categoryNumber) {
+
         List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
+        model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("board",boardSaveVo);
         return "html/boardNew";
@@ -37,6 +40,14 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/new")
     public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+
+        BoardDto boardDto = boardService.selectBoardCategory(boardSaveVo.getBoardAdminId());
+
+        boolean validationFileCheck = fileStoreService.validationFileCheck(boardDto, boardSaveVo);
+
+        if(validationFileCheck == false){
+            return "false";
+        }
 
         boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
@@ -54,11 +65,11 @@ public class BoardController {
 
     @GetMapping("/reply/{id}")
     public String boardReply(BoardSaveVo boardSaveVo, Model model){
+
         BoardDto detailViewBoard = boardService.selectBoardReply(boardSaveVo.getId());
         model.addAttribute("board", detailViewBoard);
         return "html/boardReply";
     }
-
 
     @GetMapping("/category/{categoryNumber}")
     public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber, BoardDto boardDto, Model model) {
@@ -66,10 +77,8 @@ public class BoardController {
         boardDto.setCategoryNumber(categoryNumber);
         List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
-
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardList", boardList);
-
         return "html/boardList";
     }
 
@@ -78,13 +87,38 @@ public class BoardController {
 
         List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
         List<BoardDto> boardList = boardService.selectBoardAllList(boardDto);
-
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryList", categoryList);
-
         return "html/boardList";
     }
 
+    @ResponseBody
+    @GetMapping("/validation/file/yn")
+    public String validationFileYn(@RequestParam int id){
+        BoardDto boardDto = boardService.selectBoardCategory(id);
+        return boardDto.getAttachedFileYn();
+    }
+
+    @ResponseBody
+    @GetMapping("/validation/reply/yn")
+    public String validationReplyYn(@RequestParam int id){
+        BoardDto boardDto = boardService.getDetailViewBoard(id);
+        return boardDto.getCommentsYn();
+    }
+
+    @ResponseBody
+    @GetMapping("/validation/file/count")
+    public String validationFileCount(@RequestParam int id){
+        BoardDto boardDto = boardService.selectBoardCategory(id);
+        return boardDto.getAttachedFileCount().toString();
+    }
+
+    @ResponseBody
+    @GetMapping("/validation/comments/yn")
+    public String validationCommentsYn(@RequestParam int categoryNumber){
+        BoardDto boardDto = boardService.selectBoardCategoryNumber(categoryNumber);
+        return boardDto.getCommentsYn();
+    }
 
     @GetMapping("/view/{id}")
     public String boardDetails(@PathVariable("id") int id, Model model) {
@@ -119,10 +153,9 @@ public class BoardController {
     @GetMapping("/update/{id}")
     public String boardModify(@PathVariable("id") int id, Model model) {
 
-        BoardDto boardUpdateVo = boardService.getDetailViewBoard(id);
+        BoardDto boardDto = boardService.getDetailViewBoard(id);
         List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
-//        model.addAttribute("uploadFileUpdateVo", UploadFileUpdateVo.builder().build());
-        model.addAttribute("boardUpdateVo", boardUpdateVo);
+        model.addAttribute("boardUpdateVo", boardDto);
         model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardEdit";
     }

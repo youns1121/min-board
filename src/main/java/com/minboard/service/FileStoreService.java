@@ -1,7 +1,9 @@
 package com.minboard.service;
 
+import com.minboard.dto.BoardDto;
 import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
+import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,4 +58,11 @@ public interface FileStoreService {
 
     /** 파일다운로드**/
     DownloadFileDto downloadAttachedFile(int fileId) throws MalformedURLException;
+
+    boolean validationFileCount(int valiFileCount, int inputFileCount);
+
+    boolean validationFileYn(String attachedFileYn);
+
+    boolean validationFileCheck(BoardDto boardDto, BoardSaveVo boardSaveVo);
+
 }

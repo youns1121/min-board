@@ -16,11 +16,11 @@
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
-<!--  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>-->
+  <script type="text/javascript" th:src="@{/script/admin.js}"></script>
 </head>
 <body>
 <br/>
-<form id="boardAdminDetails" th:object="${boardAdmin}" th:action method="POST">
+<form id="boardAdminDetails" th:object="${boardAdminUpdate}" th:action method="POST">
   <table>
     <tr>
       <th>카테고리 번호</th>
@@ -30,25 +30,23 @@
     <tr>
       <th>카테고리명</th>
       <td>
-        <input type="text" th:field="*{categoryName}" readonly  style="width: 200px;">
+        <input type="text" th:field="*{categoryName}"   style="width: 200px;">
       </td>
     </tr>
     <tr>
       <th>설명</th>
       <td>
-        <input type="text" th:field="*{contents}" readonly  style="width: 400px; height: 50px">
+        <input type="text" th:field="*{contents}"   style="width: 400px; height: 50px">
       </td>
     </tr>
     <tr>
       <th>댓글 기능</th>
       <div id="comments">
         <td>
-          <label><input  name="commentsYn" class="on" type="radio" value="Y" disabled
-                         th:checked="${boardAdmin.commentsYn} eq Y "
-                         th:disabled="${boardAdmin.commentsYn} eq N ">사용</label>
+          <label><input  name="commentsYn" class="on" type="radio" value="Y"
+                         th:checked="${boardAdminUpdate.commentsYn} eq Y ">사용</label>
           <label><input name="commentsYn" class="off" type="radio" value="N"
-                        th:checked="${boardAdmin.commentsYn} eq N "
-                        th:disabled="${boardAdmin.commentsYn} eq Y ">사용안함</label>
+                        th:checked="${boardAdminUpdate.commentsYn} eq N ">사용안함</label>
         </td>
       </div>
     </tr>
@@ -57,11 +55,9 @@
       <div id="reply">
         <td>
           <label><input name="replyYn" class="on" type="radio" value="Y"
-                        th:checked="${boardAdmin.replyYn} eq Y "
-                        th:disabled="${boardAdmin.replyYn} eq N ">사용</label>
+                        th:checked="${boardAdminUpdate.replyYn} eq Y ">사용</label>
           <label><input name="replyYn" class="off" type="radio" value="N"
-                        th:checked="${boardAdmin.replyYn} eq N "
-                        th:disabled="${boardAdmin.replyYn} eq Y ">사용안함</label>
+                        th:checked="${boardAdminUpdate.replyYn} eq N ">사용안함</label>
 
         </td>
       </div>
@@ -71,11 +67,9 @@
       <div id="file">
         <td>
           <label><input name="attachedFileYn" class="on" type="radio" value="Y"
-                        th:checked="${boardAdmin.attachedFileYn} eq Y "
-                        th:disabled="${boardAdmin.attachedFileYn} eq N ">사용</label>
+                        th:checked="${boardAdminUpdate.attachedFileYn} eq Y ">사용</label>
           <label><input  name="attachedFileYn" class="off" type="radio" value="N"
-                         th:checked="${boardAdmin.attachedFileYn} eq N "
-                         th:disabled="${boardAdmin.attachedFileYn} eq Y ">사용안함</label>
+                         th:checked="${boardAdminUpdate.attachedFileYn} eq N ">사용안함</label>
         </td>
       </div>
     </tr>
@@ -85,15 +79,14 @@
         <td>
         <span th:each="num : ${#numbers.sequence(0, 6)}">
           <label><input  name="attachedFileCount" type="radio" th:value="${num}" th:text="${num}"
-                         th:checked="${num} eq ${boardAdmin.attachedFileCount}"
-                         th:disabled="${num} ne ${boardAdmin.attachedFileCount}">개</label>
+                         th:checked="${num} eq ${boardAdminUpdate.attachedFileCount}">개</label>
         </span>
         </td>
       </div>
     </tr>
   </table>
   <br/>
-  <button type="button" th:onclick="|location.href='@{/admin/setting/update/{id}(id = ${id})}'|">수정</button>
+  <button type="button" id="adminUpdatebutton" th:value="${id}" onclick="updateAdminFn()">수정완료</button>
   <button type="button" th:onclick="|location.href='@{/admin}'|">목록</button>
 </form>
 </body>

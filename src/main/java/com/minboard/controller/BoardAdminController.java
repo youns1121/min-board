@@ -4,6 +4,7 @@ import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 import com.minboard.service.BoardAdminService;
 import com.minboard.vo.BoardAdminSaveVo;
+import com.minboard.vo.BoardAdminUpdateVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +35,22 @@ public class BoardAdminController {
         model.addAttribute("boardCategory", boardAdminDtoList);
         model.addAttribute("boardAdmin", boardAdminSaveVo);
         return "html/boardAdminNew";
+    }
+
+    @GetMapping("/setting/update/{id}")
+    public String boardAdminModify(@PathVariable("id") int id, Model model) {
+
+        BoardAdminDto boardAdminDto = boardAdminService.selectBoardAdmin(id);
+        model.addAttribute("boardAdminUpdate", boardAdminDto);
+        return "html/boardAdminEdit";
+    }
+
+    @ResponseBody
+    @PostMapping("/setting/update")
+    public String boardAdminModify(@ModelAttribute("boardAdminUpdateVo") BoardAdminUpdateVo boardAdminUpdateVo) {
+
+        boardAdminService.updateBoardAdminSetting(boardAdminUpdateVo);
+        return boardAdminUpdateVo.getId().toString();
     }
 
     @ResponseBody

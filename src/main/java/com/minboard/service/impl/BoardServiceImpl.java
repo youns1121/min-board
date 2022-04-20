@@ -41,10 +41,21 @@ public class BoardServiceImpl implements BoardService {
         return categoryList;
     }
 
+    @Override
+    public BoardDto selectBoardCategory(int id) {
+        BoardDto boardCategory = boardMapper.selectBoardCategory(id);
+        return boardCategory;
+    }
+
+    @Override
+    public BoardDto selectBoardCategoryNumber(int categoryNumber) {
+        BoardDto boardDto = boardMapper.selectBoardCategoryNumber(categoryNumber);
+        return boardDto;
+    }
+
     /** 게시물 생성 **/
     @Override
     public void saveBoard(BoardSaveVo boardSaveVo) {
-
         boardSaveVo.setBoardSortDepth(boardSaveVo);
         boardMapper.insertBoard(boardSaveVo);
         boardMapper.updateBoardGroupSet(boardSaveVo.getId());
@@ -53,6 +64,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException {
+
         if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
             List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
                     boardSaveVo.getId());
@@ -140,6 +152,8 @@ public class BoardServiceImpl implements BoardService {
         return boardList;
     }
 
+
+
     @Transactional(readOnly = true)
     public List<BoardDto> selectBoardAllList(BoardDto boardDto){
 
@@ -174,6 +188,11 @@ public class BoardServiceImpl implements BoardService {
             boardSaveVo.setBoardSort(calculationResult);
             calculationResultNotZero(boardSaveVo);
         }
+    }
+
+    @Override
+    public int validationBoardCategory(int id) {
+        return 0;
     }
 
     public void calculationResultZero(BoardSaveVo boardSaveVo){

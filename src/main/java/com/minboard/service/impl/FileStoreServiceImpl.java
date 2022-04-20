@@ -1,9 +1,11 @@
 package com.minboard.service.impl;
 
+import com.minboard.dto.BoardDto;
 import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.FileStoreService;
+import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
 
@@ -41,8 +43,6 @@ public class FileStoreServiceImpl implements FileStoreService {
      * @return**/
     @Override
     public List<UploadFileVo> storeFiles(List<MultipartFile> multipartFiles, int boardId) throws IOException {
-
-
 
         List<UploadFileVo> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
@@ -216,4 +216,40 @@ public class FileStoreServiceImpl implements FileStoreService {
                 .contentDisposition(contentDisposition)
                 .build();
     }
+    @Override
+    public boolean validationFileCheck(BoardDto boardDto, BoardSaveVo boardSaveVo){
+
+        if(boardDto.getAttachedFileCount() == null || boardSaveVo.getFileList() == null){
+            return true;
+        }
+
+        boolean validationFileCount =
+                validationFileCount(boardDto.getAttachedFileCount(), boardSaveVo.getFileList().size());
+        boolean validationFileYn =
+                validationFileYn(boardDto.getAttachedFileYn());
+
+        if(validationFileCount && validationFileYn){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean validationFileCount(int valiFileCount, int inputFileCount) {
+
+        if(valiFileCount >= inputFileCount){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean validationFileYn(String attachedFileYn) {
+
+        if ("Y".equals(attachedFileYn)) {
+            return true;
+        }
+        return false;
+    }
+
 }

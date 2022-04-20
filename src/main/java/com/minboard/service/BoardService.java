@@ -13,6 +13,10 @@ public interface BoardService {
     /** 게시물 리스트 **/
     List<BoardDto> getBoardList(BoardDto boardDto);
 
+    BoardDto selectBoardCategory(int id);
+
+    BoardDto selectBoardCategoryNumber(int categoryNumber);
+
     /** 전체 게시물 수 **/
     int geTotalBoardCount();
 
@@ -25,7 +29,7 @@ public interface BoardService {
     BoardUpdateVo getDetailViewUpdateBoard(int id);
 
     /** 게시물 생성 **/
-    void saveBoard(BoardSaveVo boardSaveVo);
+    void saveBoard(BoardSaveVo boardSaveVo) throws IOException;
 
     /** 게시물의 파일 저장 **/
     void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException;
@@ -40,4 +44,8 @@ public interface BoardService {
     void updateBoard(BoardUpdateVo boardUpdateVo);
 
     void saveBoardReply(BoardSaveVo boardSaveVo);
+
+
+    int validationBoardCategory(int id);
+
 }

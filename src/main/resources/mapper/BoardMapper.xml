@@ -16,7 +16,10 @@
         <result property="boardId" column="board_id"/>
         <result property="boardAdminId" column="board_admin_id"/>
         <result property="commentsCount" column="comments_count"/>
+        <result property="commentsYn" column="comments_yn"/>
         <result property="fileCount" column="file_count"/>
+        <result property="attachedFileYn" column="attached_file_yn"/>
+        <result property="attachedFileCount" column="attached_file_count"/>
         <result property="categoryName" column="category_name" />
         <result property="categoryNumber" column="category_number" />
     </resultMap>
@@ -201,11 +204,17 @@
 
     <select id="selectBoardCategoryList" parameterType="BoardDto" resultType="BoardDto" resultMap="boardDtoResultMap">
         select
-            id,
-            category_name,
-            category_number,
-            contents,
-            del_yn
+            id
+            ,category_name
+            ,category_number
+            ,contents
+            ,attached_file_yn
+            ,attached_file_count
+            ,reply_yn
+            ,comments_yn
+            ,create_time
+            ,update_time
+            ,del_yn
 
         from
             board_admin
@@ -214,12 +223,56 @@
             del_yn = 'N' and category_number > 0
     </select>
 
+    <select id="selectBoardCategory" parameterType="int" resultType="BoardDto" resultMap="boardDtoResultMap">
+        select
+            id
+             ,category_name
+             ,category_number
+             ,contents
+             ,attached_file_yn
+             ,attached_file_count
+             ,reply_yn
+             ,comments_yn
+             ,create_time
+             ,update_time
+             ,del_yn
+
+        from
+            board_admin
+
+        where
+            del_yn = 'N'
+          and id = #{id};
+    </select>
+
+    <select id="selectBoardCategoryNumber" parameterType="int" resultType="BoardDto" resultMap="boardDtoResultMap">
+        select
+            id
+             ,category_name
+             ,category_number
+             ,contents
+             ,attached_file_yn
+             ,attached_file_count
+             ,reply_yn
+             ,comments_yn
+             ,create_time
+             ,update_time
+             ,del_yn
+
+        from
+            board_admin
+
+        where
+            del_yn = 'N'
+          and category_number = #{categoryNumber};
+    </select>
 
     <!--총 게시물 수-->
     <select id="totalCountCategoryBoard" resultType="int">
-        select count(*)
-        from board_admin
-        where del_yn = 'N' and category_number = #{categoryNumber}
+        select count(b.id)
+        from board_admin as ba
+            join board as b on ba.id = b.board_admin_id
+        where b.del_yn = 'N' and ba.category_number = #{categoryNumber}
     </select>
 
     <select id="totalCountBoard" resultType="int">
@@ -240,6 +293,10 @@
                b.board_group,
                b.board_sort,
                b.board_depth,
+               ba.attached_file_yn,
+               ba.attached_file_count,
+               ba.comments_yn,
+               reply_yn,
                b.create_time,
                b.update_time,
                b.del_yn
@@ -276,6 +333,7 @@
             b.id,
             b.title,
             b.category_name,
+            ba.category_number,
             b.board_group,
             b.board_sort,
             b.board_depth,
@@ -365,6 +423,24 @@
                    ,#{updateTime}
                )
     </insert>
+
+    <update id="updateBoardAdminSetting" parameterType="BoardAdminUpdateVo">
+
+        UPDATE  board_admin
+        SET
+            category_name = #{categoryName}
+            ,contents = #{contents}
+            ,attached_file_count = #{attachedFileCount}
+            ,attached_file_yn = #{attachedFileYn}
+            ,reply_yn = #{replyYn}
+            ,comments_yn = #{commentsYn}
+            ,update_time = #{updateTime}
+
+        WHERE
+             del_yn = 'N' and id = #{id}
+
+    </update>
+
 
     <!--수정하기-->
     <update id="updateBoard" parameterType="BoardUpdateVo">

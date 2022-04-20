@@ -1,13 +1,11 @@
 
-$(document).ready(function(){
+$(function(){
     let id = parseInt($('#id').val())
     $.ajax({
         method: 'GET',
         url : '/board/commentsList/'+ id,
         success: function(data){
             $("#commentsTable").append(data)
-            disableModifyButton()
-
         },
         error:function(){
             alert('초기 댓글리스트 불러오기 실패');
@@ -23,47 +21,69 @@ function getBoardHierarchicalCommentsAll(){
         url: '/board/commentsList/' + boardId,
     }).done(function (returnData) {
         $('#commentsTable').html(returnData)
-        disableModifyButton()
-
     })
 }
 
 
 function addComment() {
-    let id = parseInt($('#id').val())
 
+    let id = parseInt($('#id').val())
+    let categoryNumber = $(".createButton").val()
     let contents = $('input[name="commentContents"]').val()
     let contentsLength = $('input[name="commentContents"]').val().trim().length
     let dataGroup = parseInt($('input[name="commentContents"]').data('group'))
     let dataDepth = parseInt($('input[name="commentContents"]').data('depth'))
     let dataSort = parseInt($('input[name="commentContents"]').data('sort'))
 
+    let categoryNumberData = {
+        categoryNumber: categoryNumber
+    }
+
     let formData = {
-            boardId: id,
-            contents : contents,
-            commentGroup : dataGroup,
-            commentDepth : dataDepth,
-            sort : dataSort
-        }
-
-    if(contentsLength < 1){
-        alert("공백은 불가합니다.")
+        boardId: id,
+        contents : contents,
+        commentGroup : dataGroup,
+        commentDepth : dataDepth,
+        sort : dataSort
     }
 
-    if(contentsLength > 1) {
-        $.ajax({
-            url: '/board/comment',
-            method: "POST",
-            data: formData,
-            success:function (){
-                alert("댓글작성 완료");
+    $.ajax({
+        method:'GET',
+        url:'/board/validation/comments/yn',
+        data: categoryNumberData,
+        success:function (commentsYn) {
+            if (commentsYn == 'N') {
                 $('input[name="commentContents"]').val("")
-                getBoardHierarchicalCommentsAll()
-            },
-            error:function () {
-                alert("댓글작성 실패")
-            }})
-    }
+                $('#commentsButton').prop("disabled")
+                alert("댓글작성이 불가능한 게시판입니다.")
+            }
+
+            if (commentsYn == 'Y') {
+                if(contentsLength < 1){
+                    alert("공백은 불가합니다.")
+                }
+
+                if(contentsLength > 1) {
+                    $.ajax({
+                        url: '/board/comment',
+                        method: "POST",
+                        data: formData,
+                        success:function (){
+                            alert("댓글작성 완료");
+                            $('input[name="commentContents"]').val("")
+                            getBoardHierarchicalCommentsAll()
+                        },
+                        error:function () {
+                            alert("댓글작성 실패")
+                        }})
+                }
+            }
+        }
+    });
+
+
+
+
 }
 
 function getCommentReply(obj){
@@ -189,15 +209,15 @@ function deleteComment(obj) {
     })
 }
 
-function disableModifyButton(){
-    let commentsLength = $('[class^=commentContents]').length
-    for(let i = 0; i < commentsLength; i++ ){
-        if($('[class^=commentContents]'+':eq(' +i+ ')').data('depth') > 0){
-            $('[class^=commentContents]'+':eq(' +i+ ')')
-                .parent()
-                .find('.modifyButton')
-                .prop("disabled", true).hide()
-        }
-
-    }
-}
+// function disableModifyButton(){
+//     let commentsLength = $('[class^=commentContents]').length
+//     for(let i = 0; i < commentsLength; i++ ){
+//         if($('[class^=commentContents]'+':eq(' +i+ ')').data('depth') > 0){
+//             $('[class^=commentContents]'+':eq(' +i+ ')')
+//                 .parent()
+//                 .find('.modifyButton')
+//                 .prop("disabled", true).hide()
+//         }
+//
+//     }
+// }

@@ -3,7 +3,7 @@
 <div id="comments" th:fragment="comments">
   <form class="form-inline" action="/board/comment" method="POST" style="width: 500px">
       <input type="text" data-depth="0" data-group="0" data-sort="0" name ="commentContents" style="width: 300px" >
-      <input type="button" onclick="addComment()"  value="댓글작성" style="width: 100px" >
+      <input type="button" id="commentsButton" onclick="addComment()"  value="댓글작성" style="width: 100px" >
   </form>
   <br/><br/>
 </div>

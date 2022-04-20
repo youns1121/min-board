@@ -2,19 +2,16 @@ package com.minboard.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 @Getter
-public class BoardAdminSaveVo {
+public class BoardAdminUpdateVo {
 
     /** Board Table PK **/
     private Integer id;
 
     private String categoryName;
-
-    private Integer categoryNumber;
-
-    private String title;
 
     private String contents;
 
@@ -26,26 +23,20 @@ public class BoardAdminSaveVo {
 
     private Integer attachedFileCount;
 
-    /** 등록시간 */
-    private LocalDateTime createTime;
-
     /** 수정시간 */
     private LocalDateTime updateTime;
 
     @Builder
-    public BoardAdminSaveVo(String categoryName, String attachedFileYn, String commentsYn,
-                            String replyYn, Integer attachedFileCount, String title,
-                            String contents, LocalDateTime createTime, LocalDateTime updateTime) {
-
+    public BoardAdminUpdateVo(Integer id, String categoryName, String attachedFileYn,
+                              String commentsYn, String replyYn, Integer attachedFileCount,
+                              String contents, LocalDateTime updateTime) {
+        this.id = id;
         this.categoryName = categoryName;
-        this.categoryNumber = (int)(Math.random() * 10000);
-        this.attachedFileYn = attachedFileYn;
-        this.commentsYn = commentsYn;
-        this.title = title;
         this.contents = contents;
         this.replyYn = replyYn;
+        this.attachedFileYn = attachedFileYn;
+        this.commentsYn = commentsYn;
         this.attachedFileCount = attachedFileCount;
-        this.createTime = createTime.now();
         this.updateTime = updateTime.now();
     }
 }

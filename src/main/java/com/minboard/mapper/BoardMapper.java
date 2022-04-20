@@ -4,6 +4,7 @@ import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 
 import com.minboard.vo.BoardAdminSaveVo;
+import com.minboard.vo.BoardAdminUpdateVo;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -41,6 +42,8 @@ public interface BoardMapper {
 
     void insertBoardAdminSetting(BoardAdminSaveVo boardAdminSaveVo);
 
+    void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo);
+
     void insertBoardAdmin(BoardAdminSaveVo boardAdminSaveVo);
 
     /** 게시물 삭제 **/
@@ -68,4 +71,8 @@ public interface BoardMapper {
     void decreaseSort(BoardDto boardDto);
 
     List<BoardDto> selectBoardCategoryList(BoardDto boardDto);
+
+    BoardDto selectBoardCategory(int id);
+
+    BoardDto selectBoardCategoryNumber(int categoryNumber);
 }

@@ -53,7 +53,7 @@ public class BoardDto extends CommonPageDto {
 
     private int categoryNumber;
 
-    private int attachedFileCount;
+    private Integer attachedFileCount;
 
     private String commentsYn;
 

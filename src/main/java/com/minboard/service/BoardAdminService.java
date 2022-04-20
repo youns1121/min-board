@@ -23,6 +23,11 @@ public class BoardAdminService{
         boardMapper.insertBoardAdminSetting(boardAdminSaveVo);
     }
 
+    public void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo){
+        boardMapper.updateBoardAdminSetting(boardAdminUpdateVo);
+    }
+
+
     public BoardAdminDto selectBoardAdmin(int id){
         BoardAdminDto boardAdminDto = boardMapper.selectBoardAdmin(id);
         return boardAdminDto;

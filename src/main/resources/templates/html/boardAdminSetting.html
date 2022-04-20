@@ -16,7 +16,7 @@
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/admin.js}"></script>
-  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>
+<!--  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>-->
 </head>
 <body>
 <br/>
@@ -65,7 +65,7 @@
     <th>첨부파일 최대 갯수</th>
     <div id="fileMaxCount">
       <td>
-        <span th:each="num : ${#numbers.sequence(1, 6)}">
+        <span th:each="num : ${#numbers.sequence(0, 6)}">
           <label><input  name="attachedFileCount" type="radio" th:value="${num}" th:text="${num}"
                          th:checked="${num} eq 6">개</label>
 

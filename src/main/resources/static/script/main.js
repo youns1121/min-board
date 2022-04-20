@@ -1,4 +1,6 @@
 
+
+
 function createFn(){
     const titleValueCheck = $('#title').val().trim().length;
     const contentsValueCheck = $('#contents').val().trim().length;
@@ -101,8 +103,14 @@ function uploadNewFile(){
         type : "POST",
         data : formData,
         success: function(returnData) {
-            alert('등록되었습니다.')
-            location.href = '/board/view/' + returnData + '?'+"status="+true
+            if (returnData == "false") {
+                alert('파일 허용 갯수가 초과 되었습니다.')
+                $("input[type='file']").val("")
+            }
+            if (returnData != "false") {
+                alert('등록되었습니다.')
+                location.href = '/board/view/' + returnData + '?' + "status=" + true
+            }
         },
         error : function (){
             return false;

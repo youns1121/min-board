@@ -29,13 +29,12 @@
             <legend>글쓰기</legend>
             <td>카테고리</td>
             <span>
-                <select class="selectbox-control">
+                <select class="selectbox">
                     <option th:each="category : ${categoryList}"
-                            th:value="${category.id}"
+                            th:value="${category.categoryNumber}"
+                            th:data-adminid="${category.id}"
                             th:text="${category.categoryName}"
                             th:selected="${categoryNumber} eq ${category.categoryNumber}">
-
-
                     </option>
                 </select>
             </span>
@@ -56,18 +55,16 @@
                 <br/>
                 <tr>
                     <td>
-                        <div id="clone">
-                            <div id="Files0">
+                        <div id="Files0">
                                     <input type='file' class="file" name='fileList' />
                                     <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
-                            </div>
-                            <div id="file-list"></div>
                         </div>
+                            <div id="file-list"></div>
                     </td>
                 </tr>
             </div>
         </fieldset>
-            <button type="button" id="buttonCreate" onclick="createFn()">저장</button>
+            <button type="button" class="selectbox-control" th:data-id="${categoryNumber}" id="buttonCreate" onclick="createFn()">저장</button>
             <button type="button" class="btn btn-primary"
                     th:onclick="|location.href='@{/board/category/{categoryNumber}(categoryNumber = ${categoryNumber})}'|">
                 목록</button>

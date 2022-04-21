@@ -1,6 +1,6 @@
 $(function() {
     let idData = {
-        id : $('#id').val()
+        id : $('#categoryId').attr("value")
     }
     $.ajax({
         url: '/board/validation/reply/yn',

@@ -1,7 +1,23 @@
+$(function() {
+    let dataBoardAdminId = {
+        id : $('#categoryName').attr("value")
+    }
+    $.ajax({
+        url: '/board/validation/reply/yn',
+        method: 'GET',
+        data: dataBoardAdminId,
+        success: function (replyYn) {
+            if (replyYn == 'N') {
+                $('#buttonCreate').hide().prop("disabled")
+                history.back()
+                alert("답글 작성이 불가능한 게시판입니다.")
+            }
 
+        }
+    })
+})
 
 function addReply(obj) {
-
 
     let id = $(obj).val()
     let dataGroup = $(obj).data('group')
@@ -26,6 +42,7 @@ function addReply(obj) {
 }
 
 function createFnReply(){
+
     const titleValueCheck = $('#title').val().trim().length;
     const contentsValueCheck = $('#contents').val().trim().length;
 
@@ -38,7 +55,6 @@ function createFnReply(){
     if(titleValueCheck != 0 && (contentsValueCheck > 20 && contentsValueCheck < 100)){
         replyBoardAttachedExtenSionCheck()
     }
-
 
 }
 
@@ -61,6 +77,7 @@ function replyBoardAttachedExtenSionCheck(){
 }
 
 function uploadFile(){
+
     let formData = new FormData();
     let inputFile = $("input[type='file']")
     let inputFileLength = inputFile.length
@@ -76,11 +93,14 @@ function uploadFile(){
     formData.append('boardSort', dataSort)
     formData.append('boardDepth', dataDepth)
 
+
+
     for(var i = 0;  i < inputFileLength; i++){
         if(!(inputFile[i].value == "")){
             formData.append('fileList', inputFile[i].files[0])
         }
     }
+
 
     $.ajax({
         method : 'POST',

@@ -80,10 +80,6 @@ function addComment() {
             }
         }
     });
-
-
-
-
 }
 
 function getCommentReply(obj){
@@ -104,12 +100,16 @@ function getCommentReply(obj){
 }
 
 function addCommentReply(obj){
-    let id = parseInt($(obj).val())
     let contents = $(obj).siblings('input').val()
     let boardId = parseInt($('#id').val())
     let dataGroup =  parseInt($(obj).val())
     let dataDepth = $(obj).parents('td').find('span').data('depth')
     let dataSort = $(obj).parents('td').find('span').data('sort')
+    let categoryNumber = $(".createButton").val()
+
+    let categoryNumberData = {
+        categoryNumber: categoryNumber
+    }
 
     let formData ={
         commentGroup : dataGroup,
@@ -120,18 +120,32 @@ function addCommentReply(obj){
     }
 
     $.ajax({
-            type: 'POST',
-            url: '/board/comment/reply',
-            data: formData,
-            success: function () {
-                alert("답글작성 완료")
-                getBoardHierarchicalCommentsAll()
-            },
-            error: function () {
-                alert("답글작성 실패")
+        method: 'GET',
+        url: '/board/validation/comments/yn',
+        data: categoryNumberData,
+        success: function (commentsYn) {
+            if (commentsYn == 'N') {
+                $('input[name="commentReplyContents"]').val("")
+                $('#commentsButton').prop("disabled")
+                alert("댓글작성이 불가능한 게시판입니다.")
+            }
+
+            if (commentsYn == 'Y') {
+                $.ajax({
+                    type: 'POST',
+                    url: '/board/comment/reply',
+                    data: formData,
+                    success: function () {
+                        alert("답글작성 완료")
+                        getBoardHierarchicalCommentsAll()
+                    },
+                    error: function () {
+                        alert("답글작성 실패")
+                    }
+                })
             }
         }
-    )
+    })
 }
 
 function getUpdateComment(obj){
@@ -142,7 +156,8 @@ function getUpdateComment(obj){
 
     $('.optionButton').hide()
     $(obj).parent().parent().find('span[class=commentContents]').unwrap()
-    $(obj).parent().parent().find('[class^=commentContents]').wrap('<input class="commentContents" style="width: 300px">').val(returnData);
+    $(obj).parent().parent().find('[class^=commentContents]')
+        .wrap('<input class="commentContents" name="commentContents" style="width: 300px">').val(returnData);
     $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
     $(obj).parent().parent().find('input[class=commentContents]').val(returnData)
 }
@@ -151,29 +166,48 @@ function updateComment(obj) {
 
     let id = parseInt($(obj).parent().parent().find('.commentId').val())
     let inputData = $(obj).parent().parent().find('input').val()
+    let categoryNumber = $(".createButton").val()
+    let categoryNumberData = {
+        categoryNumber: categoryNumber
+    }
     let formData = {
         id: id,
         contents: inputData
     }
 
-    if (inputData.trim().length < 1) {
-        alert("공백은 불가합니다.")
-    }
-
-    if (inputData.trim().length >= 1) {
-        $.ajax({
-            method: "POST",
-            url: '/board/comment/update',
-            data: formData,
-            success: function () {
-                alert("댓글 수정완료")
-                getBoardHierarchicalCommentsAll()
-            },
-            error: function () {
-                alert("댓글 수정실패")
+    $.ajax({
+        method: 'GET',
+        url: '/board/validation/comments/yn',
+        data: categoryNumberData,
+        success: function (commentsYn) {
+            if (commentsYn == 'N') {
+                $('input[name="commentContents"]').val("")
+                $('#commentsButton').prop("disabled")
+                alert("댓글작성이 불가능한 게시판입니다.")
             }
-        })
-    }
+
+            if (commentsYn == 'Y') {
+                if (inputData.trim().length < 1) {
+                    alert("공백은 불가합니다.")
+                }
+
+                if (inputData.trim().length >= 1) {
+                    $.ajax({
+                        method: "POST",
+                        url: '/board/comment/update',
+                        data: formData,
+                        success: function () {
+                            alert("댓글 수정완료")
+                            getBoardHierarchicalCommentsAll()
+                        },
+                        error: function () {
+                            alert("댓글 수정실패")
+                        }
+                    })
+                }
+            }
+        }
+    })
 }
 
 function cancelUpdateComment() {
@@ -208,16 +242,3 @@ function deleteComment(obj) {
         }
     })
 }
-
-// function disableModifyButton(){
-//     let commentsLength = $('[class^=commentContents]').length
-//     for(let i = 0; i < commentsLength; i++ ){
-//         if($('[class^=commentContents]'+':eq(' +i+ ')').data('depth') > 0){
-//             $('[class^=commentContents]'+':eq(' +i+ ')')
-//                 .parent()
-//                 .find('.modifyButton')
-//                 .prop("disabled", true).hide()
-//         }
-//
-//     }
-// }

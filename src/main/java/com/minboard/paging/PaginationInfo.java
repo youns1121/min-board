@@ -1,6 +1,5 @@
 package com.minboard.paging;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,9 +33,6 @@ public class PaginationInfo {
 
     /** 다음 페이지 존재 여부 */
     private boolean hasNextPage;
-
-
-
 
     private int findByTotalPageCount(){
         /** 전체 페이지 수 (현재 페이지 번호가 전체 페이지 수보다 크면 현재 페이지 번호에 전체 페이지 수를 저장) **/

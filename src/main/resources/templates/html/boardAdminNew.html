@@ -29,7 +29,9 @@
             <td>카테고리</td>
             <span>
                 <select class="selectbox-control">
-                    <option th:each="category : ${boardCategory}"
+                    <option
+                            th:each="category : ${boardCategory}"
+                            th:id=""
                             th:value="${category.categoryNumber}"
                             th:text="${category.categoryName}">
                     </option>

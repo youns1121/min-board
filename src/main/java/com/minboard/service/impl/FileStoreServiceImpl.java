@@ -6,6 +6,7 @@ import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.UploadFileMapper;
 import com.minboard.service.FileStoreService;
 import com.minboard.vo.BoardSaveVo;
+import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
 
@@ -225,6 +226,23 @@ public class FileStoreServiceImpl implements FileStoreService {
 
         boolean validationFileCount =
                 validationFileCount(boardDto.getAttachedFileCount(), boardSaveVo.getFileList().size());
+        boolean validationFileYn =
+                validationFileYn(boardDto.getAttachedFileYn());
+
+        if(validationFileCount && validationFileYn){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateValidationFileCheck(BoardDto boardDto, BoardUpdateVo boardUpdateVo) {
+        if(boardDto.getAttachedFileCount() == null || boardUpdateVo.getFileList() == null){
+            return true;
+        }
+
+        boolean validationFileCount =
+                validationFileCount(boardDto.getAttachedFileCount(), boardUpdateVo.getFileList().size());
         boolean validationFileYn =
                 validationFileYn(boardDto.getAttachedFileYn());
 

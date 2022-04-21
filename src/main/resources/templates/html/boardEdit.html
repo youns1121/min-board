@@ -21,7 +21,6 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
   <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
-<!--  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>-->
   <br/>
 </head>
 <body>
@@ -84,7 +83,13 @@
           </tr>
       </div>
     </fieldset>
-      <button type="button" id="updateButton" onclick="updateFn()" >수정완료</button>
+      <button type="button" class="selectbox-control" id="updateButton"
+              th:value="${boardUpdateVo.boardAdminId}"
+              th:data-adminid="${boardUpdateVo.boardAdminId}"
+              th:data-id="${boardUpdateVo.categoryNumber}"
+
+              onclick="updateFn()" >수정완료
+      </button>
       <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
       <button type="button" th:onclick="|location.href='/board/category/${boardUpdateVo.categoryNumber}'|">목록</button>
   </form>

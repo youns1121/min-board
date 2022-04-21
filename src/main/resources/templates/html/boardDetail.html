@@ -15,9 +15,7 @@
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
-  <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
   <script type="text/javascript" th:src="@{/script/comments.js}"></script>
-  <script type="text/javascript" th:src="@{/script/reply.js}"></script>
   <script type="text/javascript" th:src="@{/script/boardDetails.js}"></script>
 
   <br/>
@@ -29,12 +27,14 @@
       <legend>상세보기</legend>
       <div>
         <tr>
-          <td>
-            <label>카테고리:</label>
-          </td>
-          <td>
-            <label th:text="*{categoryName}"></label>
-          </td>
+          <div id="categoryId" th:value="${detailViewBoard.categoryNumber}">
+            <td>
+              <label>카테고리:</label>
+            </td>
+            <td>
+              <label th:text="*{categoryName}"></label>
+            </td>
+          </div>
         </tr>
         <br/>
         <tr>

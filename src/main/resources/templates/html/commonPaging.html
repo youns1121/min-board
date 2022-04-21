@@ -5,7 +5,6 @@
      th:with="info=${boardDto.paginationInfo}" aria-label="Page navigation" class="text-center">
   <ul class="pagination">
 
-
     <li th:if="*{hasPreviousPage == true}" th:onclick="movePage([[${#request.requestURI}]],
      [[ ${boardDto.makeQueryString(1)}]])">
       <a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>&nbsp;

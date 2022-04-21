@@ -5,42 +5,16 @@ $(function(){
 
     $('.selectbox-control').change(function (){
         validationFileYn()
-
     })
-
 });
 
-// function validationFileCount(){
-//     let id = $('.selectbox-control').val()
-//     let fileLength = $('.file').length
-//     let formData = {
-//         id : id
-//     }
-//
-//     $.ajax({
-//         method: 'GET',
-//         url: '/board/validation/file/count',
-//         data: formData,
-//         success: function(fileCount){
-//             if (fileCount == fileLength){
-//                 $("#button-add-file").hide()
-//             }
-//
-//             if (fileCount != fileLength){
-//                 $("#button-add-file").show()
-//             }
-//         }
-//     });
-// }
 
 function validationFileYn(){
 
-    $('.selectbox-control').val()
-    let id = $('.selectbox-control').val()
+    let id = $('.selectbox-control').data('id')
     let formData = {
         id : id
     }
-
     $.ajax({
         method: 'GET',
         url: '/board/validation/file/yn',
@@ -56,10 +30,7 @@ function validationFileYn(){
             }
         }
     })
-
 }
-
-
 
 function addFileForm() {
 

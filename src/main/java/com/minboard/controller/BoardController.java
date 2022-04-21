@@ -28,7 +28,7 @@ public class BoardController {
 
     @GetMapping("/new")
     public String boardSave(Model model, BoardSaveVo boardSaveVo, BoardDto boardDto,
-                            @RequestParam("categorynumber") String categoryNumber) {
+                            @RequestParam("categorynumber") int categoryNumber) {
 
         List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
         model.addAttribute("categoryNumber", categoryNumber);
@@ -52,6 +52,35 @@ public class BoardController {
         boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
         return boardSaveVo.getId().toString();
+    }
+
+    @ResponseBody
+    @PostMapping("/update")
+    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
+                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
+    ) throws IOException {
+
+        BoardDto boardDto = boardService.selectBoardCategory(boardUpdateVo.getBoardAdminId());
+
+        boolean validationFileCheck = fileStoreService.updateValidationFileCheck(boardDto, boardUpdateVo);
+
+        if(validationFileCheck == false){
+            return "false";
+        }
+
+        boardService.updateBoardFile(boardUpdateVo);
+        boardService.updateBoard(boardUpdateVo);
+        return boardUpdateVo.getId().toString();
+    }
+
+    @GetMapping("/update/{id}")
+    public String boardModify(@PathVariable("id") int id, Model model) {
+
+        BoardDto boardDto = boardService.getDetailViewBoard(id);
+        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
+        model.addAttribute("boardUpdateVo", boardDto);
+        model.addAttribute("uploadFileList", uploadFileList);
+        return "html/boardEdit";
     }
 
     @ResponseBody
@@ -95,22 +124,22 @@ public class BoardController {
     @ResponseBody
     @GetMapping("/validation/file/yn")
     public String validationFileYn(@RequestParam int id){
-        BoardDto boardDto = boardService.selectBoardCategory(id);
+        BoardDto boardDto = boardService.selectBoardCategoryNumber(id);
         return boardDto.getAttachedFileYn();
-    }
-
-    @ResponseBody
-    @GetMapping("/validation/reply/yn")
-    public String validationReplyYn(@RequestParam int id){
-        BoardDto boardDto = boardService.getDetailViewBoard(id);
-        return boardDto.getCommentsYn();
     }
 
     @ResponseBody
     @GetMapping("/validation/file/count")
     public String validationFileCount(@RequestParam int id){
-        BoardDto boardDto = boardService.selectBoardCategory(id);
+        BoardDto boardDto = boardService.selectBoardCategoryNumber(id);
         return boardDto.getAttachedFileCount().toString();
+    }
+
+    @ResponseBody
+    @GetMapping("/validation/reply/yn")
+    public String validationReplyYn(@RequestParam int id){
+        BoardDto boardDto = boardService.selectBoardCategoryNumber(id);
+        return boardDto.getReplyYn();
     }
 
     @ResponseBody
@@ -139,26 +168,7 @@ public class BoardController {
                 .body(downloadFileInfo.getResource());
     }
 
-    @ResponseBody
-    @PostMapping("/update")
-    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
-                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
-                              ) throws IOException {
 
-        boardService.updateBoardFile(boardUpdateVo);
-        boardService.updateBoard(boardUpdateVo);
-        return boardUpdateVo.getId().toString();
-    }
-
-    @GetMapping("/update/{id}")
-    public String boardModify(@PathVariable("id") int id, Model model) {
-
-        BoardDto boardDto = boardService.getDetailViewBoard(id);
-        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
-        model.addAttribute("boardUpdateVo", boardDto);
-        model.addAttribute("uploadFileList", uploadFileList);
-        return "html/boardEdit";
-    }
 
     @PostMapping("/delete")
     public String boardRemove(int id) {

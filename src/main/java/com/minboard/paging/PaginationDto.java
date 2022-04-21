@@ -33,5 +33,4 @@ public class PaginationDto {
                 .encode();
         return uriComponents.toUriString();
     }
-
 }

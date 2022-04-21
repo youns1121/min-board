@@ -17,6 +17,7 @@
         <result property="boardAdminId" column="board_admin_id"/>
         <result property="commentsCount" column="comments_count"/>
         <result property="commentsYn" column="comments_yn"/>
+        <result property="replyYn" column="reply_yn"/>
         <result property="fileCount" column="file_count"/>
         <result property="attachedFileYn" column="attached_file_yn"/>
         <result property="attachedFileCount" column="attached_file_count"/>
@@ -92,7 +93,6 @@
             <result property="storeFileSize" column="store_file_size" />
         </collection>
     </resultMap>
-
 
     <select id="selectBoardList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         SELECT
@@ -299,6 +299,7 @@
                reply_yn,
                b.create_time,
                b.update_time,
+               b.board_admin_id,
                b.del_yn
         from
              board as b

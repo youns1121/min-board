@@ -19,6 +19,8 @@ public class BoardUpdateVo {
 
     private Integer boardId;
 
+    private Integer boardAdminId;
+
     /** 게시글 제목 **/
     @NotBlank(message = "제목은 필수값 입니다.")
     private String title;
@@ -31,20 +33,16 @@ public class BoardUpdateVo {
     /** 수정일 **/
     private LocalDateTime updateTime;
 
-    /** 게시글 조회수 **/
-    private Integer viewCount;
-
-    /** 게시글 좋아요수 **/
-    private Integer likeCount;
-
     private List<MultipartFile> fileList;
 
     @Builder
-    public BoardUpdateVo(Integer id, String title, String contents, LocalDateTime updateTime,Integer boardId,
+    public BoardUpdateVo(Integer id, String title, String contents,
+                         LocalDateTime updateTime,Integer boardId, Integer boardAdminId,
                          List<MultipartFile> fileList) {
 
         this.id = id;
         this.boardId = boardId;
+        this.boardAdminId = boardAdminId;
         this.title = title;
         this.fileList = fileList;
         this.contents = contents;

@@ -4,6 +4,7 @@ import com.minboard.dto.BoardDto;
 import com.minboard.dto.DownloadFileDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.vo.BoardSaveVo;
+import com.minboard.vo.BoardUpdateVo;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,4 +66,5 @@ public interface FileStoreService {
 
     boolean validationFileCheck(BoardDto boardDto, BoardSaveVo boardSaveVo);
 
+    boolean updateValidationFileCheck(BoardDto boardDto, BoardUpdateVo boardUpdateVo);
 }

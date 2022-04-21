@@ -1,3 +1,4 @@
+$(document).keypress(function(e) { if (e.keyCode == 13) e.preventDefault(); });
 
 
 
@@ -84,9 +85,8 @@ function uploadNewFile(){
     let inputFileLength = inputFile.length
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
-    formData.append('boardAdminId', parseInt($('.selectbox-control').val()))
-    formData.append('categoryName', $('.selectbox-control option:selected').text())
-
+    formData.append('boardAdminId', $(".selectbox option:selected").data('adminid'))
+    formData.append('categoryName', $('.selectbox option:selected').text())
 
     for(var i = 0;  i < inputFileLength; i++){
         if(!(inputFile[i].value == "")){
@@ -121,6 +121,7 @@ function uploadNewFile(){
 function uploadUpdateFile() {
     let formData = new FormData();
     let inputFile = $("input[type='file']")
+    formData.append('boardAdminId', $('#updateButton').data('adminid'))
     formData.append('title', $('#title').val())
     formData.append('contents', $('#contents').val())
     let id = parseInt($('#id').val())
@@ -140,8 +141,15 @@ function uploadUpdateFile() {
         cache: false,
         data: formData,
         success: function (returnData) {
-            alert('등록되었습니다.')
-            location.href = '/board/view/' + returnData + '?' + "status=" + true
+            if (returnData == "false") {
+                alert('파일 허용 갯수가 초과 되었습니다.')
+                $("input[type='file']").val("")
+            }
+
+            if (returnData != "false") {
+                alert('등록되었습니다.')
+                location.href = '/board/view/' + returnData + '?' + "status=" + true
+            }
         },
         error: function () {
             return false;

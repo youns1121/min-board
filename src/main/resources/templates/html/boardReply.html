@@ -20,7 +20,7 @@
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
     <script type="text/javascript" th:src="@{/script/reply.js}"></script>
-<!--    <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>-->
+
     <br/>
 </head>
 <body>
@@ -30,7 +30,7 @@
         <div>
             <tr>
                 <th>카테고리: </th>
-                <span id="categoryName" th:text="${board.categoryName}"></span>
+                <span id="categoryName" th:value="${board.categoryNumber}" th:text="${board.categoryName}"></span>
             </tr>
             <br/>
             <tr>
@@ -61,6 +61,8 @@
         </div>
     </fieldset>
     <button type="button" id="buttonCreate"
+            class="selectbox-control"
+            th:data-id="${board.categoryNumber}"
             th:data-group="${board.getBoardGroup()}"
             th:data-sort="${board.getBoardSort()}"
             th:data-depth="${board.getBoardDepth()}"

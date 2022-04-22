@@ -54,10 +54,11 @@
           </thead>
       <th:block layout:fragment="content">
           <tbody>
-          <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board, index : ${boardList}">
-              <td th:text="${boardDto.paginationInfo.totalRecordCount}-(${boardDto.paginationInfo.paginationDto.currentPageNo - 1} *
+          <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board, index : ${boardList}" >
+              <td style="text-align: center" th:text="${boardDto.paginationInfo.totalRecordCount} -
+              ((${boardDto.paginationInfo.paginationDto.currentPageNo - 1}) *
               ${boardDto.paginationInfo.paginationDto.recordsPerPage} +
-              ${boardDto.paginationInfo.firstRecordIndex} + ${index.index})"></td>
+              ${boardDto.paginationInfo.firstPage} + ${index.index}-1)"></td>
               <td th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
                   style="cursor:pointer; width: 250px; ">
                   <span th:style="${board.boardDepth ne 0}

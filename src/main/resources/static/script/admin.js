@@ -23,6 +23,16 @@ function createAdminFn(){
     });
 }
 
+function deleteAdminFn(adminId){
+
+
+    $.ajax({
+        method: 'POST',
+        url: '/admin/remove',
+        data: adminData = {id : adminId },
+    })
+}
+
 function updateAdminFn(){
     let formData = new FormData();
     formData.append("id", parseInt($('#adminUpdatebutton').val()))

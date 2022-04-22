@@ -109,7 +109,6 @@ public class BoardServiceImpl implements BoardService {
         return detailViewUpdateBoard;
     }
 
-    /** 게시물 삭제 **/
     @Override
     public void deleteBoard(int id) {
         List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
@@ -125,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
         BoardDto boardReply = boardMapper.selectBoardReply(id);
         boardMapper.decreaseSort(boardReply);
         boardMapper.deleteBoard(id);
-        fileMapper.deleteAlldFile(id);
+        fileMapper.deleteAllFile(id);
 
     }
 

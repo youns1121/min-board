@@ -16,9 +16,6 @@ public class BoardDto extends CommonPageDto {
 
     /** 게시글 아이디 **/
     private Integer id;
-    
-    /** 게시글 번호 **/
-    private Integer num;
 
     /** 게시글 제목 **/
     @NotBlank(message = "제목은 필수값 입니다.")

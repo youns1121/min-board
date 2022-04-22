@@ -77,27 +77,10 @@
         <result property="id" column="id"/>
     </resultMap>
 
-    <resultMap id="getDetailViewBoardAllInfoResultMap" type="BoardDto">
-        <result property="id" column="id"/>
-        <result property="title" column="title" />
-        <result property="contents" column="contents" />
-        <result property="createTime" column="create_time"/>
-        <result property="updateTime" column="update_time"/>
-        <result property="delYn" column="del_yn"/>
-        <result property="viewCount" column="view_count"/>
-        <result property="likeCount" column="like_count"/>
-        <collection property="uploadFileDtoList" ofType="UploadFileDto">
-            <result property="storeFileName" column="store_file_name" />
-            <result property="originalFileName" column="original_file_name" />
-            <result property="extensionName" column="extension_name" />
-            <result property="storeFileSize" column="store_file_size" />
-        </collection>
-    </resultMap>
 
     <select id="selectBoardList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         SELECT
                 b.id,
-                (@rownum := @rownum + 1) as num,
                 ba.category_name,
                 ba.category_number,
                 b.title,
@@ -122,16 +105,12 @@
         FROM
                 board as b
                     join board_admin as ba on b.board_admin_id = ba.id
-                    left join comments as c on b.id = c.board_id,
-                    (select @rownum := 0) as num_table
         WHERE
                 b.del_yn = 'N' and ba.category_number = #{categoryNumber}
 
-        group by b.id
         order by
                 board_group desc,
-                board_sort asc,
-                num desc
+                board_sort asc
 
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
@@ -139,7 +118,6 @@
     <select id="selectBoardAllList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
         SELECT
             b.id,
-            (@rownum := @rownum + 1) as num,
             ba.category_name,
             ba.category_number,
             b.title,
@@ -164,21 +142,17 @@
         FROM
             board as b
                 join board_admin as ba on b.board_admin_id = ba.id
-                left join comments as c on b.id = c.board_id,
-            (select @rownum := 0) as num_table
         WHERE
-            b.del_yn = 'N'
+            b.del_yn = 'N' and  ba.category_number > 0
 
-        group by b.id
         order by
             board_group desc,
-            board_sort asc,
-            num desc
+            board_sort asc
 
-            limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
+        limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
 
-    <!--- 관리자 카테고리 전체보기  -->
+
     <select id="selectBoardAdminList" parameterType="BoardAdminDto" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
         select
             id,
@@ -200,6 +174,8 @@
 
         where
             del_yn = 'N' and category_number > 0
+        order by num desc
+
     </select>
 
     <select id="selectBoardCategoryList" parameterType="BoardDto" resultType="BoardDto" resultMap="boardDtoResultMap">
@@ -241,8 +217,7 @@
             board_admin
 
         where
-            del_yn = 'N'
-          and id = #{id};
+            del_yn = 'N'and id = #{id};
     </select>
 
     <select id="selectBoardCategoryNumber" parameterType="int" resultType="BoardDto" resultMap="boardDtoResultMap">
@@ -263,8 +238,7 @@
             board_admin
 
         where
-            del_yn = 'N'
-          and category_number = #{categoryNumber};
+            del_yn = 'N'and category_number = #{categoryNumber};
     </select>
 
     <!--총 게시물 수-->
@@ -296,7 +270,7 @@
                ba.attached_file_yn,
                ba.attached_file_count,
                ba.comments_yn,
-               reply_yn,
+               ba.reply_yn,
                b.create_time,
                b.update_time,
                b.board_admin_id,
@@ -308,7 +282,6 @@
               b.id = #{id} and b.del_yn = 'N'
     </select>
 
-    <!-- 관리자 게시판 상세보기-->
     <select id="selectBoardAdmin" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap" >
         select
             id,
@@ -325,29 +298,29 @@
         from
             board_admin
         where
-            id = #{id}
-          and del_yn = 'N'
+            id = #{id} and del_yn = 'N'
     </select>
 
-    <select id="selectBoardReply" resultType="BoardDto" resultMap="boardDtoResultMap" >
+
+    <select id="getBoardCategory" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap" >
         select
-            b.id,
-            b.title,
-            b.category_name,
-            ba.category_number,
-            b.board_group,
-            b.board_sort,
-            b.board_depth,
-            b.board_admin_id,
-            b.del_yn
+            id,
+            category_name,
+            category_number,
+            contents,
+            attached_file_yn,
+            attached_file_count,
+            comments_yn,
+            reply_yn,
+            create_time,
+            update_time,
+            del_yn
         from
-            board as b
-                join board_admin as ba on b.board_admin_id = ba.id
+            board_admin
         where
-            b.id = #{id} and b.del_yn = 'N'
+            category_number = #{id} and del_yn = 'N'
     </select>
 
-    <!--게시판 수정 상세보기 -->
     <select id="getDetailViewUpdateBoard" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
         select
                id,
@@ -363,6 +336,28 @@
         where
               id = #{id}
           and del_yn = 'N'
+    </select>
+
+    <select id="findByBoardIdList" resultType="BoardDto" resultMap="boardDtoResultMap">
+        select
+
+              b.id
+             ,ba.category_name
+             ,b.title
+             ,b.contents
+             ,b.create_time
+             ,b.update_time
+             ,b.del_yn
+             ,b.board_admin_id
+             ,uf.board_id
+
+        from
+            board as b
+                join board_admin as ba on ba.id = b.board_admin_id
+                join upload_file uf on b.id = uf.board_id
+
+        where
+            b.del_yn = 'N' and ba.id = #{id};
     </select>
 
     <!--- 생성하기  -->
@@ -464,15 +459,26 @@
               id = #{id} AND del_yn = 'N'
     </update>
 
-    <!--삭제하기-->
     <update id="deleteBoard" parameterType="int">
         update
             board
         set
             del_yn = 'Y'
         where
-            del_yn = 'N'
-            and id = #{id}
+            del_yn = 'N' and id = #{id}
+    </update>
+
+    <update id="deleteBoardAdmin" parameterType="int">
+        update board as b
+            join board_admin ba on ba.id = b.board_admin_id
+            join comments c on b.id = c.board_id
+
+        set
+                b.del_yn = 'Y', c.del_yn = 'Y'
+        where
+            b.del_yn = 'N'
+          and ba.id = #{id}
+          and b.board_admin_id = ba.id
     </update>
 
     <select id="countComments" resultType="int">
@@ -566,6 +572,4 @@
         WHERE
             board_group = ${boardGroup} AND board_sort > ${boardSort}
     </update>
-
-
 </mapper>

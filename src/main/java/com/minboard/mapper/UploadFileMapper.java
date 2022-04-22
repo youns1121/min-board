@@ -1,5 +1,6 @@
 package com.minboard.mapper;
 
+import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.vo.UploadFileUpdateVo;
 import com.minboard.vo.UploadFileVo;
@@ -30,6 +31,6 @@ public interface UploadFileMapper {
     void deleteFile(int id);
 
     /** 파일 전체 삭제하기 **/
-    void deleteAlldFile(int id);
+    void deleteAllFile(int id);
 
 }

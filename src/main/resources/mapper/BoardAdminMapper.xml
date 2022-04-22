@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.minboard.mapper.BoardAdminMapper">
+
+    <update id="deleteBoardAdmin" parameterType="int">
+        update
+            board as b
+            join board_admin ba on ba.id = b.board_admin_id
+            set
+                b.del_yn = 'Y'
+        where
+            b.del_yn = 'N'
+          and ba.id = #{id}
+          and b.board_admin_id = ba.id
+    </update>
+
+</mapper>

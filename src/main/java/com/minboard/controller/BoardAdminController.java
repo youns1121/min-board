@@ -20,26 +20,8 @@ public class BoardAdminController {
 
     private final BoardAdminService boardAdminService;
 
-    @ResponseBody
-    @PostMapping("/new")
-    public String boardAdminSave(@ModelAttribute("boardAdmin") BoardAdminSaveVo boardAdminSaveVo){
-
-        boardAdminService.saveBoardAdmin(boardAdminSaveVo);
-        return boardAdminSaveVo.getId().toString();
-    }
-
-    @GetMapping("/new")
-    public String boardAdminSave(Model model, BoardAdminSaveVo boardAdminSaveVo, BoardAdminDto boardAdminDto){
-
-        List<BoardAdminDto> boardAdminDtoList = boardAdminService.selectBoardAdminList(boardAdminDto);
-        model.addAttribute("boardCategory", boardAdminDtoList);
-        model.addAttribute("boardAdmin", boardAdminSaveVo);
-        return "html/boardAdminNew";
-    }
-
     @GetMapping("/setting/update/{id}")
     public String boardAdminModify(@PathVariable("id") int id, Model model) {
-
         BoardAdminDto boardAdminDto = boardAdminService.selectBoardAdmin(id);
         model.addAttribute("boardAdminUpdate", boardAdminDto);
         return "html/boardAdminEdit";
@@ -86,9 +68,10 @@ public class BoardAdminController {
         return "html/boardAdmin";
     }
 
+    @ResponseBody
+    @PostMapping("/remove")
+    public void boardAdminRemove(int id) {
 
-
-
-
-
+        boardAdminService.removeBoardAdmin(id);
+    }
 }

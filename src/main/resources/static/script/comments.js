@@ -28,16 +28,12 @@ function getBoardHierarchicalCommentsAll(){
 function addComment() {
 
     let id = parseInt($('#id').val())
-    let categoryNumber = $(".createButton").val()
     let contents = $('input[name="commentContents"]').val()
     let contentsLength = $('input[name="commentContents"]').val().trim().length
     let dataGroup = parseInt($('input[name="commentContents"]').data('group'))
     let dataDepth = parseInt($('input[name="commentContents"]').data('depth'))
     let dataSort = parseInt($('input[name="commentContents"]').data('sort'))
 
-    let categoryNumberData = {
-        categoryNumber: categoryNumber
-    }
 
     let formData = {
         boardId: id,
@@ -47,39 +43,27 @@ function addComment() {
         sort : dataSort
     }
 
-    $.ajax({
-        method:'GET',
-        url:'/board/validation/comments/yn',
-        data: categoryNumberData,
-        success:function (commentsYn) {
-            if (commentsYn == 'N') {
+
+    if (contentsLength < 1) {
+        alert("공백은 불가합니다.")
+    }
+
+    if (contentsLength > 1) {
+        $.ajax({
+            url: '/board/comment',
+            method: "POST",
+            data: formData,
+            success: function () {
+                alert("댓글작성 완료");
                 $('input[name="commentContents"]').val("")
-                $('#commentsButton').prop("disabled")
-                alert("댓글작성이 불가능한 게시판입니다.")
+                getBoardHierarchicalCommentsAll()
+            },
+            error: function () {
+                alert("댓글작성 실패")
             }
+        })
+    }
 
-            if (commentsYn == 'Y') {
-                if(contentsLength < 1){
-                    alert("공백은 불가합니다.")
-                }
-
-                if(contentsLength > 1) {
-                    $.ajax({
-                        url: '/board/comment',
-                        method: "POST",
-                        data: formData,
-                        success:function (){
-                            alert("댓글작성 완료");
-                            $('input[name="commentContents"]').val("")
-                            getBoardHierarchicalCommentsAll()
-                        },
-                        error:function () {
-                            alert("댓글작성 실패")
-                        }})
-                }
-            }
-        }
-    });
 }
 
 function getCommentReply(obj){
@@ -105,11 +89,6 @@ function addCommentReply(obj){
     let dataGroup =  parseInt($(obj).val())
     let dataDepth = $(obj).parents('td').find('span').data('depth')
     let dataSort = $(obj).parents('td').find('span').data('sort')
-    let categoryNumber = $(".createButton").val()
-
-    let categoryNumberData = {
-        categoryNumber: categoryNumber
-    }
 
     let formData ={
         commentGroup : dataGroup,
@@ -120,94 +99,62 @@ function addCommentReply(obj){
     }
 
     $.ajax({
-        method: 'GET',
-        url: '/board/validation/comments/yn',
-        data: categoryNumberData,
-        success: function (commentsYn) {
-            if (commentsYn == 'N') {
-                $('input[name="commentReplyContents"]').val("")
-                $('#commentsButton').prop("disabled")
-                alert("댓글작성이 불가능한 게시판입니다.")
-            }
-
-            if (commentsYn == 'Y') {
-                $.ajax({
-                    type: 'POST',
-                    url: '/board/comment/reply',
-                    data: formData,
-                    success: function () {
-                        alert("답글작성 완료")
-                        getBoardHierarchicalCommentsAll()
-                    },
-                    error: function () {
-                        alert("답글작성 실패")
-                    }
-                })
-            }
+        type: 'POST',
+        url: '/board/comment/reply',
+        data: formData,
+        success: function () {
+            alert("답글작성 완료")
+            getBoardHierarchicalCommentsAll()
+        },
+        error: function () {
+            alert("답글작성 실패")
         }
     })
+
 }
 
-function getUpdateComment(obj){
-
-    let returnData = $(obj).parents('tr').children('td').find('.commentsContents').text()
-    $(obj).parents('tr').children('td').find('.commentsContents').hide()
-    // $('[class^=commentContents]').hide()
-
-    $('.optionButton').hide()
-    $(obj).parent().parent().find('span[class=commentContents]').unwrap()
-    $(obj).parent().parent().find('[class^=commentContents]')
-        .wrap('<input class="commentContents" name="commentContents" style="width: 300px">').val(returnData);
-    $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
-    $(obj).parent().parent().find('input[class=commentContents]').val(returnData)
+function getUpdateComment(val){
+    $('#spanComment_'+ val).hide();
+    $('#boardComment_'+val).show();
+    // let returnData = $(obj).parents('tr').children('td').find('.commentsContents').text()
+    // $(obj).parents('tr').children('td').find('.commentsContents').hide()
+    //
+    // $('.optionButton').hide()
+    // $(obj).parent().parent().find('span[class=commentContents]').unwrap()
+    // $(obj).parent().parent().find('[class^=commentContents]')
+    //     .wrap('<input class="commentContents" name="commentContents" style="width: 300px">').val(returnData);
+    // $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
+    // $(obj).parent().parent().find('input[class=commentContents]').val(returnData)
 }
 
 function updateComment(obj) {
 
     let id = parseInt($(obj).parent().parent().find('.commentId').val())
     let inputData = $(obj).parent().parent().find('input').val()
-    let categoryNumber = $(".createButton").val()
-    let categoryNumberData = {
-        categoryNumber: categoryNumber
-    }
+
     let formData = {
         id: id,
         contents: inputData
     }
 
-    $.ajax({
-        method: 'GET',
-        url: '/board/validation/comments/yn',
-        data: categoryNumberData,
-        success: function (commentsYn) {
-            if (commentsYn == 'N') {
-                $('input[name="commentContents"]').val("")
-                $('#commentsButton').prop("disabled")
-                alert("댓글작성이 불가능한 게시판입니다.")
-            }
+    if (inputData.trim().length < 1) {
+        alert("공백은 불가합니다.")
+    }
 
-            if (commentsYn == 'Y') {
-                if (inputData.trim().length < 1) {
-                    alert("공백은 불가합니다.")
-                }
-
-                if (inputData.trim().length >= 1) {
-                    $.ajax({
-                        method: "POST",
-                        url: '/board/comment/update',
-                        data: formData,
-                        success: function () {
-                            alert("댓글 수정완료")
-                            getBoardHierarchicalCommentsAll()
-                        },
-                        error: function () {
-                            alert("댓글 수정실패")
-                        }
-                    })
-                }
+    if (inputData.trim().length >= 1) {
+        $.ajax({
+            method: "POST",
+            url: '/board/comment/update',
+            data: formData,
+            success: function () {
+                alert("댓글 수정완료")
+                getBoardHierarchicalCommentsAll()
+            },
+            error: function () {
+                alert("댓글 수정실패")
             }
-        }
-    })
+        })
+    }
 }
 
 function cancelUpdateComment() {

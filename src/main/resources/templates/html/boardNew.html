@@ -52,14 +52,19 @@
                         <input type="text" class="inputForm" rows="3" style="width: 400px; height: 150px;" th:field="*{contents}" >
                     </td>
                 </tr>
+
                 <br/>
                 <tr>
                     <td>
-                        <div id="Files0">
+                        <div class="fileCount" id="Files0"
+                             th:remove="${boardAdmin.attachedFileYn eq 'N' or boardAdmin.attachedFileCount eq 0 }? all : none">
                                     <input type='file' class="file" name='fileList' />
-                                    <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
+                                    <button type="button" id="button-add-file"
+                                            onclick="addFileForm()">파일추가</button>
                         </div>
-                            <div id="file-list"></div>
+                            <div id="file-list">
+
+                            </div>
                     </td>
                 </tr>
             </div>

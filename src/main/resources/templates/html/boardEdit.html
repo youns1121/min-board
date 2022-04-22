@@ -61,13 +61,14 @@
           <br/>
           <bt/>
           <br/>
-          <tr>
-            <th>파일리스트: </th>
-            <br/>
-          </tr>
+          <div th:remove="${boardUpdateVo.attachedFileYn eq 'N' or boardUpdateVo.attachedFileCount eq 0}? all:none">
+            <tr>
+              <th>파일리스트: </th>
+              <br/>
+            </tr>
 
           <tr th:each="uploadFile : ${uploadFileList}">
-            <div th:id="delete+${uploadFile.id}" th:value="${uploadFile.id}">
+            <div class="fileCount" th:id="delete+${uploadFile.id}" th:value="${uploadFile.id}">
             <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
             <button type="button" onclick="deleteFile(this)">삭제</button>
             </div>
@@ -76,11 +77,12 @@
           <tr>
             <td>
               <div id="Files0">
-                <button type="button" id="button-add-file" onclick="addFileForm()">파일추가</button>
+                <button type="button" id="button-add-file" th:data-id="${boardUpdateVo.categoryNumber}" onclick="addFileUpdateForm(this)">파일추가</button>
               </div>
               <div id="file-list"></div>
             </td>
           </tr>
+          </div>
       </div>
     </fieldset>
       <button type="button" class="selectbox-control" id="updateButton"

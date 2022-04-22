@@ -1,6 +1,7 @@
 package com.minboard.controller;
 
 import com.minboard.dto.*;
+import com.minboard.service.BoardAdminService;
 import com.minboard.service.CommentService;
 import com.minboard.service.FileStoreService;
 import com.minboard.service.impl.BoardServiceImpl;
@@ -25,29 +26,24 @@ public class BoardController {
     private final BoardServiceImpl boardService;
     private final FileStoreService fileStoreService;
     private final CommentService commentService;
+    private final BoardAdminService boardAdminService;
 
     @GetMapping("/new")
     public String boardSave(Model model, BoardSaveVo boardSaveVo, BoardDto boardDto,
                             @RequestParam("categorynumber") int categoryNumber) {
 
         List<BoardDto> categoryList = boardService.selectBoardCategoryList(boardDto);
+        BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
         model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("board",boardSaveVo);
+        model.addAttribute("boardAdmin",boardAdminDto);
         return "html/boardNew";
     }
 
     @ResponseBody
     @PostMapping("/new")
     public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
-
-        BoardDto boardDto = boardService.selectBoardCategory(boardSaveVo.getBoardAdminId());
-
-        boolean validationFileCheck = fileStoreService.validationFileCheck(boardDto, boardSaveVo);
-
-        if(validationFileCheck == false){
-            return "false";
-        }
 
         boardService.saveBoard(boardSaveVo);
         boardService.saveBoardFile(boardSaveVo);
@@ -59,14 +55,6 @@ public class BoardController {
     public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
                               @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
     ) throws IOException {
-
-        BoardDto boardDto = boardService.selectBoardCategory(boardUpdateVo.getBoardAdminId());
-
-        boolean validationFileCheck = fileStoreService.updateValidationFileCheck(boardDto, boardUpdateVo);
-
-        if(validationFileCheck == false){
-            return "false";
-        }
 
         boardService.updateBoardFile(boardUpdateVo);
         boardService.updateBoard(boardUpdateVo);
@@ -125,7 +113,7 @@ public class BoardController {
     @GetMapping("/validation/file/yn")
     public String validationFileYn(@RequestParam int id){
         BoardDto boardDto = boardService.selectBoardCategoryNumber(id);
-        return boardDto.getAttachedFileYn();
+        return String.valueOf(boardDto.getCategoryNumber());
     }
 
     @ResponseBody
@@ -139,7 +127,7 @@ public class BoardController {
     @GetMapping("/validation/reply/yn")
     public String validationReplyYn(@RequestParam int id){
         BoardDto boardDto = boardService.selectBoardCategoryNumber(id);
-        return boardDto.getReplyYn();
+        return String.valueOf(boardDto.getCategoryNumber());
     }
 
     @ResponseBody
@@ -168,8 +156,6 @@ public class BoardController {
                 .body(downloadFileInfo.getResource());
     }
 
-
-
     @PostMapping("/delete")
     public String boardRemove(int id) {
 
@@ -177,6 +163,7 @@ public class BoardController {
         return "redirect:/admin";
     }
 
+    @ResponseBody
     @PostMapping("/deleteFile")
     public void boardFileRemove(int id){
         fileStoreService.deleteFile(id);

@@ -142,7 +142,7 @@
                 id = #{id}
     </delete>
 
-    <delete id="deleteAlldFile" parameterType="int">
+    <delete id="deleteAllFile" parameterType="int">
         DELETE
 
         FROM
@@ -150,4 +150,5 @@
         WHERE
             board_id = #{id}
     </delete>
+
 </mapper>

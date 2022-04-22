@@ -16,7 +16,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
   <script type="text/javascript" th:src="@{/script/comments.js}"></script>
-  <script type="text/javascript" th:src="@{/script/boardDetails.js}"></script>
 
   <br/>
 </head>
@@ -70,16 +69,18 @@
             <input type="hidden" th:field="*{id}">
         </tr>
         <br/><br/>
-          <tr>
-              <th>파일리스트: </th>
-              <br/>
-          </tr>
-          <tr th:each="uploadFile : ${uploadFileList}">
-              <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|"
-                 th:text="${uploadFile.originalFileName}">
-              </a>
-              <br/>
-          </tr>
+          <div th:remove="${detailViewBoard.attachedFileYn eq 'N' or detailViewBoard.attachedFileCount eq 0}? all:none">
+              <tr>
+                  <th>파일리스트: </th>
+                  <br/>
+              </tr>
+              <tr th:each="uploadFile : ${uploadFileList}">
+                  <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|"
+                     th:text="${uploadFile.originalFileName}">
+                  </a>
+                  <br/>
+              </tr>
+          </div>
       </div>
     </fieldset>
       <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/update/{id}(id = ${id})}'|">수정
@@ -91,16 +92,20 @@
               th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
       </button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
-      <button type="button" class="replyButton"
-              th:data-group="${detailViewBoard.boardGroup}"
-              th:data-sort="${detailViewBoard.boardSort}"
-              th:data-depth="${detailViewBoard.boardDepth}"
-              th:onclick="|location.href='@{/board/reply/{id}(id = ${id})}'|">답글작성
-      </button>
+      <span th:remove="${detailViewBoard.replyYn eq 'N'}? all: none">
+        <button type="button" class="replyButton"
+                  th:data-group="${detailViewBoard.boardGroup}"
+                  th:data-sort="${detailViewBoard.boardSort}"
+                  th:data-depth="${detailViewBoard.boardDepth}"
+                  th:onclick="|location.href='@{/board/reply/{id}(id = ${id})}'|">답글작성
+          </button>
+      </span>
 
   </form>
   <br/><br/>
-  <div th:fragment="comments" th:replace="html/boardComments :: comments"></div>
-  <div th:fragment="commentsList" th:replace="html/boardCommentsDetail :: commentsList"></div>
+  <div th:remove="${detailViewBoard.commentsYn eq 'N'}? all:none">
+    <div th:fragment="comments" th:replace="html/boardComments :: comments"></div>
+    <div th:fragment="commentsList" th:replace="html/boardCommentsDetail :: commentsList"></div>
+  </div>
 </body>
 </html>

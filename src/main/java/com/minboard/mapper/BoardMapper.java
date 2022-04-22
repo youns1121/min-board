@@ -34,6 +34,9 @@ public interface BoardMapper {
     /** 관리자 게시물 상세보기 **/
     BoardAdminDto selectBoardAdmin(int id);
 
+    /** 관리자 게시물 상세보기 **/
+    BoardAdminDto getBoardCategory(int id);
+
     /** 게시물 수정 상세보기 **/
     BoardUpdateVo selectUpdateBoard(int id);
 
@@ -43,8 +46,6 @@ public interface BoardMapper {
     void insertBoardAdminSetting(BoardAdminSaveVo boardAdminSaveVo);
 
     void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo);
-
-    void insertBoardAdmin(BoardAdminSaveVo boardAdminSaveVo);
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);
@@ -75,4 +76,8 @@ public interface BoardMapper {
     BoardDto selectBoardCategory(int id);
 
     BoardDto selectBoardCategoryNumber(int categoryNumber);
+
+    void deleteBoardAdmin(int id);
+
+    List<BoardDto> findByBoardIdList(int boardAdminId);
 }

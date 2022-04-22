@@ -18,8 +18,8 @@
                   <span th:if="${comments.commentDepth ne 0}" th:text="ㄴRe"></span>
 
                   </span>
-                  <span th:class="commentsContents" th:text = "${comments.contents}">
-                  </span>
+                  <span th:class="commentsContents" th:text = "${comments.contents}" th:id="spanComment_+${comments.id}"></span>
+                  <input type="text" th:text="${comments.contents}" th:id="boardComment_+${comments.id}" th:value="${comments.contents}" style="display: none">
                   <div id="option">
                       <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료"
                              onclick="updateComment(this)"
@@ -46,7 +46,7 @@
                               th:value="${comments.id}"
                               onclick="getCommentReply(this)">답변작성
                       </button>
-                      <button type="button" class="modifyButton" onclick="getUpdateComment(this)">수정</button>
+                      <button type="button" class="modifyButton" th:onclick="|getUpdateComment('${comments.id}')|">수정</button>
                       <button type="button" onclick="deleteComment(this)">삭제</button>
                   </div>
               </td>

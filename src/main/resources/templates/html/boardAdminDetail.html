@@ -16,7 +16,8 @@
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
-<!--  <div th:fragment="category" th:replace="html/header/boardCategory :: category"></div>-->
+  <script type="text/javascript" th:src="@{/script/admin.js}"></script>
+
 </head>
 <body>
 <br/>
@@ -95,6 +96,7 @@
   <br/>
   <button type="button" th:onclick="|location.href='@{/admin/setting/update/{id}(id = ${id})}'|">수정</button>
   <button type="button" th:onclick="|location.href='@{/admin}'|">목록</button>
+  <button type="button" th:onclick="|deleteAdminFn('${id}')|">삭제</button>
 </form>
 </body>
 </html>

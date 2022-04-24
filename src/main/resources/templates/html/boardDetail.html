@@ -87,11 +87,15 @@
       </button>
       <button type="button" class="btn btn-primary"
               th:onclick="|location.href='/board/category/${detailViewBoard.categoryNumber}'|">목록</button>
-      <button type="button" class="createButton"
-              th:value="${detailViewBoard.categoryNumber}"
-              th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
+
       </button>
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
+    <br/>
+    <br/>
+    <button type="button" class="createButton"
+            th:value="${detailViewBoard.categoryNumber}"
+            th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
+    </button>
       <span th:remove="${detailViewBoard.replyYn eq 'N'}? all: none">
         <button type="button" class="replyButton"
                   th:data-group="${detailViewBoard.boardGroup}"
@@ -102,7 +106,6 @@
       </span>
 
   </form>
-  <br/><br/>
   <div th:remove="${detailViewBoard.commentsYn eq 'N'}? all:none">
     <div th:fragment="comments" th:replace="html/boardComments :: comments"></div>
     <div th:fragment="commentsList" th:replace="html/boardCommentsDetail :: commentsList"></div>

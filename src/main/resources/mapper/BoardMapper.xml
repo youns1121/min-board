@@ -474,7 +474,7 @@
             join comments c on b.id = c.board_id
 
         set
-                b.del_yn = 'Y', c.del_yn = 'Y'
+               ba.del_yn='Y' , b.del_yn = 'Y', c.del_yn = 'Y'
         where
             b.del_yn = 'N'
           and ba.id = #{id}

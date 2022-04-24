@@ -48,12 +48,13 @@ public class BoardAdminService{
     }
 
     public void removeBoardAdmin(int id){
-        boardMapper.deleteBoardAdmin(id);
         List<BoardDto> boardIdList = boardMapper.findByBoardIdList(id);
         int size = boardIdList.size();
 
         for(int i=0; i< size; i++) {
             uploadFileMapper.deleteAllFile(boardIdList.get(i).getBoardId());
         }
+        boardMapper.deleteBoardAdmin(id);
+
     }
 }

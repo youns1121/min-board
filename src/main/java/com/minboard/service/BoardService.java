@@ -13,8 +13,6 @@ public interface BoardService {
     /** 게시물 리스트 **/
     List<BoardDto> getBoardList(BoardDto boardDto);
 
-    BoardDto selectBoardCategory(int id);
-
     /** 전체 게시물 수 **/
     int geTotalBoardCount();
 

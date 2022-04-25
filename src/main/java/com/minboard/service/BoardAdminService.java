@@ -19,6 +19,7 @@ import java.util.List;
 public class BoardAdminService{
 
     private final BoardAdminMapper boardAdminMapper;
+    private final BoardMapper boardMapper;
     private final UploadFileMapper uploadFileMapper;
 
     /** 게시물 생성 **/
@@ -36,13 +37,14 @@ public class BoardAdminService{
         return boardAdminDto;
     }
 
-    public BoardAdminDto getBoardCategory(int id){
-        return boardMapper.getBoardCategory(id);
+    public BoardAdminDto getBoardCategory(int categoryNumber){
+        BoardAdminDto boardAdminDto = boardAdminMapper.selectBoardCategory(categoryNumber);
+        return boardAdminDto;
     }
 
     public List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto){
 
-        List<BoardAdminDto> boardAdminDtoList = boardMapper.selectBoardAdminList(boardAdminDto);
+        List<BoardAdminDto> boardAdminDtoList = boardAdminMapper.selectBoardAdminList(boardAdminDto);
 
         return boardAdminDtoList;
 
@@ -63,5 +65,11 @@ public class BoardAdminService{
 
         return BoardCategoryList;
     }
+
+    public int totalCountCategoryBoard(int categoryNumber){
+        int totalCountCategoryBoard = boardAdminMapper.totalCountCategoryBoard(categoryNumber);
+        return totalCountCategoryBoard;
+    }
+
 
 }

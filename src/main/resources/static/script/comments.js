@@ -111,20 +111,16 @@ function addCommentReply(obj){
         }
     })
 
+
 }
 
 function getUpdateComment(val){
+    $('.optionButton').hide()
+    let contents = $('#spanComment_'+ val).text()
     $('#spanComment_'+ val).hide();
+    $('#boardComment_'+val).val(contents)
     $('#boardComment_'+val).show();
-    // let returnData = $(obj).parents('tr').children('td').find('.commentsContents').text()
-    // $(obj).parents('tr').children('td').find('.commentsContents').hide()
-    //
-    // $('.optionButton').hide()
-    // $(obj).parent().parent().find('span[class=commentContents]').unwrap()
-    // $(obj).parent().parent().find('[class^=commentContents]')
-    //     .wrap('<input class="commentContents" name="commentContents" style="width: 300px">').val(returnData);
-    // $(obj).parent().parent().find('[class^=modify]').attr('type', 'button')
-    // $(obj).parent().parent().find('input[class=commentContents]').val(returnData)
+    $('.modifyButton'+val).show();
 }
 
 function updateComment(obj) {
@@ -157,8 +153,11 @@ function updateComment(obj) {
     }
 }
 
-function cancelUpdateComment() {
-    getBoardHierarchicalCommentsAll()
+function cancelUpdateComment(val) {
+    $('.modifyButton'+val).hide();
+    $('#boardComment_'+val).hide();
+    $('.optionButton').show()
+    $('.commentsContents').show()
 }
 
 function cancelCommentReply(obj){

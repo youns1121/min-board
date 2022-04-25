@@ -21,12 +21,16 @@ public interface BoardAdminMapper {
     List<BoardAdminDto> selectBoardCategoryList();
 
     /** 관리자 게시물 상세보기 **/
-    BoardAdminDto selectBoardCategory(int boardAdminId);
+    BoardAdminDto selectBoardCategory(int id);
 
     /** 관리자 게시물 상세보기 **/
     BoardAdminDto selectBoardAdmin(int boardAdminId);
 
     void deleteBoardAdmin(int boardAdminId);
 
+    int totalCountCategoryBoard(int categoryNumber);
+
+    /** 관리자 게시물 리스트 **/
+    List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto);
 
 }

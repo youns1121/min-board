@@ -1,8 +1,10 @@
 package com.minboard.service.impl;
 
 
+import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
+import com.minboard.mapper.BoardAdminMapper;
 import com.minboard.mapper.BoardMapper;
 import com.minboard.mapper.CommentsMapper;
 import com.minboard.mapper.UploadFileMapper;
@@ -29,29 +31,13 @@ public class BoardServiceImpl implements BoardService {
 
     private final FileStoreServiceImpl fileStoreService;
     private final BoardMapper boardMapper;
+    private final BoardAdminMapper boardAdminMapper;
     private final UploadFileMapper fileMapper;
     private final CommentsMapper commentsMapper;
 
     @Value("${custom.path.uploadPath}")
     private String uploadPath;
 
-
-    public List<BoardDto> selectBoardCategoryList(){
-        List<BoardDto> categoryList = boardMapper.selectBoardCategoryList();
-        return categoryList;
-    }
-
-    @Override
-    public BoardDto selectBoardCategory(int id) {
-        BoardDto boardCategory = boardMapper.selectBoardCategory(id);
-        return boardCategory;
-    }
-
-    @Override
-    public BoardDto selectBoardCategoryNumber(int categoryNumber) {
-        BoardDto boardDto = boardMapper.selectBoardCategoryNumber(categoryNumber);
-        return boardDto;
-    }
 
     /** 게시물 생성 **/
     @Override
@@ -101,13 +87,12 @@ public class BoardServiceImpl implements BoardService {
         return boardReply;
     }
 
-    /** 게시물 수정 상세보기 **/
     @Override
-    @Transactional(readOnly = true)
-    public BoardUpdateVo getDetailViewUpdateBoard(int id) {
-        BoardUpdateVo detailViewUpdateBoard = boardMapper.selectUpdateBoard(id);
-        return detailViewUpdateBoard;
+    public BoardUpdateVo selectBoardUpdate(int id) {
+        return null;
     }
+
+
 
     @Override
     public void deleteBoard(int id) {
@@ -140,7 +125,7 @@ public class BoardServiceImpl implements BoardService {
     public List<BoardDto> getBoardList(BoardDto boardDto) {
 
         List<BoardDto> boardList = Collections.emptyList();
-        int boardTotalCount = boardMapper.totalCountCategoryBoard(boardDto.getCategoryNumber());
+        int boardTotalCount = boardAdminMapper.totalCountCategoryBoard(boardDto.getCategoryNumber());
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
         boardDto.setPaginationInfo(paginationInfo);

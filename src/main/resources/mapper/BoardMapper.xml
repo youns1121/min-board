@@ -138,13 +138,7 @@
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
 
-    <!--총 게시물 수-->
-    <select id="totalCountCategoryBoard" resultType="int">
-        select count(b.id)
-        from board_admin as ba
-            join board as b on ba.id = b.board_admin_id
-        where b.del_yn = 'N' and ba.category_number = #{categoryNumber}
-    </select>
+
 
     <select id="totalCountBoard" resultType="int">
         select count(*)
@@ -380,6 +374,24 @@
             board_group = ${boardGroup} AND del_yn = 'N';
     </select>
 
+    <select id="selectBoardReply" resultType="BoardDto" resultMap="boardDtoResultMap" >
+        select
+            b.id,
+            b.title,
+            b.category_name,
+            ba.category_number,
+            b.board_group,
+            b.board_sort,
+            b.board_depth,
+            b.board_admin_id,
+            b.del_yn
+        from
+            board as b
+                join board_admin as ba on b.board_admin_id = ba.id
+        where
+            b.id = #{id} and b.del_yn = 'N'
+    </select>
+
     <insert id="insertBoareReply"
             parameterType="BoardSaveVo"
             useGeneratedKeys ="true"
@@ -430,4 +442,6 @@
         WHERE
             board_group = ${boardGroup} AND board_sort > ${boardSort}
     </update>
+
+
 </mapper>

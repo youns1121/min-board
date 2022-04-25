@@ -19,15 +19,21 @@
 
                   </span>
                   <span th:class="commentsContents" th:text = "${comments.contents}" th:id="spanComment_+${comments.id}"></span>
-                  <input type="text" th:text="${comments.contents}" th:id="boardComment_+${comments.id}" th:value="${comments.contents}" style="display: none">
-                  <div id="option">
-                      <input th:class = "modify + ${comments.id}" type="hidden" value="수정완료"
-                             onclick="updateComment(this)"
-                      >
-                      <input th:class = "modify + ${comments.id}" type="hidden" value="취소"
-                             onclick="cancelUpdateComment(this)"
-                      >
+                  <input type="text" th:id="boardComment_+${comments.id}" style="display: none">
+
+                  <div th:class="modifyButton + ${comments.id}" style="display:none">
+                      <button th:class = "modify+ ${comments.id}"
+                                 value="수정완료"
+                                 onclick="updateComment(this)">수정완료
+                      </button>
+                      <button th:class = "cancel + ${comments.id}"
+                              value="취소"
+                              th:onclick="|cancelUpdateComment('${comments.id}')|">취소
+                      </button>
                   </div>
+                  <br/>
+
+
                   <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') == null}"
                      th:text="*{#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm')}" th:value="생성시간">
                   </a>

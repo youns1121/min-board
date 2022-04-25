@@ -57,9 +57,10 @@
                 board_admin
 
         <where>
-                <if test="id != null">AND id = #{id} </if>
-                <if test="category_number != null">AND category_number = #{categoryNumber} </if>
-                AND del_yn = 'N'
+                del_yn = 'N' AND category_number = #{categoryNumber}
+                <if test="categoryNumber == null"> AND id = #{id}  </if>
+
+
         </where>
     </select>
 
@@ -78,8 +79,7 @@
                  ,del_yn
 
         from
-                 board_admin,
-
+                 board_admin
         where
                 del_yn = 'N' and category_number > 0
     </select>
@@ -120,5 +120,13 @@
           and ba.id = #{id}
           and b.board_admin_id = ba.id
     </update>
+
+    <!--총 게시물 수-->
+    <select id="totalCountCategoryBoard" resultType="int">
+        select count(b.id)
+        from board_admin as ba
+                 join board as b on ba.id = b.board_admin_id
+        where b.del_yn = 'N' and ba.category_number = #{categoryNumber}
+    </select>
 
 </mapper>

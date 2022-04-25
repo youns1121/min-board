@@ -19,14 +19,13 @@ public interface BoardMapper {
 
     List<BoardDto> selectBoardAllList(BoardDto boardDto);
 
-    /** 관리자 게시물 리스트 **/
-    List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto);
+
 
 
     /** 게시물 총 갯수 **/
     int totalCountBoard();
 
-    int totalCountCategoryBoard(int categoryCode);
+
 
     /** 게시물 상세보기 **/
     BoardDto selectBoard(int id);
@@ -65,10 +64,6 @@ public interface BoardMapper {
     BoardDto selectBoardReply(int id);
 
     void decreaseSort(BoardDto boardDto);
-
-
-
-    BoardDto selectBoardCategory(int id);
 
     BoardDto selectBoardCategoryNumber(int categoryNumber);
 

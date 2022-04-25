@@ -32,7 +32,7 @@ public class BoardController {
     public String boardSave(Model model, BoardSaveVo boardSaveVo,
                             @RequestParam("categorynumber") int categoryNumber) {
 
-        List<BoardDto> categoryList = boardService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
         BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
         model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList", categoryList);
@@ -89,10 +89,10 @@ public class BoardController {
     }
 
     @GetMapping("/category/{categoryNumber}")
-    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber, BoardAdminDto boardAdminDto, Model model) {
+    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber,BoardDto boardDto, Model model) {
 
         boardDto.setCategoryNumber(categoryNumber);
-        List<BoardDto> boardCategoryList = boardService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardList", boardList);
@@ -102,7 +102,7 @@ public class BoardController {
     @GetMapping("/category")
     public String boardCategoryList(BoardDto boardDto, Model model) {
 
-        List<BoardDto> categoryList = boardService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
         List<BoardDto> boardList = boardService.selectBoardAllList(boardDto);
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryList", categoryList);
@@ -112,29 +112,29 @@ public class BoardController {
     @ResponseBody
     @GetMapping("/validation/file/yn")
     public String validationFileYn(@RequestParam int id){
-        BoardDto boardDto = boardService.selectBoardCategory(id);
-        return String.valueOf(boardDto.getCategoryNumber());
+        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
+        return String.valueOf(boardCategory.getCategoryNumber());
     }
 
     @ResponseBody
     @GetMapping("/validation/file/count")
     public String validationFileCount(@RequestParam int id){
-        BoardDto boardDto = boardService.selectBoardCategory(id);
-        return boardDto.getAttachedFileCount().toString();
+        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
+        return String.valueOf(boardCategory.getAttachedFileCount());
     }
 
     @ResponseBody
     @GetMapping("/validation/reply/yn")
     public String validationReplyYn(@RequestParam int id){
-        BoardDto boardDto = boardService.selectBoardCategory(id);
-        return String.valueOf(boardDto.getCategoryNumber());
+        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
+        return String.valueOf(boardCategory.getCategoryNumber());
     }
 
     @ResponseBody
     @GetMapping("/validation/comments/yn")
     public String validationCommentsYn(@RequestParam int categoryNumber){
-        BoardDto boardDto = boardService.selectBoardCategory(categoryNumber);
-        return boardDto.getCommentsYn();
+        BoardAdminDto boardCategory  = boardAdminService.getBoardCategory(categoryNumber);
+        return boardCategory.getCommentsYn();
     }
 
     @GetMapping("/view/{id}")

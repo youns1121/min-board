@@ -15,8 +15,6 @@ public interface BoardService {
 
     BoardDto selectBoardCategory(int id);
 
-    BoardDto selectBoardCategoryNumber(int categoryNumber);
-
     /** 전체 게시물 수 **/
     int geTotalBoardCount();
 
@@ -26,7 +24,7 @@ public interface BoardService {
     BoardDto selectBoardReply(int id);
 
     /** 게시물 수정 상세보기 **/
-    BoardUpdateVo getDetailViewUpdateBoard(int id);
+    BoardUpdateVo selectBoardUpdate(int id);
 
     /** 게시물 생성 **/
     void saveBoard(BoardSaveVo boardSaveVo) throws IOException;

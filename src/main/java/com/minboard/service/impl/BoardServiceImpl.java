@@ -36,8 +36,8 @@ public class BoardServiceImpl implements BoardService {
     private String uploadPath;
 
 
-    public List<BoardDto> selectBoardCategoryList(BoardDto boardDto){
-        List<BoardDto> categoryList = boardMapper.selectBoardCategoryList(boardDto);
+    public List<BoardDto> selectBoardCategoryList(){
+        List<BoardDto> categoryList = boardMapper.selectBoardCategoryList();
         return categoryList;
     }
 

@@ -5,6 +5,110 @@
 
 <mapper namespace="com.minboard.mapper.BoardAdminMapper">
 
+    <resultMap id="boardAdminDtoResultMap" type="BoardAdminDto">
+        <result property="id" column="id"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="categoryNumber" column="category_number"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="attachedFileCount" column="attached_file_count"/>
+        <result property="commentsYn" column="comments_yn"/>
+        <result property="commentsCount" column="comments_count"/>
+        <result property="attachedFileYn" column="attached_file_yn"/>
+        <result property="replyYn" column="reply_yn" />
+        <result property="boardId" column="board_id"/>
+        <result property="delYn" column="del_yn"/>
+    </resultMap>
+
+    <select id="selectBoardAdmin" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap" >
+        select
+            id,
+            category_name,
+            category_number,
+            contents,
+            attached_file_yn,
+            attached_file_count,
+            comments_yn,
+            reply_yn,
+            create_time,
+            update_time,
+            del_yn
+        from
+            board_admin
+        where
+            id = #{id} and del_yn = 'N'
+    </select>
+
+    <select id="selectBoardCategory" parameterType="int" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
+        select
+                id
+                ,category_name
+                ,category_number
+                ,contents
+                ,attached_file_yn
+                ,attached_file_count
+                ,reply_yn
+                ,comments_yn
+                ,create_time
+                ,update_time
+                ,del_yn
+
+        from
+                board_admin
+
+        <where>
+                <if test="id != null">AND id = #{id} </if>
+                <if test="category_number != null">AND category_number = #{categoryNumber} </if>
+                AND del_yn = 'N'
+        </where>
+    </select>
+
+    <select id="selectBoardCategoryList" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
+        select
+                 id
+                 ,category_name
+                 ,category_number
+                 ,contents
+                 ,attached_file_yn
+                 ,attached_file_count
+                 ,reply_yn
+                 ,comments_yn
+                 ,create_time
+                 ,update_time
+                 ,del_yn
+
+        from
+                 board_admin,
+
+        where
+                del_yn = 'N' and category_number > 0
+    </select>
+
+    <select id="selectBoardAdminList" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
+        select
+            id,
+            (@rownum := @rownum + 1) as num,
+            category_name,
+            category_number,
+            contents,
+            attached_file_yn,
+            attached_file_count,
+            reply_yn,
+            comments_yn,
+            create_time,
+            update_time,
+            del_yn
+
+        from
+            board_admin,
+            (select @rownum := 0) as num_table
+
+        where
+            del_yn = 'N' and category_number > 0
+        order by num desc
+
+    </select>
+
     <update id="deleteBoardAdmin" parameterType="int">
         update
             board as b

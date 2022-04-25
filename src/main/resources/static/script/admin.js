@@ -25,11 +25,14 @@ function createAdminFn(){
 
 function deleteAdminFn(adminId){
 
-
     $.ajax({
         method: 'POST',
         url: '/admin/remove',
         data: adminData = {id : adminId },
+        success: function (){
+            alert("삭제 완료되었습니다.")
+            location.href='/admin'
+        }
     })
 }
 

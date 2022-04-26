@@ -1,7 +1,6 @@
 package com.minboard.service.impl;
 
 
-import com.minboard.dto.BoardAdminDto;
 import com.minboard.dto.BoardDto;
 import com.minboard.dto.UploadFileDto;
 import com.minboard.mapper.BoardAdminMapper;
@@ -81,21 +80,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDto selectBoardReply(int id) {
+    public BoardDto getBoardReply(int id) {
 
         BoardDto boardReply = boardMapper.selectBoardReply(id);
         return boardReply;
     }
 
     @Override
-    public BoardUpdateVo selectBoardUpdate(int id) {
-        return null;
-    }
-
-
-
-    @Override
-    public void deleteBoard(int id) {
+    public void removeBoard(int id) {
         List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
         int uploadFileListSize= uploadFileList.size();
         for(int i=0; i < uploadFileListSize; i++){
@@ -115,7 +107,7 @@ public class BoardServiceImpl implements BoardService {
 
     /** 게시물 수정 **/
     @Override
-    public void updateBoard(BoardUpdateVo boardUpdateVo) {
+    public void modifyBoard(BoardUpdateVo boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
     }
 
@@ -172,11 +164,6 @@ public class BoardServiceImpl implements BoardService {
             boardSaveVo.setBoardSort(calculationResult);
             calculationResultNotZero(boardSaveVo);
         }
-    }
-
-    @Override
-    public int validationBoardCategory(int id) {
-        return 0;
     }
 
     public void calculationResultZero(BoardSaveVo boardSaveVo){

@@ -27,12 +27,12 @@ public class BoardAdminService{
         boardAdminMapper.insertBoardAdminSetting(boardAdminSaveVo);
     }
 
-    public void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo){
+    public void modifyBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo){
         boardAdminMapper.updateBoardAdminSetting(boardAdminUpdateVo);
     }
 
 
-    public BoardAdminDto selectBoardAdmin(int id){
+    public BoardAdminDto getBoardAdmin(int id){
         BoardAdminDto boardAdminDto = boardAdminMapper.selectBoardAdmin(id);
         return boardAdminDto;
     }
@@ -42,12 +42,10 @@ public class BoardAdminService{
         return boardAdminDto;
     }
 
-    public List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto){
+    public List<BoardAdminDto> getBoardAdminList(BoardAdminDto boardAdminDto){
 
         List<BoardAdminDto> boardAdminDtoList = boardAdminMapper.selectBoardAdminList(boardAdminDto);
-
         return boardAdminDtoList;
-
     }
 
     public void removeBoardAdmin(int id){
@@ -60,13 +58,13 @@ public class BoardAdminService{
         boardMapper.deleteBoardAdmin(id);
     }
 
-    public List<BoardAdminDto> selectBoardCategoryList(){
+    public List<BoardAdminDto> getBoardCategoryList(){
         List<BoardAdminDto> BoardCategoryList = boardAdminMapper.selectBoardCategoryList();
 
         return BoardCategoryList;
     }
 
-    public int totalCountCategoryBoard(int categoryNumber){
+    public int getTotalCountCategoryBoard(int categoryNumber){
         int totalCountCategoryBoard = boardAdminMapper.totalCountCategoryBoard(categoryNumber);
         return totalCountCategoryBoard;
     }

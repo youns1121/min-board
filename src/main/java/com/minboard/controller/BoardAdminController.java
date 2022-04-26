@@ -22,7 +22,7 @@ public class BoardAdminController {
 
     @GetMapping("/setting/update/{id}")
     public String boardAdminModify(@PathVariable("id") int id, Model model) {
-        BoardAdminDto boardAdminDto = boardAdminService.selectBoardAdmin(id);
+        BoardAdminDto boardAdminDto = boardAdminService.getBoardAdmin(id);
         model.addAttribute("boardAdminUpdate", boardAdminDto);
         return "html/boardAdminEdit";
     }
@@ -31,7 +31,7 @@ public class BoardAdminController {
     @PostMapping("/setting/update")
     public String boardAdminModify(@ModelAttribute("boardAdminUpdateVo") BoardAdminUpdateVo boardAdminUpdateVo) {
 
-        boardAdminService.updateBoardAdminSetting(boardAdminUpdateVo);
+        boardAdminService.modifyBoardAdminSetting(boardAdminUpdateVo);
         return boardAdminUpdateVo.getId().toString();
     }
 
@@ -53,7 +53,7 @@ public class BoardAdminController {
     @GetMapping("/view/{id}")
     public String boardAdminDetails(@PathVariable("id") int id, Model model){
 
-        BoardAdminDto boardAdminDto = boardAdminService.selectBoardAdmin(id);
+        BoardAdminDto boardAdminDto = boardAdminService.getBoardAdmin(id);
         model.addAttribute("boardAdmin", boardAdminDto);
         return "html/boardAdminDetail";
     }
@@ -62,7 +62,7 @@ public class BoardAdminController {
     @GetMapping
     public String boardAdminList(BoardAdminDto boardAdminDto, Model model){
 
-        List<BoardAdminDto> boardAdminDtoList = boardAdminService.selectBoardAdminList(boardAdminDto);
+        List<BoardAdminDto> boardAdminDtoList = boardAdminService.getBoardAdminList(boardAdminDto);
         model.addAttribute("boardAdminList", boardAdminDtoList);
 
         return "html/boardAdmin";

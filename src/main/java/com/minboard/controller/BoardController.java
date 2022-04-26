@@ -32,7 +32,7 @@ public class BoardController {
     public String boardSave(Model model, BoardSaveVo boardSaveVo,
                             @RequestParam("categorynumber") int categoryNumber) {
 
-        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
         model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList", categoryList);
@@ -57,7 +57,7 @@ public class BoardController {
     ) throws IOException {
 
         boardService.updateBoardFile(boardUpdateVo);
-        boardService.updateBoard(boardUpdateVo);
+        boardService.modifyBoard(boardUpdateVo);
         return boardUpdateVo.getId().toString();
     }
 
@@ -83,7 +83,7 @@ public class BoardController {
     @GetMapping("/reply/{id}")
     public String boardReply(BoardSaveVo boardSaveVo, Model model){
 
-        BoardDto detailViewBoard = boardService.selectBoardReply(boardSaveVo.getId());
+        BoardDto detailViewBoard = boardService.getBoardReply(boardSaveVo.getId());
         model.addAttribute("board", detailViewBoard);
         return "html/boardReply";
     }
@@ -92,7 +92,7 @@ public class BoardController {
     public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber,BoardDto boardDto, Model model) {
 
         boardDto.setCategoryNumber(categoryNumber);
-        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardList", boardList);
@@ -102,7 +102,7 @@ public class BoardController {
     @GetMapping("/category")
     public String boardCategoryList(BoardDto boardDto, Model model) {
 
-        List<BoardAdminDto> categoryList = boardAdminService.selectBoardCategoryList();
+        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         List<BoardDto> boardList = boardService.selectBoardAllList(boardDto);
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryList", categoryList);
@@ -159,7 +159,7 @@ public class BoardController {
     @PostMapping("/delete")
     public String boardRemove(int id) {
 
-        boardService.deleteBoard(id);
+        boardService.removeBoard(id);
         return "redirect:/admin";
     }
 

@@ -20,8 +20,38 @@
         <result property="delYn" column="del_yn"/>
     </resultMap>
 
+    <insert id="insertBoardAdminSetting"
+            parameterType="BoardAdminSaveVo"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        INSERT INTO board_admin(
+
+                                category_name
+                               ,category_number
+                               ,contents
+                               ,attached_file_count
+                               ,attached_file_yn
+                               ,reply_yn
+                               ,comments_yn
+                               ,create_time
+                               ,update_time
+        )VALUES(
+                #{categoryName}
+               ,#{categoryNumber}
+               ,#{contents}
+               ,#{attachedFileCount}
+               ,#{attachedFileYn}
+               ,#{replyYn}
+               ,#{commentsYn}
+               ,#{createTime}
+               ,#{updateTime}
+               )
+    </insert>
+
+
     <select id="selectBoardAdmin" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap" >
-        select
+        SELECT
             id,
             category_name,
             category_number,
@@ -33,14 +63,14 @@
             create_time,
             update_time,
             del_yn
-        from
+        FROM
             board_admin
-        where
-            id = #{id} and del_yn = 'N'
+        WHERE
+            id = #{id} AND del_yn = 'N'
     </select>
 
     <select id="selectBoardCategory" parameterType="int" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
-        select
+        SELECT
                 id
                 ,category_name
                 ,category_number
@@ -53,7 +83,7 @@
                 ,update_time
                 ,del_yn
 
-        from
+        FROM
                 board_admin
 
         <where>
@@ -65,7 +95,7 @@
     </select>
 
     <select id="selectBoardCategoryList" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
-        select
+        SELECT
                  id
                  ,category_name
                  ,category_number
@@ -78,55 +108,71 @@
                  ,update_time
                  ,del_yn
 
-        from
+        FROM
                  board_admin
-        where
-                del_yn = 'N' and category_number > 0
+        WHERE
+                del_yn = 'N' AND category_number > 0
     </select>
 
     <select id="selectBoardAdminList" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">
-        select
-            id,
-            (@rownum := @rownum + 1) as num,
-            category_name,
-            category_number,
-            contents,
-            attached_file_yn,
-            attached_file_count,
-            reply_yn,
-            comments_yn,
-            create_time,
-            update_time,
-            del_yn
+        SELECT
+                id,
+                (@rownum := @rownum + 1) AS num,
+                category_name,
+                category_number,
+                contents,
+                attached_file_yn,
+                attached_file_count,
+                reply_yn,
+                comments_yn,
+                create_time,
+                update_time,
+                del_yn
 
-        from
+        FROM
             board_admin,
-            (select @rownum := 0) as num_table
+            (select @rownum := 0) AS num_table
 
-        where
-            del_yn = 'N' and category_number > 0
-        order by num desc
+        WHERE
+            del_yn = 'N' AND category_number > 0
+        ORDER BY num DESC
 
     </select>
 
     <update id="deleteBoardAdmin" parameterType="int">
-        update
-            board as b
-            join board_admin ba on ba.id = b.board_admin_id
-            set
+        UPDATE board AS b
+            JOIN board_admin AS ba ON ba.id = b.board_admin_id
+        SET
                 b.del_yn = 'Y'
-        where
+        WHERE
             b.del_yn = 'N'
-          and ba.id = #{id}
-          and b.board_admin_id = ba.id
+          AND ba.id = #{id}
+          AND b.board_admin_id = ba.id
+    </update>
+
+    <update id="updateBoardAdminSetting" parameterType="BoardAdminUpdateVo">
+
+        UPDATE  board_admin
+        SET
+            category_name = #{categoryName}
+          ,contents = #{contents}
+          ,attached_file_count = #{attachedFileCount}
+          ,attached_file_yn = #{attachedFileYn}
+          ,reply_yn = #{replyYn}
+          ,comments_yn = #{commentsYn}
+          ,update_time = #{updateTime}
+
+        WHERE
+            del_yn = 'N' AND id = #{id}
+
     </update>
 
     <!--총 게시물 수-->
     <select id="totalCountCategoryBoard" resultType="int">
-        select count(b.id)
-        from board_admin as ba
-                 join board as b on ba.id = b.board_admin_id
-        where b.del_yn = 'N' and ba.category_number = #{categoryNumber}
+        SELECT count(b.id)
+        FROM board_admin AS ba
+                 JOIN board AS b ON ba.id = b.board_admin_id
+        WHERE b.del_yn = 'N' AND ba.category_number = #{categoryNumber}
     </select>
 
 </mapper>

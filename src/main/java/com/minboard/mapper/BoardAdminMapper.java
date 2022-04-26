@@ -15,9 +15,6 @@ public interface BoardAdminMapper {
 
     void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo);
 
-
-    List<BoardDto> findByBoardList(int boardAdminId);
-
     List<BoardAdminDto> selectBoardCategoryList();
 
     /** 관리자 게시물 상세보기 **/

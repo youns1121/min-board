@@ -23,11 +23,9 @@
 
                   <div th:class="modifyButton + ${comments.id}" style="display:none">
                       <button th:class = "modify+ ${comments.id}"
-                                 value="수정완료"
                                  onclick="updateComment(this)">수정완료
                       </button>
-                      <button th:class = "cancel + ${comments.id}"
-                              value="취소"
+                      <button type="button" th:class = "cancel + ${comments.id}"
                               th:onclick="|cancelUpdateComment('${comments.id}')|">취소
                       </button>
                   </div>

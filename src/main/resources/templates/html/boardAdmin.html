@@ -47,11 +47,11 @@
             <td th:text="${boardAdmin.num}"></td>
             <td th:text="${boardAdmin.categoryName}"
                 style="cursor:pointer"
-                th:onclick="|location.href='@{/admin/view/{id}(id = ${boardAdmin.id})}'|">
+                th:onclick="|location.href='@{/board/category/{categoryNumber}(categoryNumber = ${boardAdmin.categoryNumber})}'|">
             </td>
-            <td th:onclick="|location.href='@{/board/category/{categoryNumber}(categoryNumber = ${boardAdmin.categoryNumber})}'|"
+            <td th:onclick="|location.href='@{/admin/view/{id}(id = ${boardAdmin.id})}'|"
                 style="cursor:pointer">
-              바로가기
+              설정하기
             </td>
             <td th:if="${#temporals.format(boardAdmin.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                 th:text="${#temporals.format(boardAdmin.createTime, 'HH:mm')}" style="color: red">

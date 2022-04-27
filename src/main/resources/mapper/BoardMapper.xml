@@ -99,7 +99,7 @@
 
         FROM
             board AS b
-                JOIM board_admin AS ba ON b.board_admin_id = ba.id
+                JOIN board_admin AS ba ON b.board_admin_id = ba.id
         WHERE
             b.del_yn = 'N' AND ba.category_number > 0
 

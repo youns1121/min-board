@@ -29,3 +29,11 @@ li {
     color: #ff5353;
     margin-left: 5px;
 }
+
+textarea {
+    width: 100%;
+    height: 6.25em;
+    border: none;
+    resize: none;
+    outline-color: black;
+}

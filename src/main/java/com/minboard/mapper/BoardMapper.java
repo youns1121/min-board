@@ -19,27 +19,17 @@ public interface BoardMapper {
 
     List<BoardDto> selectBoardAllList(BoardDto boardDto);
 
-
-
-
     /** 게시물 총 갯수 **/
     int totalCountBoard();
 
-
-
     /** 게시물 상세보기 **/
     BoardDto selectBoard(int id);
-
-
-
 
     /** 게시물 수정 상세보기 **/
     BoardUpdateVo selectUpdateBoard(int id);
 
     /** 게시물 생성 **/
     void insertBoard(BoardSaveVo boardSaveVo);
-
-
 
     /** 게시물 삭제 **/
     void deleteBoard(int id);

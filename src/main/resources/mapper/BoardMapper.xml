@@ -64,8 +64,13 @@
         FROM
                 board AS b
                     JOIN board_admin AS ba ON b.board_admin_id = ba.id
-        WHERE
-                b.del_yn = 'N' AND ba.category_number = #{categoryNumber}
+        <where>
+                b.del_yn = 'N'
+
+                <if test="categoryNumber != 0">
+                    AND ba.category_number = #{categoryNumber}
+                </if>
+        </where>
 
         ORDER BY
                 board_group DESC,
@@ -101,7 +106,7 @@
             board AS b
                 JOIN board_admin AS ba ON b.board_admin_id = ba.id
         WHERE
-            b.del_yn = 'N' AND ba.category_number > 0
+            b.del_yn = 'N' AND
 
         ORDER BY
             board_group DESC,
@@ -225,7 +230,7 @@
           and id = #{id}
     </update>
 
-    <update id="updateBoardGroupSET" parameterType="int">
+    <update id="updateBoardGroupSet" parameterType="int">
         UPDATE  board
         SET
                 board_group = #{id}

@@ -1,7 +1,6 @@
 package com.minboard.vo;
 
 import com.minboard.dto.BoardDto;
-import com.minboard.enums.CategoryEnum;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;

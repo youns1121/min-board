@@ -51,63 +51,40 @@ function addFileReplyForm(){
     })
 }
 
-function addFileUpdateForm(obj){
-    let id = $(obj).data('id')
-    let formData = {
-        id : id
-    }
-    let fileCount = $('.fileCount').length
-    $.ajax({
-        method: 'GET',
-        url: '/board/validation/file/count',
-        data: formData,
-        success: function (fileLimitCount) {
-            if (fileCount >= fileLimitCount) {
-                alert("파일은 최대 " + fileLimitCount + "개 까지 업로드 가능합니다.")
-            }
+function addFileUpdateForm(value){
 
-            if (fileCount < fileLimitCount) {
-                let htmlData = '';
-                htmlData += '<div class="fileCount" id="Files' + count + '">'
-                htmlData += '<input type="file" class="file" name="fileList" />'
-                htmlData += '<button type="button" id="delete' + count + '" onclick="deleteNewFile(this)">삭제</button>';
-                htmlData += '</div>'
-                $("#file-list").append('')
-                $("#file-list").append(htmlData);
-                count++;
-            }
-        }
-    })
+    let fileLength = $('div[id^="Files"]').length
+
+    if(fileLength < value) {
+        let htmlData = '';
+        htmlData += '<div class="fileCount" id="Files' + count + '">'
+        htmlData += '<input type="file" class="file" name="fileList" />'
+        htmlData += '<button type="button" id="delete' + count + '" onclick="deleteNewFile(this)">삭제</button>';
+        htmlData += '</div>'
+        $("#file-list").append('')
+        $("#file-list").append(htmlData);
+        count++;
+    }
+
+
+
 }
 
 
-function addFileForm() {
-    let id = $(".selectbox option:selected").val()
-    let formData = {
-        id : id
-    }
-    let fileCount = $('.fileCount').length
-    $.ajax({
-        method: 'GET',
-        url: '/board/validation/file/count',
-        data: formData,
-        success: function (fileLimitCount) {
-            if (fileCount >= fileLimitCount) {
-                alert("파일은 최대 " + fileLimitCount + "개 까지 업로드 가능합니다.")
-            }
+function addFileForm(value) {
 
-            if (fileCount < fileLimitCount) {
-                let htmlData = '';
-                htmlData += '<div class="fileCount" id="Files' + count + '">'
-                htmlData += '<input type="file" class="file" name="fileList" />'
-                htmlData += '<button type="button" id="delete' + count + '" onclick="deleteNewFile(this)">삭제</button>';
-                htmlData += '</div>'
-                $("#file-list").append('')
-                $("#file-list").append(htmlData);
-                count++;
-            }
-        }
-    })
+    let fileLength = $('div[id^="Files"]').length
+
+    if(fileLength < value) {
+        let htmlData = '';
+        htmlData += '<div class="fileCount" id="Files' + fileLength + '">'
+        htmlData += '<input type="file" class="file" name="fileList" />'
+        htmlData += '<button type="button" id="delete' + fileLength + '" onclick="deleteNewFile(this)">삭제</button>';
+        htmlData += '</div>'
+        $("#file-list").append('')
+        $("#file-list").append(htmlData);
+        fileLength++;
+    }
 }
 
 function deleteDefaultFile() {
@@ -128,8 +105,7 @@ function deleteFile(obj) {
         url : '/board/deleteFile',
         method : "post",
         data : idData,
-        }).done(function (){
-            location.href='/admin'
-    })
+        }
+    )
 }
 

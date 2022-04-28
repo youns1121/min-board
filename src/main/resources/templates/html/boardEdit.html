@@ -54,7 +54,7 @@
           <tr>
             <td>
               <label >내용</label>
-              <input type="text" class="contents" style="width: 300px; height: 150px;" rows="3" th:field="*{contents}" >
+              <textarea  th:field="*{contents}"></textarea>
             </td>
               <input type="hidden" th:field="*{id}">
           </tr>
@@ -68,7 +68,7 @@
             </tr>
 
           <tr th:each="uploadFile : ${uploadFileList}">
-            <div class="fileCount" th:id="delete+${uploadFile.id}" th:value="${uploadFile.id}">
+            <div class="fileCount" th:id="Files+${uploadFile.id}" th:value="${uploadFile.id}">
             <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
             <button type="button" onclick="deleteFile(this)">삭제</button>
             </div>
@@ -77,7 +77,8 @@
           <tr>
             <td>
               <div id="Files0">
-                <button type="button" id="button-add-file" th:data-id="${boardUpdateVo.categoryNumber}" onclick="addFileUpdateForm(this)">파일추가</button>
+                <button type="button" id="button-add-file" th:data-id="${boardUpdateVo.categoryNumber}"
+                        th:onclick="|addFileUpdateForm('${boardUpdateVo.attachedFileCount}')|">파일추가</button>
               </div>
               <div id="file-list"></div>
             </td>

@@ -91,9 +91,12 @@ public class BoardController {
     @GetMapping("/category/{categoryNumber}")
     public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber,BoardDto boardDto, Model model) {
 
-        boardDto.setCategoryNumber(categoryNumber);
         List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
+        boardDto.setCategoryNumber(categoryNumber);
+        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(categoryNumber);
+
+        model.addAttribute("boardCategory", boardCategory);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardList", boardList);
         return "html/boardList";
@@ -103,7 +106,10 @@ public class BoardController {
     public String boardCategoryList(BoardDto boardDto, Model model) {
 
         List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
-        List<BoardDto> boardList = boardService.selectBoardAllList(boardDto);
+        List<BoardDto> boardList = boardService.getBoardList(boardDto);
+        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(boardDto.getCategoryNumber());
+
+        model.addAttribute("boardCategory", boardCategory);
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryList", categoryList);
         return "html/boardList";

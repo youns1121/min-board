@@ -128,30 +128,6 @@ public class BoardServiceImpl implements BoardService {
         return boardList;
     }
 
-
-
-    @Transactional(readOnly = true)
-    public List<BoardDto> selectBoardAllList(BoardDto boardDto){
-
-        List<BoardDto> boardAllList = Collections.emptyList();
-        int boardTotalCount = boardMapper.totalCountBoard();
-        PaginationInfo paginationInfo = new PaginationInfo(boardDto);
-        paginationInfo.setTotalRecordCount(boardTotalCount);
-        boardDto.setPaginationInfo(paginationInfo);
-
-        if(boardTotalCount > 0){
-            boardAllList = boardMapper.selectBoardAllList(boardDto);
-        }
-        return boardAllList;
-    }
-
-    /** 게시물 전체 갯수 **/
-    @Override
-    public int geTotalBoardCount() {
-        int successCount = boardMapper.totalCountBoard();
-        return successCount;
-    }
-
     @Override
     public void saveBoardReply(BoardSaveVo boardSaveVo){
         int calculationResult = boardMapper.hierarchicalCalculationFormula(boardSaveVo);

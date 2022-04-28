@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
-    <button type="button" th:onclick="|location.href='@{/board/category}'|">전체보기</button>
+    <button type="button" th:onclick="|location.href='@{/board/category}'|" th:text="전체보기"></button>
     <button type="button" th:each="category : ${categoryList}"
             th:onclick="|location.href='@{/board/category/}${category.categoryNumber}'|"
             th:text="${category.categoryName}"></button>
@@ -28,7 +28,7 @@
           th:if="${category.categoryNumber} eq ${categoryNumber}"
           th:text="${category.categoryName}">
       </h1>
-      <h1 th:if="${categoryNumber} eq  null" th:text="전체게시판"></h1>
+      <h1 th:if="${categoryNumber} eq  null" th:text="전체보기"></h1>
         <div>
           <button type="button" class="writeButton"
                   th:each="category : ${categoryList}"
@@ -48,8 +48,13 @@
               <th style="text-align: center">제목</th>
               <th style="text-align: center">작성자</th>
               <th style="text-align: center">작성일</th>
-              <th style="text-align: center">댓글수</th>
-              <th style="text-align: center">첨부파일수</th>
+              <th
+
+                        th:hidden="${boardCategory.commentsYn} eq 'N' "
+                      style="text-align: center">댓글수
+              </th>
+
+              <th th:hidden="${boardCategory.attachedFileYn} eq 'N'" style="text-align: center">첨부파일수</th>
             </tr>
           </thead>
       <th:block layout:fragment="content">
@@ -79,8 +84,15 @@
               <td style="text-align: center" th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                   th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd')}">
               </td>
-              <td th:text="${board.commentsCount}" style="cursor:pointer; text-align: center" th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
-              <td th:text="${board.fileCount}" style="cursor:pointer; text-align: center " th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"></td>
+              <td th:hidden="${boardCategory.commentsYn} eq 'N'"
+                  th:text="${board.commentsCount}"
+                  th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
+                  style="cursor:pointer; text-align: center"></td>
+
+              <td th:hidden="${boardCategory.attachedFileYn} eq 'N'"
+                  th:text="${board.fileCount}"
+                  th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
+                  style="cursor:pointer; text-align: center "></td>
             </tr>
             <tr th:if="${#lists.isEmpty(boardList)}">
               <td colspan="6">조회된 결과가 없습니다.</td>

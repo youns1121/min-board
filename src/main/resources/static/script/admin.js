@@ -54,7 +54,7 @@ function updateAdminFn(){
         data : formData,
         success: function(returnData) {
             alert('등록되었습니다.')
-            location.href = '/admin/view/' + returnData + '?'+"status="+true
+            location.href = '/admin/setting/update/' + returnData + '?'+"status="+true
         },
         error : function (){
             return false;

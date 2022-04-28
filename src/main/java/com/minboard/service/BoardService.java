@@ -13,14 +13,10 @@ public interface BoardService {
     /** 게시물 리스트 **/
     List<BoardDto> getBoardList(BoardDto boardDto);
 
-    /** 전체 게시물 수 **/
-    int geTotalBoardCount();
-
     /** 게시물 상세보기 **/
     BoardDto getDetailViewBoard(int id);
 
     BoardDto getBoardReply(int id);
-
 
     /** 게시물 생성 **/
     void saveBoard(BoardSaveVo boardSaveVo) throws IOException;

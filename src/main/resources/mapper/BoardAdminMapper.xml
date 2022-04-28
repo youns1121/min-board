@@ -88,8 +88,9 @@
 
         <where>
                 del_yn = 'N' AND category_number = #{categoryNumber}
-                <if test="categoryNumber == null"> AND id = #{id}  </if>
-
+                <if test="categoryNumber == null">
+                    AND id = #{id}
+                </if>
 
         </where>
     </select>
@@ -134,7 +135,7 @@
             (select @rownum := 0) AS num_table
 
         WHERE
-            del_yn = 'N' AND category_number > 0
+            del_yn = 'N'
         ORDER BY num DESC
 
     </select>
@@ -172,7 +173,13 @@
         SELECT count(b.id)
         FROM board_admin AS ba
                  JOIN board AS b ON ba.id = b.board_admin_id
-        WHERE b.del_yn = 'N' AND ba.category_number = #{categoryNumber}
+        <where>
+              b.del_yn = 'N'
+
+              <if test="categoryNumber != 0">
+                AND ba.category_number = #{categoryNumber}
+              </if>
+        </where>
     </select>
 
 </mapper>

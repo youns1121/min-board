@@ -49,7 +49,7 @@
                 <tr>
                     <th>내용</th>
                     <td>
-                        <input type="text" class="inputForm" rows="3" style="width: 400px; height: 150px;" th:field="*{contents}" >
+                        <textarea th:field="*{contents}" ></textarea>
                     </td>
                 </tr>
 
@@ -60,7 +60,8 @@
                              th:remove="${boardAdmin.attachedFileYn eq 'N' or boardAdmin.attachedFileCount eq 0 }? all : none">
                                     <input type='file' class="file" name='fileList' />
                                     <button type="button" id="button-add-file"
-                                            onclick="addFileForm()">파일추가</button>
+                                                th:onclick="|addFileForm('${boardAdmin.attachedFileCount}')|">파일추가</button>
+
                         </div>
                             <div id="file-list">
 

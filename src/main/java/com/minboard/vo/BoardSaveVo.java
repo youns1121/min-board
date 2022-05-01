@@ -30,6 +30,8 @@ public class BoardSaveVo {
 
     private UploadFileVo uploadFileVo;
 
+    private BoardUpdateVo boardUpdateVo;
+
     private Integer boardSort;
 
     private Integer boardDepth;

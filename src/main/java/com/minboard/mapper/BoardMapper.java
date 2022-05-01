@@ -1,10 +1,7 @@
 package com.minboard.mapper;
 
-import com.minboard.dto.BoardAdminDto;
-import com.minboard.dto.BoardDto;
 
-import com.minboard.vo.BoardAdminSaveVo;
-import com.minboard.vo.BoardAdminUpdateVo;
+import com.minboard.dto.BoardDto;
 import com.minboard.vo.BoardSaveVo;
 import com.minboard.vo.BoardUpdateVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,6 +11,8 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
+
+    BoardDto selectFileTest(int id);
 
     List<BoardDto> selectBoardList(BoardDto boardDto);
 

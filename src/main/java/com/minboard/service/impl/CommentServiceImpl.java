@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override /** 게시물의 계층형 댓글전체 보기 **/
     public List<CommentsDto> getBoardHierarchicalCommentsList(int boardId) {
-        List<CommentsDto> hierarchicalCommentsAll = commentsMapper.getBoardHierarchicalCommentsList(boardId);
+        List<CommentsDto> hierarchicalCommentsAll = commentsMapper.selectBoardHierarchicalCommentsList(boardId);
         return hierarchicalCommentsAll;
     }
 

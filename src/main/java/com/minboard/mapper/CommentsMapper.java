@@ -14,8 +14,7 @@ public interface CommentsMapper {
     /** 댓글 작성하기 **/
     void insertComments(CommentsSaveVo commentsSaveVo);
 
-    /** 게시물의 계층형 댓글전체 보기 **/
-    List<CommentsDto> getBoardHierarchicalCommentsList(int boardId);
+    List<CommentsDto> selectBoardHierarchicalCommentsList(int boardId);
 
     /** 댓글 수정하기 **/
     void updateComments(CommentsUpdateVo commentsUpdateVo);

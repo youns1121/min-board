@@ -93,6 +93,7 @@ public class BoardServiceImpl implements BoardService {
         for(int i=0; i < uploadFileListSize; i++){
             File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." +
                     uploadFileList.get(i).getExtensionName());
+
             if(file.exists()){
                 file.delete();
             }
@@ -116,6 +117,8 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public List<BoardDto> getBoardList(BoardDto boardDto) {
 
+
+        boardDto.setCategoryNumber(boardDto.getCategoryNumber());
         List<BoardDto> boardList = Collections.emptyList();
         int boardTotalCount = boardAdminMapper.totalCountCategoryBoard(boardDto.getCategoryNumber());
         PaginationInfo paginationInfo = new PaginationInfo(boardDto);

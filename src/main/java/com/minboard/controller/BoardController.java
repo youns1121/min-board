@@ -52,13 +52,11 @@ public class BoardController {
 
     @ResponseBody
     @PostMapping("/update")
-    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
-                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
-    ) throws IOException {
+    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardSaveVo boardSaveVo) throws IOException {
 
-        boardService.updateBoardFile(boardUpdateVo);
-        boardService.modifyBoard(boardUpdateVo);
-        return boardUpdateVo.getId().toString();
+        boardService.saveBoardFile(boardSaveVo);
+        boardService.modifyBoard(boardSaveVo.getBoardUpdateVo());
+        return boardSaveVo.getBoardUpdateVo().getId().toString();
     }
 
     @GetMapping("/update/{id}")
@@ -89,7 +87,7 @@ public class BoardController {
     }
 
     @GetMapping("/category/{categoryNumber}")
-    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber,BoardDto boardDto, Model model) {
+    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber, BoardDto boardDto, Model model) {
 
         List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         List<BoardDto> boardList = boardService.getBoardList(boardDto);
@@ -115,40 +113,12 @@ public class BoardController {
         return "html/boardList";
     }
 
-    @ResponseBody
-    @GetMapping("/validation/file/yn")
-    public String validationFileYn(@RequestParam int id){
-        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
-        return String.valueOf(boardCategory.getCategoryNumber());
-    }
-
-    @ResponseBody
-    @GetMapping("/validation/file/count")
-    public String validationFileCount(@RequestParam int id){
-        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
-        return String.valueOf(boardCategory.getAttachedFileCount());
-    }
-
-    @ResponseBody
-    @GetMapping("/validation/reply/yn")
-    public String validationReplyYn(@RequestParam int id){
-        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(id);
-        return String.valueOf(boardCategory.getCategoryNumber());
-    }
-
-    @ResponseBody
-    @GetMapping("/validation/comments/yn")
-    public String validationCommentsYn(@RequestParam int categoryNumber){
-        BoardAdminDto boardCategory  = boardAdminService.getBoardCategory(categoryNumber);
-        return boardCategory.getCommentsYn();
-    }
 
     @GetMapping("/view/{id}")
     public String boardDetails(@PathVariable("id") int id, Model model) {
+
         BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
-        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
         model.addAttribute("detailViewBoard", detailViewBoard);
-        model.addAttribute("uploadFileList", uploadFileList);
         return "html/boardDetail";
     }
 
@@ -172,12 +142,14 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/deleteFile")
     public void boardFileRemove(int id){
+
         fileStoreService.deleteFile(id);
     }
 
     @ResponseBody
     @PostMapping("/comment")
     public void CommentsAdd(CommentsSaveVo commentsSaveVo){
+
         commentService.insertComments(commentsSaveVo);
     }
 
@@ -193,6 +165,7 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/comment/update")
     public void boardCommentsModify(CommentsUpdateVo commentsUpdateVo){
+
         commentService.updateComments(commentsUpdateVo);
     }
 

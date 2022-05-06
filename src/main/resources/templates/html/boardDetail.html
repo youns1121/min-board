@@ -74,7 +74,7 @@
                   <th>파일리스트: </th>
                   <br/>
               </tr>
-              <tr th:each="uploadFile : ${uploadFileList}">
+              <tr th:each="uploadFile : ${detailViewBoard.uploadFileDtoList}">
                   <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|"
                      th:text="${uploadFile.originalFileName}">
                   </a>

@@ -29,25 +29,25 @@ public class BoardController {
     private final BoardAdminService boardAdminService;
 
     @GetMapping("/new")
-    public String boardSave(Model model, BoardSaveVo boardSaveVo,
+    public String boardSave(Model model, BoardVo boardVo,
                             @RequestParam("categorynumber") int categoryNumber) {
 
         List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
         model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList", categoryList);
-        model.addAttribute("board",boardSaveVo);
+        model.addAttribute("board", boardVo.getBoardSaveVo());
         model.addAttribute("boardAdmin",boardAdminDto);
         return "html/boardNew";
     }
 
     @ResponseBody
     @PostMapping("/new")
-    public String boardSave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+    public String boardSave(@Validated @ModelAttribute("board") BoardVo boardVo) throws IOException {
 
-        boardService.saveBoard(boardSaveVo);
-        boardService.saveBoardFile(boardSaveVo);
-        return boardSaveVo.getId().toString();
+        boardService.saveBoard(boardVo.getBoardSaveVo());
+        boardService.saveBoardFile(boardVo.getBoardSaveVo());
+        return boardVo.getBoardSaveVo().getId().toString();
     }
 
     @ResponseBody

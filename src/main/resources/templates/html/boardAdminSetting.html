@@ -65,7 +65,7 @@
     <th>첨부파일 최대 갯수</th>
     <div id="fileMaxCount">
       <td>
-        <span th:each="num : ${#numbers.sequence(0, 6)}">
+        <span th:each="num : ${#numbers.sequence(1, 6)}">
           <label><input  name="attachedFileCount" type="radio" th:value="${num}" th:text="${num}"
                          th:checked="${num} eq 6">개</label>
 

@@ -92,23 +92,25 @@
       <button type="button" class="deleteButton"  th:onclick="deleteFn()">삭제</button>
     <br/>
     <br/>
-    <button type="button" class="createButton"
-            th:value="${detailViewBoard.categoryNumber}"
-            th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
-    </button>
-      <span th:remove="${detailViewBoard.replyYn eq 'N'}? all: none">
-        <button type="button" class="replyButton"
-                  th:data-group="${detailViewBoard.boardGroup}"
-                  th:data-sort="${detailViewBoard.boardSort}"
-                  th:data-depth="${detailViewBoard.boardDepth}"
-                  th:onclick="|location.href='@{/board/reply/{id}(id = ${id})}'|">답글작성
-          </button>
-      </span>
 
-  </form>
   <div th:remove="${detailViewBoard.commentsYn eq 'N'}? all:none">
     <div th:fragment="comments" th:replace="html/boardComments :: comments"></div>
     <div th:fragment="commentsList" th:replace="html/boardCommentsDetail :: commentsList"></div>
   </div>
+    <br/>
+    <br/>
+  <button type="button" class="createButton"
+          th:value="${detailViewBoard.categoryNumber}"
+          th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
+  </button>
+  <span th:remove="${detailViewBoard.replyYn eq 'N'}? all: none">
+        <button type="button" class="replyButton"
+                th:data-group="${detailViewBoard.boardGroup}"
+                th:data-sort="${detailViewBoard.boardSort}"
+                th:data-depth="${detailViewBoard.boardDepth}"
+                th:onclick="|location.href='@{/board/reply/{id}(id = ${id})}'|">답글작성
+        </button>
+  </span>
+  </form>
 </body>
 </html>

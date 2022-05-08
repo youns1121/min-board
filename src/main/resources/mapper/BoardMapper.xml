@@ -116,7 +116,7 @@
             board AS b
                 JOIN board_admin AS ba ON b.board_admin_id = ba.id
         WHERE
-            b.del_yn = 'N' AND
+            b.del_yn = 'N'
 
         ORDER BY
             board_group DESC,

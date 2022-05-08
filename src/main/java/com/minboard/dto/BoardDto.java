@@ -12,8 +12,6 @@ import java.util.List;
 @Getter
 public class BoardDto extends CommonPageDto {
 
-    private UploadFileDto uploadFileDto;
-
     /** 게시글 아이디 **/
     private Integer id;
 
@@ -32,9 +30,6 @@ public class BoardDto extends CommonPageDto {
 
     /** 파일업로드 **/
     List<UploadFileDto> uploadFileDtoList;
-
-    /** 댓글 **/
-    List<CommentsDto> commentsDtoList;
 
     private Integer boardSort;
 

@@ -100,7 +100,9 @@ public class BoardServiceImpl implements BoardService {
         }
         commentsMapper.deleteAllComment(id);
         BoardDto boardReply = boardMapper.selectBoardReply(id);
-        boardMapper.decreaseSort(boardReply);
+        if(boardReply.getBoardSort() != 0) {
+            boardMapper.decreaseSort(boardReply);
+        }
         boardMapper.deleteBoard(id);
         fileMapper.deleteAllFile(id);
 

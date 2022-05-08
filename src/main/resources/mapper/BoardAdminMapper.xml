@@ -87,8 +87,12 @@
                 board_admin
 
         <where>
-                del_yn = 'N' AND category_number = #{categoryNumber}
-                <if test="categoryNumber == null">
+                del_yn = 'N'
+                <if test="categoryNumber != 0">
+                    AND category_number = #{categoryNumber}
+                </if>
+
+                <if test="categoryNumber == 0 and id != 0">
                     AND id = #{id}
                 </if>
 
@@ -112,7 +116,7 @@
         FROM
                  board_admin
         WHERE
-                del_yn = 'N' AND category_number > 0
+                del_yn = 'N'
     </select>
 
     <select id="selectBoardAdminList" resultType="BoardAdminDto" resultMap="boardAdminDtoResultMap">

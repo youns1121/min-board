@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.minboard.mapper.MemberMapper">
+
+
+    <resultMap id="MemberDtoMap" type="MemberDto">
+        <result property="userName" column="username"/>
+        <result property="memberRole" column="member_role"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delYn" column="del_yn"/>
+    </resultMap>
+
+    <insert id="insertMember"
+            parameterType="MemberDto"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        insert into members(
+                    username,
+                    password,
+                    name,
+                    birthday,
+                    gender,
+                    member_role,
+                    del_yn,
+                    create_time
+        )values(
+                #{userName},
+                #{password},
+                #{name},
+                #{birthday},
+                #{memberRole},
+                #{createTime}
+         )
+    </insert>
+
+    <select id="findByUserName">
+
+    select
+        seq,
+        username,
+        password,
+        name,
+        birthday,
+        gender,
+        member_role,
+        del_yn,
+        create_time,
+        update_time
+
+    from
+         members
+
+    where
+          del_yn = 'N'
+
+    </select>
+
+
+</mapper>

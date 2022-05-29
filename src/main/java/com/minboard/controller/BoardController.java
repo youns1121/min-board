@@ -28,6 +28,16 @@ public class BoardController {
     private final CommentService commentService;
     private final BoardAdminService boardAdminService;
 
+    @GetMapping
+    public String boardHeader(Model model){
+
+        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
+
+        model.addAttribute("categoryList", categoryList);
+
+        return "html/header/boardHeader";
+    }
+
     @GetMapping("/new")
     public String boardSave(Model model, BoardSaveVo boardSaveVo,
                             @RequestParam("categorynumber") int categoryNumber) {

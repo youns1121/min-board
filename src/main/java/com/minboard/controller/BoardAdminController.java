@@ -35,13 +35,13 @@ public class BoardAdminController {
         return boardAdminUpdateVo.getId().toString();
     }
 
-    @ResponseBody
     @PostMapping("/setting")
     public String boardAdminSetting(@ModelAttribute("boardAdmin") BoardAdminSaveVo boardAdminSaveVo){
 
         boardAdminService.saveBoardAdminSetting(boardAdminSaveVo);
-        return boardAdminSaveVo.getId().toString();
+        return "redirect:/admin/setting/update/" + boardAdminSaveVo.getId();
     }
+
 
     @GetMapping("/setting")
     public String boardAdminSetting(Model model, BoardAdminSaveVo boardAdminSaveVo){
@@ -63,7 +63,9 @@ public class BoardAdminController {
     public String boardAdminList(BoardAdminDto boardAdminDto, Model model){
 
         List<BoardAdminDto> boardAdminDtoList = boardAdminService.getBoardAdminList(boardAdminDto);
+
         model.addAttribute("boardAdminList", boardAdminDtoList);
+
 
         return "html/boardAdmin";
     }

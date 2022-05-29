@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<div
+     id="boardHeader" name="boardHeader" th:fragment="boardHeader">
+    <button type="button" th:onclick="|location.href='@{/board/category}'|" th:text="전체보기"></button>
+    <button type="button" th:each="category : ${categoryList}"
+            th:onclick="|location.href='@{/board/category/}${category.categoryNumber}'|"
+            th:text="${category.categoryName}"></button>
+    <br/>
+    <br/>
+    <button type="button" th:text="회원가입" th:onclick="|location.href='@{/member/siginup}'|"></button>
+</div>
+
+
+</html>

@@ -15,12 +15,11 @@
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
+
+  <div th:fragment="boardHeader" th:replace="html/header/boardHeader :: boardHeader"></div>
 </head>
 <body>
-<button type="button" th:onclick="|location.href='@{/board/category}'|">전체보기</button>
-<button type="button" th:each="category : ${boardAdminList}"
-        th:onclick="|location.href='@{/board/category/}${category.categoryNumber}'|"
-        th:text="${category.categoryName}"></button>
+
 
 <div class="container" style="max-width: 600px">
   <h1>관리자 페이지</h1>

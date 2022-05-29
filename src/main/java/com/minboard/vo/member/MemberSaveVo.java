@@ -1,12 +1,18 @@
 package com.minboard.vo.member;
 
-import com.minboard.enums.MemberRole;
+import com.minboard.dto.MemberDto;
+import com.minboard.enums.MemberMangeEnums;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
+@EqualsAndHashCode(of = {"seq"})
 public class MemberSaveVo {
 
     private Long seq;
@@ -21,21 +27,22 @@ public class MemberSaveVo {
 
     private String gender;
 
-    private MemberRole memberRole;
+    private String memberRole;
 
     private LocalDateTime createTime;
 
-    @Builder
-    public MemberSaveVo(Long seq, String userName, String password,
-                        String name, String birthday, String gender,
-                        MemberRole memberRole, LocalDateTime createTime) {
-        this.seq = seq;
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.memberRole = memberRole;
-        this.createTime = createTime;
+    public MemberDto createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
+
+        MemberDto member = MemberDto.builder()
+                .userName(memberDto.getUserName())
+                .password(passwordEncoder.encode(memberDto.getPassword()))
+                .name(memberDto.getName())
+                .gender(memberDto.getGender())
+                .birthday(memberDto.getBirthday())
+                .createTime(LocalDateTime.now())
+                .memberRole(MemberMangeEnums.MemberRoleEnum.USER.getTitle())
+                .build();
+
+        return member;
     }
 }

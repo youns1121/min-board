@@ -6,7 +6,7 @@
 <mapper namespace="com.minboard.mapper.MemberMapper">
 
 
-    <resultMap id="MemberDtoMap" type="MemberDto">
+    <resultMap id="MemberMap" type="MemberSaveVo">
         <result property="userName" column="username"/>
         <result property="memberRole" column="member_role"/>
         <result property="createTime" column="create_time"/>
@@ -16,7 +16,7 @@
     <insert id="insertMember"
             parameterType="MemberDto"
             useGeneratedKeys ="true"
-            keyProperty="id">
+            keyProperty="seq">
 
         insert into members(
                     username,
@@ -25,19 +25,19 @@
                     birthday,
                     gender,
                     member_role,
-                    del_yn,
                     create_time
         )values(
                 #{userName},
                 #{password},
                 #{name},
                 #{birthday},
+                #{gender},
                 #{memberRole},
                 #{createTime}
          )
     </insert>
 
-    <select id="findByUserName">
+    <select id="findByUserName" resultType="MemberSaveVo" resultMap="MemberMap">
 
     select
         seq,
@@ -55,7 +55,7 @@
          members
 
     where
-          del_yn = 'N'
+          username = #{userName} and del_yn = 'N'
 
     </select>
 

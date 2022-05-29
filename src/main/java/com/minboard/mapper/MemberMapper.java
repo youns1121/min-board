@@ -8,6 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MemberMapper {
 
     void insertMember(MemberDto memberDto);
-
-    MemberDto findByUserName(MemberDto memberDto);
+    MemberSaveVo findByUserName(MemberDto memberDto);
 }

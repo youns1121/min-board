@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<link th:href="@{/css/main.css}" rel="stylesheet" />
+<style>
+  fieldset, tr, td {
+    border: 1px solid #bcbcbc;
+    text-align: left;
+  }
+  fieldset {
+    width: 500px;
+    height: 200px;
+  }
+
+  .field-error {
+    border-color: #dc3545;
+    color: #dc3545;
+  }
+</style>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+</head>
+<body>
+<form th:object="${siginup}" th:action="@{/member/siginup}"  method="post">
+
+  <table>
+    <legend>회원가입</legend>
+    <tbody>
+      <tr>
+        <th>아이디</th>
+        <td>
+          <input type="text"  style="width: 300px;" th:field="*{userName}">
+          <div class="field-error" th:errors="*{userName}">아이디 오류</div>
+        </td>
+      </tr>
+      <tr>
+        <th>패스워드</th>
+        <td>
+          <input type="password"  style="width: 300px;" th:field="*{password}">
+          <div class="field-error" th:errors="*{password}">패스워드 오류</div>
+        </td>
+      </tr>
+      <tr>
+        <th>이름</th>
+        <td>
+          <input type="text" rows="3" style="width: 300px;"  th:field="*{name}">
+          <div class="field-error" th:errors="*{name}">이름 오류</div>
+
+        </td>
+      </tr>
+      <tr>
+        <th>성별</th>
+        <td>
+          <label><input type="radio" rows="3" style="width: 300px;" value="남" th:field="*{gender}">남자</label>
+          <label><input type="radio" rows="3" style="width: 300px;" value="여" th:field="*{gender}">여자</label>
+          <div class="field-error" th:errors="*{gender}">성별 오류</div>
+
+
+        </td>
+      </tr>
+      <tr>
+        <th>생년월일</th>
+        <td>
+          <input type="text" rows="3" style="width: 300px;" th:field="*{birthday}"  >
+        </td>
+      </tr>
+      </div>
+    </tbody>
+  </table>
+  <button type="submit" id="buttonCreate" >회원가입</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/admin}'|">취소</button>
+</form>
+
+
+
+</body>
+
+
+</html>

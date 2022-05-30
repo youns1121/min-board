@@ -1,9 +1,7 @@
 package com.minboard.controller;
 
-import com.minboard.dto.BoardDto;
 import com.minboard.dto.MemberDto;
 import com.minboard.service.MemberService;
-import com.minboard.vo.member.MemberSaveVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,13 +23,22 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping("/siginin")
+    public String memberSiginIn(Model model){
+
+        model.addAttribute("siginin", new MemberDto());
+
+        return "html/member/memberSiginInForm";
+    }
+
+
 
     @GetMapping("/siginup")
     public String memberSiginUp(Model model){
 
         model.addAttribute("siginup", new MemberDto());
 
-        return "html/signup/memberSiginUpForm";
+        return "html/member/memberSiginUpForm";
     }
 
     @PostMapping("/siginup")
@@ -39,12 +46,12 @@ public class MemberController {
 
 
         if (bindingResult.hasErrors()) {
+
             log.info("errors={}", bindingResult);
-            return "html/signup/memberSiginUpForm";
+            return "html/member/memberSiginUpForm";
         }
 
         memberService.insertMember(memberDto, passwordEncoder);
-
 
         return "redirect:/admin";
     }

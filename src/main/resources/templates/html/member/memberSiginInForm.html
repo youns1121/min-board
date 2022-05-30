@@ -18,27 +18,27 @@
   <script type="text/javascript" th:src="@{/script/main.js}"></script>
 </head>
 <body>
-<form th:object="${memberVo}" th:action="" method="post">
+<form th:object="${siginin}" th:action="@{/member/siginin}" method="post">
   <table>
     <legend>로그인</legend>
     <div>
     <tr>
       <td>
         <label>아이디</label>
-        <input type="text" class="form-member" style="width: 300px;" th:field="*{title}">
+        <input type="text" class="form-member" style="width: 300px;" th:field="*{userName}">
       </td>
     </tr>
     <tr>
       <td>
         <label>패스워드</label>
-        <input type="text" class="form-pw" style="width: 300px;" th:field="*{title}">
+        <input type="password" class="form-pw" style="width: 300px;" th:field="*{password}">
       </td>
     </tr>
     </div>
 
   </table>
-  <button type="submit" id="buttonCreate" th:onclick="createFn(this)" >로그인</button>
-  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/list}'|">취소</button>
+  <button type="submit" id="buttonLogin" >로그인</button>
+  <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/board/category}'|">취소</button>
 </form>
 
 </body>

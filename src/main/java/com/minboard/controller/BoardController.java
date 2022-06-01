@@ -2,7 +2,7 @@ package com.minboard.controller;
 
 import com.minboard.dto.*;
 import com.minboard.service.BoardAdminService;
-import com.minboard.service.CommentService;
+import com.minboard.service.CommentsService;
 import com.minboard.service.FileStoreService;
 import com.minboard.service.impl.BoardServiceImpl;
 import com.minboard.vo.*;
@@ -25,7 +25,7 @@ public class BoardController {
 
     private final BoardServiceImpl boardService;
     private final FileStoreService fileStoreService;
-    private final CommentService commentService;
+    private final CommentsService commentsService;
     private final BoardAdminService boardAdminService;
 
     @GetMapping
@@ -40,7 +40,7 @@ public class BoardController {
 
     @GetMapping("/new")
     public String boardSave(Model model, BoardSaveVo boardSaveVo,
-                            @RequestParam("categorynumber") int categoryNumber) {
+                            @RequestParam("categoryNumber") int categoryNumber) {
 
         List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
         BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
@@ -167,14 +167,14 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/comment")
     public void CommentsAdd(CommentsSaveVo commentsSaveVo){
-        commentService.insertComments(commentsSaveVo);
+        commentsService.insertComments(commentsSaveVo);
     }
 
 
     @GetMapping("/commentsList/{id}")
     public String boardCommentsList(@PathVariable("id") int id, Model model){
 
-        List<CommentsDto> commentsList = commentService.getBoardHierarchicalCommentsList(id);
+        List<CommentsDto> commentsList = commentsService.getBoardHierarchicalCommentsList(id);
         model.addAttribute("commentsList", commentsList);
         return "html/boardCommentsDetail";
     }
@@ -182,18 +182,18 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/comment/update")
     public void boardCommentsModify(CommentsUpdateVo commentsUpdateVo){
-        commentService.updateComments(commentsUpdateVo);
+        commentsService.updateComments(commentsUpdateVo);
     }
 
     @ResponseBody
     @PostMapping("/commentDelete")
     public void boardCommentsRemove(CommentsDto commentsDto){
-        commentService.deleteComment(commentsDto);
+        commentsService.deleteComments(commentsDto);
     }
 
     @ResponseBody
     @PostMapping("/comment/reply")
     public void commentsReplyAdd(CommentsReplySaveVo commentsReplySaveVo){
-        commentService.insertCommentsReply(commentsReplySaveVo);
+        commentsService.insertCommentsReply(commentsReplySaveVo);
     }
 }

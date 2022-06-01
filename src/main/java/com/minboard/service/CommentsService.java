@@ -7,7 +7,7 @@ import com.minboard.vo.CommentsUpdateVo;
 
 import java.util.List;
 
-public interface CommentService {
+public interface CommentsService {
 
     void insertComments(CommentsSaveVo commentsSaveVo);
 
@@ -18,10 +18,10 @@ public interface CommentService {
     void updateComments(CommentsUpdateVo commentsUpdateVo);
 
     /** 댓글 삭제하기 **/
-    void deleteComment(CommentsDto commentsDto);
+    void deleteComments(CommentsDto commentsDto);
 
     /** 게시글의 모든댓글 삭제하기 **/
-    void deleteAllComment(int boardId);
+    void deleteAllComments(int boardId);
 
     /** 댓글의 답변 작성하기 **/
     void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo);

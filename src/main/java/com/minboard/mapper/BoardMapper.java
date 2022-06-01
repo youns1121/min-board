@@ -11,11 +11,9 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
-
     BoardDto selectFileTest(int id);
 
     List<BoardDto> selectBoardList(BoardDto boardDto);
-
     List<BoardDto> selectBoardAllList(BoardDto boardDto);
 
     /** 게시물 총 갯수 **/

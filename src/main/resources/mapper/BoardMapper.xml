@@ -49,170 +49,162 @@
     </resultMap>
 
     <select id="selectBoardList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
-        SELECT
-                b.id,
-                ba.category_name,
-                ba.category_number,
-                b.title,
-                b.board_group,
-                b.board_sort,
-                b.board_depth,
-                (
-                    SELECT count(board_id)
-                     FROM comments
-                     WHERE comments.board_id = b.id AND comments.del_yn = 'N'
-                ) AS comments_count,
-                (
-                    SELECT count(board_id)
-                    FROM upload_file
-                    WHERE upload_file.board_id = b.id
-                ) AS file_count,
-                b.create_time,
-                b.update_time,
-                b.del_yn
+        select
+                b.id
+                , ba.category_name
+                , ba.category_number
+                , b.title
+                , b.board_group
+                , b.board_sort
+                , b.board_depth
+                , (
+                    select count(board_id)
+                     from comments
+                     where comments.board_id = b.id and comments.del_yn = 'N'
+                ) as comments_count
+                , (
+                    select count(board_id)
+                    from upload_file
+                    where upload_file.board_id = b.id
+                ) as file_count
+                , b.create_time
+                , b.update_time
+                , b.del_yn
 
-        FROM
-                board AS b
-                    JOIN board_admin AS ba ON b.board_admin_id = ba.id
-        <where>
-                b.del_yn = 'N'
+        from board as b 
+            join board_admin as ba on b.board_admin_id = ba.id
+            
+        where 
+            b.del_yn = 'N'and ba.category_number = #{categoryNumber}
 
-                <if test="categoryNumber != 0">
-                    AND ba.category_number = #{categoryNumber}
-                </if>
-        </where>
-
-        ORDER BY
-                board_group DESC,
-                board_sort ASC
+        order by
+            board_group desc
+            , board_sort asc
 
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
 
     <select id="selectBoardAllList" parameterType="BoardDto" resultType="BoardDto" resultMap ="boardDtoResultMap">
-        SELECT
-            b.id,
-            ba.category_name,
-            ba.category_number,
-            b.title,
-            b.board_group,
-            b.board_sort,
-            b.board_depth,
-            (
-                SELECT count(board_id)
-                FROM comments
-                WHERE comments.board_id = b.id AND comments.del_yn = 'N'
-            ) AS comments_count,
-            (
-                SELECT count(board_id)
-                FROM upload_file
-                WHERE upload_file.board_id = b.id
-            ) AS file_count,
-            b.create_time,
-            b.update_time,
-            b.del_yn
+        select
+            b.id
+            , ba.category_name
+            , ba.category_number
+            , b.title
+            , b.board_group
+            , b.board_sort
+            , b.board_depth
+            , (
+                select count(board_id)
+                from comments
+                where comments.board_id = b.id and comments.del_yn = 'N'
+            ) as comments_count
+            , (
+                select count(board_id)
+                from upload_file
+                where upload_file.board_id = b.id
+            ) as file_count
+            , b.create_time
+            , b.update_time
+            , b.del_yn
 
-        FROM
-            board AS b
-                JOIN board_admin AS ba ON b.board_admin_id = ba.id
-        WHERE
+        from board as b 
+            join board_admin as ba on b.board_admin_id = ba.id
+        
+        where
             b.del_yn = 'N'
 
-        ORDER BY
-            board_group DESC,
-            board_sort ASC
+        order by
+            board_group desc
+            , board_sort asc
 
         limit #{paginationInfo.firstRecordIndex}, #{recordsPerPage};
     </select>
 
     <select id="selectUploadFileList" parameterType="java.util.Map" resultType="UploadFileDto" resultMap ="UploadFileDtoResultMap">
-        SELECT
-                id,
-                original_file_name,
-                store_file_name,
-                extension_name,
-                store_file_size,
-                store_file_path,
-                create_time,
-                board_id
+        select
+                id
+                , original_file_name
+                , store_file_name
+                , extension_name
+                , store_file_size
+                , store_file_path
+                , create_time
+                , board_id
 
-        FROM
-                upload_file
+        from upload_file
 
-        WHERE
-                board_id = #{id}
+        where
+            board_id = #{id}
     </select>
 
     <select id="totalCountBoard" resultType="int">
-        SELECT count(*)
-        FROM board
-        WHERE del_yn = 'N'
+        select count(*)
+        from board
+        where del_yn = 'N'
     </select>
 
     <!--    게시판 상세보기-->
     <select id="selectBoard" resultType="BoardDto" resultMap="boardDtoResultMap" >
 
-        SELECT
-               b.id,
-               ba.category_name,
-               ba.category_number,
-               b.title,
-               b.contents,
-               b.board_group,
-               b.board_sort,
-               b.board_depth,
-               ba.attached_file_yn,
-               ba.attached_file_count,
-               ba.comments_yn,
-               ba.reply_yn,
-               b.create_time,
-               b.update_time,
-               b.board_admin_id,
-               b.del_yn
-        FROM
-             board AS b
-                join board_admin AS ba on b.board_admin_id = ba.id
-        WHERE
+        select
+               b.id
+               , ba.category_name
+               , ba.category_number
+               , b.title
+               , b.contents
+               , b.board_group
+               , b.board_sort
+               , b.board_depth
+               , ba.attached_file_yn
+               , ba.attached_file_count
+               , ba.comments_yn
+               , ba.reply_yn
+               , b.create_time
+               , b.update_time
+               , b.board_admin_id
+               , b.del_yn
+        from board as b
+            join board_admin as ba on b.board_admin_id = ba.id
+
+        where
               b.id = #{id} and b.del_yn = 'N'
     </select>
 
     <select id="selectBoardUpdate" resultType="BoardUpdateVo" resultMap="boardUpdateVoResultMap" >
-        SELECT
-               b.id,
-               ba.category_name,
-               ba.category_number,
-               b.title,
-               b.contents,
-               b.create_time,
-               b.update_time,
+        select
+               b.id
+               , ba.category_name
+               , ba.category_number
+               , b.title
+               , b.contents
+               , b.create_time
+               , b.update_time
 
-        FROM
-             board AS a
-                 join board_admin AS ba
-        WHERE
-              b.id = #{id}
-          and b.del_yn = 'N'
+        from board as a
+            join board_admin as ba
+
+        where
+              b.id = #{id} and b.del_yn = 'N'
     </select>
 
     <select id="findByBoardList" parameterType="int" resultType="BoardDto" resultMap="boardDtoResultMap">
-        SELECT
+        select
               b.id
-             ,ba.category_name
-             ,ba.category_number
-             ,b.title
-             ,b.contents
-             ,b.create_time
-             ,b.update_time
-             ,b.del_yn
-             ,b.board_admin_id
-             ,uf.board_id
+             , ba.category_name
+             , ba.category_number
+             , b.title
+             , b.contents
+             , b.create_time
+             , b.update_time
+             , b.del_yn
+             , b.board_admin_id
+             , uf.board_id
 
-        FROM
-            board AS b
-                join board_admin AS ba on ba.id = b.board_admin_id
+        from board as b
+                join board_admin as ba on ba.id = b.board_admin_id
                 join upload_file uf on b.id = uf.board_id
 
-        WHERE
+        where
             b.del_yn = 'N' and ba.id = #{id};
     </select>
 
@@ -222,176 +214,173 @@
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        INSERT INTO board(
-                  title,
-                  contents,
-                  board_group,
-                  board_sort,
-                  board_depth,
-                  create_time,
-                  update_time,
-                  board_admin_id
+        insert into board(
+                  title
+                  , contents
+                  , board_group
+                  , board_sort
+                  , board_depth
+                  , create_time
+                  , update_time
+                  , board_admin_id
                 )values(
-                    #{title},
-                    #{contents},
-                    #{boardGroup},
-                    #{boardSort},
-                    #{boardDepth},
-                    #{createTime},
-                    #{updateTime},
-                    #{boardAdminId}
+                    #{title}
+                    , #{contents}
+                    , #{boardGroup}
+                    , #{boardSort}
+                    , #{boardDepth}
+                    , #{createTime}
+                    , #{updateTime}
+                    , #{boardAdminId}
                 )
     </insert>
 
     <!--수정하기-->
     <update id="updateBoard" parameterType="BoardUpdateVo">
-        update
-            board
-        SET
-            title = #{title},
-            contents = #{contents},
-            update_time = #{updateTime}
-        WHERE
-              del_yn = 'N'
-          and id = #{id}
+        update board
+        set
+            title = #{title}
+            , contents = #{contents}
+            , update_time = #{updateTime}
+
+        where
+              del_yn = 'N' and id = #{id}
     </update>
 
-    <update id="updateBoardGroupSet" parameterType="int">
-        UPDATE  board
-        SET
-                board_group = #{id}
-        WHERE
-              id = #{id} AND del_yn = 'N'
+    <update id="updateBoardGroUpset" parameterType="int">
+        update board
+        set
+            board_group = #{id}
+        where
+              id = #{id} and del_yn = 'N'
     </update>
 
     <update id="deleteBoard" parameterType="int">
-        UPDATE board
+        update board
 
-        SET
+        set
             del_yn = 'Y'
 
-        WHERE
+        where
             del_yn = 'N' and id = #{id}
     </update>
 
     <update id="deleteBoardAdmin" parameterType="int">
-        UPDATE board AS b
-            JOIN board_admin AS ba ON ba.id = b.board_admin_id
-            JOIN comments AS co ON b.id = co.board_id
+        update board as b
+            join board_admin as ba on ba.id = b.board_admin_id
+            join comments as co on b.id = co.board_id
 
-        SET
+        set
              ba.del_yn = 'Y'
-            ,b.del_yn = 'Y'
-            ,co.del_yn = 'Y'
+            , b.del_yn = 'Y'
+            , co.del_yn = 'Y'
 
-        WHERE
-
+        where
             b.del_yn = 'N'
-          AND ba.id = #{id}
-          AND b.board_admin_id = ba.id
+            and ba.id = #{id}
+            and b.board_admin_id = ba.id
     </update>
 
     <select id="countComments" resultType="int">
-        SELECT
-            count(*) AS commentsCount
-        FROM
-            board AS b
-                JOIN comments AS c ON b.id = c.board_id
-        WHERE
-            c.del_yn = 'N' AND c.board_id = #{boardId}
+        select
+            count(*) as commentsCount
+        from board as b
+                join comments as c on b.id = c.board_id
+        where
+            c.del_yn = 'N' and c.board_id = #{boardId}
     </select>
 
     <select id="countAttachedFile" resultType="int" >
-        SELECT
-            count(*) AS attachedFileCount
-        FROM
-            board AS b
-                JOIN upload_file AS u ON b.id = u.board_id
-        WHERE
-            u.del_yn = 'N' AND u.board_id = #{boardId}
+        select
+            count(*) as attachedFileCount
+        from board as b
+            join upload_file as u on b.id = u.board_id
+        where
+            u.del_yn = 'N' and u.board_id = #{boardId}
     </select>
 
     <select id="hierarchicalCalculationFormula" resultType="int" >
-        SELECT
-                IFNULL(MIN(board_sort),0)
-        FROM
-                board
-        WHERE
+        select
+                ifnull(min(board_sort), 0)
+
+        from board
+
+        where
               board_group = ${boardGroup}
-          AND board_sort > ${boardSort}
-          AND board_depth <![CDATA[ <= ]]> ${boardDepth}
-          AND del_yn = 'N';
+          and board_sort > ${boardSort}
+          and board_depth <![CDATA[ <= ]]> ${boardDepth}
+          and del_yn = 'N';
     </select>
 
     <select id="calculationFormulaResultZero" resultType="int">
-        SELECT
-            IFNULL(MAX(board_sort),0) + 1
-        FROM
-            board
-        WHERE
-            board_group = ${boardGroup} AND del_yn = 'N';
+        select
+            ifnull(max(board_sort), 0) + 1
+
+        from board
+
+        where
+            board_group = ${boardGroup} and del_yn = 'N';
     </select>
 
     <select id="selectBoardReply" resultType="BoardDto" resultMap="boardDtoResultMap" >
-        SELECT
-                b.id,
-                b.title,
-                ba.category_name,
-                ba.category_number,
-                b.board_group,
-                b.board_sort,
-                b.board_depth,
-                b.board_admin_id,
-                b.del_yn
-        FROM
-            board AS b
-                JOIN board_admin AS ba ON b.board_admin_id = ba.id
-        WHERE
-            b.id = #{id} AND b.del_yn = 'N'
+        select
+                b.id
+                , b.title
+                , ba.category_name
+                , ba.category_number
+                , b.board_group
+                , b.board_sort
+                , b.board_depth
+                , b.board_admin_id
+                , b.del_yn
+        from
+            board as b
+                join board_admin as ba on b.board_admin_id = ba.id
+        where
+            b.id = #{id} and b.del_yn = 'N'
     </select>
 
-    <insert id="insertBoareReply"
+    <insert id="insertBoardReply"
             parameterType="BoardSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        INSERT INTO board(
-                    title,
-                    contents,
-                    board_group,
-                    board_sort,
-                    board_depth,
-                    create_time,
-                    update_time,
-                    board_admin_id
+        insert into board(
+                    title
+                    , contents
+                    , board_group
+                    , board_sort
+                    , board_depth
+                    , create_time
+                    , update_time
+                    , board_admin_id
 
-        )VALUES(
-                   #{title},
-                   #{contents},
-                   #{boardGroup},
-                   #{boardSort},
-                   #{boardDepth}+1,
-                   #{createTime},
-                   #{updateTime},
-                   #{boardAdminId}
+        )values(
+                   #{title}
+                   , #{contents}
+                   , #{boardGroup}
+                   , #{boardSort}
+                   , #{boardDepth} + 1
+                   , #{createTime}
+                   , #{updateTime}
+                   , #{boardAdminId}
                )
     </insert>
 
     <update id="calculationFormulaResultNotZero" parameterType="BoardSaveVo">
-        UPDATE board
+        update board
 
-        SET board_sort = board_sort + 1
+        set board_sort = board_sort + 1
 
-        WHERE
-
+        where
             board_group =  #{boardGroup}
-          AND board_sort <![CDATA[ >= ]]>  #{boardSort}
-          AND del_yn = 'N';
+          and board_sort <![CDATA[ >= ]]>  #{boardSort}
+          and del_yn = 'N';
     </update>
 
-    <update id="decreASeSort" parameterType="BoardDto">
-        UPDATE  board
-        SET     board_sort = board_sort - 1
-        WHERE   board_group = ${boardGroup} AND board_sort > ${boardSort}
+    <update id="decreaseSort" parameterType="BoardDto">
+        update  board
+        set     board_sort = board_sort - 1
+        where   board_group = ${boardGroup} and board_sort > ${boardSort}
     </update>
 </mapper>

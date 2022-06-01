@@ -71,7 +71,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
-    /** 게시물 상세보기 **/
+
     @Override
     @Transactional(readOnly = true)
     public BoardDto getDetailViewBoard(int id) {
@@ -98,7 +98,7 @@ public class BoardServiceImpl implements BoardService {
                 file.delete();
             }
         }
-        commentsMapper.deleteAllComment(id);
+        commentsMapper.deleteAllComments(id);
         BoardDto boardReply = boardMapper.selectBoardReply(id);
         if(boardReply.getBoardSort() != 0) {
             boardMapper.decreaseSort(boardReply);
@@ -108,17 +108,14 @@ public class BoardServiceImpl implements BoardService {
 
     }
 
-    /** 게시물 수정 **/
     @Override
     public void modifyBoard(BoardUpdateVo boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
     }
 
-    /** 게시물 리스트 **/
     @Override
     @Transactional(readOnly = true)
     public List<BoardDto> getBoardList(BoardDto boardDto) {
-
 
         boardDto.setCategoryNumber(boardDto.getCategoryNumber());
         List<BoardDto> boardList = Collections.emptyList();

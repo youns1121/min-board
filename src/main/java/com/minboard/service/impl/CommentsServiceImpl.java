@@ -2,7 +2,7 @@ package com.minboard.service.impl;
 
 import com.minboard.dto.CommentsDto;
 import com.minboard.mapper.CommentsMapper;
-import com.minboard.service.CommentService;
+import com.minboard.service.CommentsService;
 import com.minboard.vo.CommentsReplySaveVo;
 import com.minboard.vo.CommentsSaveVo;
 import com.minboard.vo.CommentsUpdateVo;
@@ -13,14 +13,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService {
+public class CommentsServiceImpl implements CommentsService {
 
     private final CommentsMapper commentsMapper;
 
     @Override /** 댓글작성 **/
-    public void insertComments(CommentsSaveVo commentsSaveVo) {
-        commentsMapper.insertComments(commentsSaveVo);
-        commentsMapper.insertCommentsSetGroup(commentsSaveVo);
+    public void insertComments(CommentsSaveVo CommentsSaveVo) {
+        commentsMapper.insertComments(CommentsSaveVo);
+        commentsMapper.insertCommentsSetGroup(CommentsSaveVo);
     }
 
     @Override /** 게시물의 계층형 댓글전체 보기 **/
@@ -30,22 +30,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void updateComments(CommentsUpdateVo commentsUpdateVo) {
-        commentsMapper.updateComments(commentsUpdateVo);
+    public void updateComments(CommentsUpdateVo CommentsUpdateVo) {
+        commentsMapper.updateComments(CommentsUpdateVo);
     }
 
     @Override
-    public void deleteComment(CommentsDto commentsDto) {
-        commentsMapper.deleteComment(commentsDto);
-        commentsMapper.decreaseSort(commentsDto);
+    public void deleteComments(CommentsDto CommentsDto) {
+        commentsMapper.deleteComments(CommentsDto);
+        commentsMapper.decreaseSort(CommentsDto);
     }
 
     @Override
-    public void deleteAllComment(int boardId) {
-        commentsMapper.deleteAllComment(boardId);
+    public void deleteAllComments(int boardId) {
+        commentsMapper.deleteAllComments(boardId);
     }
 
-    @Override /** 계층형 댓글 계산공식 **/
+    @Override
     public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
 
         int calculationResult = commentsMapper.hierarchicalCalculationFormula(commentsReplySaveVo);

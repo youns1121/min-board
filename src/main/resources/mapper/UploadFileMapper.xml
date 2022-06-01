@@ -32,16 +32,15 @@
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        INSERT INTO
-            upload_file(
-                        store_file_name,
-                        original_file_name,
-                        extension_name,
-                        store_file_size,
-                        store_file_path,
-                        board_id,
-                        create_time
-        )VALUES
+        insert into upload_file(
+                        store_file_name
+                        , original_file_name
+                        , extension_name
+                        , store_file_size
+                        , store_file_path
+                        , board_id
+                        , create_time
+        )values
         <foreach collection="list" item="item" separator=",">
             (
                          #{item.storeFileName},
@@ -59,48 +58,46 @@
             parameterType="java.util.List"
             useGeneratedKeys ="true">
 
-        INSERT INTO
-            upload_file(
-                store_file_name,
-                original_file_name,
-                extension_name,
-                store_file_size,
-                store_file_path,
-                board_id,
-                create_time
-        )VALUES
+        insert into upload_file(
+                store_file_name
+                , original_file_name
+                , extension_name
+                , store_file_size
+                , store_file_path
+                , board_id
+                , create_time
+        )values
             <foreach collection="list" item="item" separator=",">
                 (
-                    #{item.storeFileName},
-                    #{item.originalFileName},
-                    #{item.extensionName},
-                    #{item.storeFileSize},
-                    #{item.storeFilePath},
-                    #{item.boardId},
-                    #{item.createTime}
+                    #{item.storeFileName}
+                    , #{item.originalFileName}
+                    , #{item.extensionName}
+                    , #{item.storeFileSize}
+                    , #{item.storeFilePath}
+                    , #{item.boardId}
+                    , #{item.createTime}
                 )
             </foreach>
     </insert>
 
     <select id="getUploadFileList" resultType="UploadFileDto" resultMap="UploadFileDtoResultMap">
-        SELECT
-                id,
-                original_file_name,
-                store_file_name,
-                store_file_path,
-                store_file_size,
-                extension_name,
-                board_id
+        select
+                id
+                , original_file_name
+                , store_file_name
+                , extension_name
+                , store_file_size
+                , store_file_path
+                , board_id
 
-        FROM
-                upload_file
+        from upload_file
 
-        WHERE
+        where
                 board_id = #{boardId}
     </select>
 
     <select id="findByUploadFile" resultType="UploadFileDto" resultMap="UploadFileDtoResultMap">
-        SELECT
+        select
                 id,
                 original_file_name,
                 store_file_name,
@@ -109,46 +106,44 @@
                 store_file_path,
                 create_time,
                 board_id
-        FROM
+        from
                 upload_file
 
-        WHERE
+        where
                 id = #{id}
     </select>
 
     <select id="getUploadFileUpdateList" resultType="UploadFileUpdateVo" resultMap="UploadFileUpdateVoResultMap"  >
-        SELECT
-                id,
-                original_file_name,
-                store_file_name,
-                extension_name,
-                store_file_size,
-                store_file_path,
-                create_time,
-                board_id
+        select
+                id
+                , original_file_name
+                , store_file_name
+                , extension_name
+                , store_file_size
+                , store_file_path
+                , create_time
+                , board_id
 
-        FROM
-                upload_file
-        WHERE
+        from upload_file
+        
+        where
                 board_id = #{id}
     </select>
 
     <delete id="deleteFile" parameterType="int">
-        DELETE
+        delete
 
-        FROM
-                upload_file
-        WHERE
-                id = #{id}
+        from upload_file
+
+        where
+            id = #{id}
     </delete>
 
     <delete id="deleteAllFile" parameterType="int">
-        DELETE
+        delete
+        from upload_file
 
-        FROM
-            upload_file
-        WHERE
+        where
             board_id = #{id}
     </delete>
-
 </mapper>

@@ -5,39 +5,38 @@
 
 <mapper namespace="com.minboard.mapper.CommentsMapper">
 
-    <resultMap id="CommentsDtoResultMap" type="CommentsDto">
-        <result property="commentGroup" column="comment_group"/>
-        <result property="commentDepth" column="comment_depth" />
+    <resultMap id="commentsDtoResultMap" type="commentsDto">
+        <result property="commentsGroup" column="comments_group"/>
+        <result property="commentsDepth" column="comments_depth" />
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="delYn" column="del_yn"/>
         <result property="boardId" column="board_id"/>
     </resultMap>
 
-    <resultMap id="CommentsUpdateVoResultMap" type="CommentsUpdateVo">
+    <resultMap id="commentsUpdateVoResultMap" type="commentsUpdateVo">
         <result property="createTime" column="create_time"/>
         <result property="delYn" column="del_yn"/>
         <result property="boardId" column="board_id"/>
     </resultMap>
 
-    <!--- 댓글 생성하기  -->
     <insert id="insertComments"
-            parameterType="CommentsSaveVo"
+            parameterType="commentsSaveVo"
             useGeneratedKeys ="true"
             keyProperty="id">
 
-        INSERT INTO
+        insert into
             comments(
                         contents,
-                        comment_group,
-                        comment_depth,
+                        comments_group,
+                        comments_depth,
                         sort,
                         create_time,
                         board_id
-        )VALUES(
+        )values(
                         #{contents},
-                        #{commentGroup},
-                        #{commentDepth},
+                        #{commentsGroup},
+                        #{commentsDepth},
                         #{sort},
                         #{createTime},
                         #{boardId}
@@ -45,183 +44,177 @@
                    )
     </insert>
 
-    <select id="getBoardHierarchicalCommentsList" resultType="CommentsDto" resultMap="CommentsDtoResultMap" >
-            SELECT
+    <select id="getBoardHierarchicalCommentsList" resultType="commentsDto" resultMap="commentsDtoResultMap" >
+            select
                 id
-                 ,contents
-                 ,comment_group
-                 ,sort
-                 ,comment_depth
-                 ,create_time
-                 ,update_time
-                 ,board_id
-                 ,del_yn
-            FROM
-                comments
-            WHERE
-                       board_id  = #{id}
-                      AND del_yn = 'N'
-            ORDER BY comment_group ASC , sort ASC;
+                 , contents
+                 , comments_group
+                 , sort
+                 , comments_depth
+                 , create_time
+                 , update_time
+                 , board_id
+                 , del_yn
+
+            from comments
+
+            where
+                board_id  = #{id} and del_yn = 'N'
+
+            order by
+                comments_group asc
+                , sort asc;
 
     </select>
 
-    <update id="CommentsReplySortUpdate" parameterType="CommentsReplySaveVo">
-        update
-            comments
+    <update id="commentsReplySortUpdate" parameterType="commentsReplySaveVo">
+        update comments
+
         set
             sort = #{sort} + 1
-        where comment_group = #{commentGroup}
+
+        where comments_group = #{commentsGroup}
           and sort > #{sort}
           and board_id = ${boardId}
     </update>
 
-    <!--댓글 수정하기-->
-    <update id="updateComments" parameterType="CommentsUpdateVo">
-        UPDATE comments
+    <update id="updateComments" parameterType="commentsUpdateVo">
+        update comments
 
-        SET
-                contents = #{contents},
-                update_time = #{updateTime}
+        set
+                contents = #{contents}
+                , update_time = #{updateTime}
 
-        WHERE
-                id = #{id} AND del_yn = 'N'
+        where
+                id = #{id} and del_yn = 'N'
     </update>
 
-    <!--댓글 삭제하기-->
-    <update id="deleteComment" parameterType="CommentsDto">
-        UPDATE comments
+    <update id="deleteComments" parameterType="commentsDto">
+        update comments
 
-        SET
+        set
             del_yn = 'Y'
 
-        WHERE
-            id = #{id} AND del_yn = 'N'
+        where
+            id = #{id} and del_yn = 'N'
     </update>
 
-    <!--게시글의 모든댓글 삭제하기-->
-    <update id="deleteAllComment" parameterType="int">
-        UPDATE
+    <update id="deleteAllComments" parameterType="int">
+        update
             comments
 
-        SET
+        set
             del_yn = 'Y'
 
-        WHERE
-            board_id = #{boardId} AND del_yn = 'N'
+        where
+            board_id = #{boardId} and del_yn = 'N'
     </update>
 
     <!--댓글의 답글 작성하기-->
     <insert id="insertCommentsReply"
             keyProperty="id"
-            parameterType="CommentsReplySaveVo"
+            parameterType="commentsReplySaveVo"
             useGeneratedKeys ="true"
     >
-        INSERT INTO
+        insert into
             comments(
-
-                    contents,
-                    create_time,
-                    board_id,
-                    sort,
-                    comment_group,
-                    comment_depth
-        )VALUES(
-                   #{contents},
-                   #{createTime},
-                   #{boardId},
-                   #{sort},
-                   #{commentGroup},
-                   #{commentDepth}
+                    contents
+                    , create_time
+                    , board_id
+                    , sort
+                    , comments_group
+                    , comments_depth
+        )values(
+                   #{contents}
+                   , #{createTime}
+                   , #{boardId}
+                   , #{sort}
+                   , #{commentsGroup}
+                   , #{commentsDepth}
                )
 
     </insert>
 
-    <update id="insertCommentsSetGroup" parameterType="CommentsSaveVo">
-        UPDATE
-            comments
-        set comment_group = #{id}
+    <update id="insertCommentsSetGroup" parameterType="commentsSaveVo">
+        update comments
+        
+        set comments_group = #{id}
+        
         where
             board_id = #{boardId}
-          AND id = #{id}
-          AND del_yn = 'N';
+          and id = #{id}
+          and del_yn = 'N';
     </update>
 
     <select id="hierarchicalCalculationFormula" resultType="int" >
-        SELECT
-               IFNULL(MIN(sort),0)
-        FROM
+        select
+               ifnull(min(sort), 0)
+        from
                 comments
-        WHERE
-                comment_group = ${commentGroup}
-          AND sort > ${sort}
-          AND comment_depth <![CDATA[ <= ]]> ${commentDepth};
+        where
+                comments_group = ${commentsGroup}
+          and sort > ${sort}
+          and comments_depth <![CDATA[ <= ]]> ${commentsDepth};
     </select>
 
     <select id="calculationFormulaResultZero" resultType="int">
-        SELECT
-                IFNULL(MAX(SORT),0) + 1
-        FROM
+        select
+                ifnull(max(sort), 0) + 1
+        from
                 comments
-        WHERE
-                comment_group = ${commentGroup};
+        where
+                comments_group = ${commentsGroup};
     </select>
 
-    <insert id="insertResultZero" parameterType="CommentsReplySaveVo">
-        INSERT INTO comments(
-                    contents,
-                    create_time,
-                    board_id,
-                    sort,
-                    comment_group,
-                    comment_depth
-        )VALUES(
-                   #{contents},
-                   #{createTime},
-                   #{boardId},
-                   #{sort},
-                   #{commentGroup},
-                   #{commentDepth} + 1)
+    <insert id="insertResultZero" parameterType="commentsReplySaveVo">
+        insert into comments(
+                    contents
+                    , create_time
+                    , board_id
+                    , sort
+                    , comments_group
+                    , comments_depth
+        )values(
+                   #{contents}
+                   , #{createTime}
+                   , #{boardId}
+                   , #{sort}
+                   , #{commentsGroup}
+                   , #{commentsDepth} + 1)
     </insert>
 
-    <insert id="insertResultNotZero" parameterType="CommentsReplySaveVo">
-        INSERT INTO comments(
-                    contents,
-                    create_time,
-                    board_id,
-                    sort,
-                    comment_group,
-                    comment_depth
-        )VALUES(
-                       #{contents},
-                       #{createTime},
-                       #{boardId},
-                       #{sort},
-                       #{commentGroup},
-                       #{commentDepth} + 1
+    <insert id="insertResultNotZero" parameterType="commentsReplySaveVo">
+        insert into comments(
+                    contents
+                    , create_time
+                    , board_id
+                    , sort
+                    , comments_group
+                    , comments_depth
+        )values(
+                       #{contents}
+                       , #{createTime}
+                       , #{boardId}
+                       , #{sort}
+                       , #{commentsGroup}
+                       , #{commentsDepth} + 1
                )
     </insert>
 
-    <update id="calculationFormulaResultNotZero" parameterType="CommentsReplySaveVo">
-        UPDATE
-                comments
-        SET
+    <update id="calculationFormulaResultNotZero" parameterType="commentsReplySaveVo">
+        update comments
+        set
                 sort = sort + 1
-        WHERE
-
-                comment_group =  #{commentGroup}  AND sort <![CDATA[ >= ]]>  #{sort};
+        where
+                comments_group =  #{commentsGroup}  and sort <![CDATA[ >= ]]>  #{sort};
     </update>
 
-    <update id="decreaseSort" parameterType="CommentsDto">
-        UPDATE
-                comments
-        SET
+    <update id="decreaseSort" parameterType="commentsDto">
+        update comments
+        set
                 sort = sort - 1
-
-        WHERE
-                comment_group =  ${commentGroup}  AND sort > ${sort};
+        where
+                comments_group =  ${commentsGroup}  and sort > ${sort};
 
     </update>
-
-
-
 </mapper>

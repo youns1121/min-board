@@ -24,15 +24,15 @@
 <body>
 <div class="container" style="max-width: 600px">
   <h1 th:each="category : ${categoryList}"
-      th:if="${category.categoryNumber} eq ${categoryNumber}"
+      th:if="${category.categoryNumber} eq ${categorynumber}"
       th:text="${category.categoryName}">
   </h1>
-  <h1 th:if="${categoryNumber} eq  null" th:text="전체보기"></h1>
+  <h1 th:if="${categorynumber} eq  null" th:text="전체보기"></h1>
   <div>
     <button type="button" class="writeButton"
             th:each="category : ${categoryList}"
-            th:if="${category.categoryNumber} eq ${categoryNumber}"
-            th:onclick="|location.href='@{/board/new(categorynumber=${category.categoryNumber})}'|" >글쓰기</button>
+            th:if="${category.categoryNumber} eq ${categorynumber}"
+            th:onclick="|location.href='@{/board/new(categoryNumber=${category.categoryNumber})}'|" >글쓰기</button>
     <button type="button" class="admin" th:onclick="|location.href='@{/admin}'|">관리자 페이지</button>
   </div>
   <div>
@@ -52,17 +52,17 @@
           </th>
 
           <th
-                  style="text-align: center">첨부파일수
+                  style="text-align: center">첨부파일
           </th>
         </tr>
         </thead>
-        <th:block layout:fragment="content">
+        <th:block th:fragment="content">
           <tbody>
           <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board, index : ${boardList}" >
-            <td style="text-align: center" th:text="${boardDto.paginationInfo.totalRecordCount} -
-              ((${boardDto.paginationInfo.paginationDto.currentPageNo - 1}) *
-              ${boardDto.paginationInfo.paginationDto.recordsPerPage} +
-              ${boardDto.paginationInfo.firstPage} + ${index.index}-1)"></td>
+            <td style="text-align: center" th:text="${boardRequestDto.paginationInfo.totalRecordCount} -
+              ((${boardRequestDto.paginationInfo.paginationDto.currentPageNo - 1}) *
+              ${boardRequestDto.paginationInfo.paginationDto.recordsPerPage} +
+              ${boardRequestDto.paginationInfo.firstPage} + ${index.index}-1)"></td>
             <td th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
                 style="cursor:pointer; width: 250px; ">
                   <span th:style="${board.boardDepth ne 0}
@@ -89,9 +89,16 @@
                 style="cursor:pointer; text-align: center"></td>
 
             <td
-                th:text="${board.fileCount}"
+                th:if="${board.boardFileYn eq 'Y'}"
                 th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
-                style="cursor:pointer; text-align: center "></td>
+                style="cursor:pointer; text-align: center ">
+              <img class="board-img" src="C:/Users/minys/attachment_87543.png">
+
+            </td>
+            <td
+                    th:unless="${board.boardFileYn eq 'Y'}"
+                    style="cursor:pointer; text-align: center ">
+            </td>
           </tr>
           <tr th:if="${#lists.isEmpty(boardList)}">
             <td colspan="6">조회된 결과가 없습니다.</td>
@@ -101,11 +108,11 @@
       </table>
     </fieldset>
 
-    <th:block layout:fragment="paging">
+    <th:block th:fragment="paging">
       <nav th:replace="html/commonPaging :: pagination"></nav>
     </th:block>
   </div>
-  <th:block layout:fragment="script">
+  <th:block th:fragment="script">
     <script th:inline="javascript">
       function movePage(uri, queryString) {
         location.href = uri + queryString;

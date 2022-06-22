@@ -1,10 +1,8 @@
-package com.minboard.vo;
+package com.minboard.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class BoardUpdateVo {
+public class BoardUpdateDto {
 
     /** Board Table PK **/
     private Integer id;
@@ -30,15 +28,14 @@ public class BoardUpdateVo {
     @Length(min = 20, max = 100, message = "내용은 20자 이상 100자 이하")
     private String contents;
 
-    /** 수정일 **/
     private LocalDateTime updateTime;
 
     private List<MultipartFile> fileList;
 
     @Builder
-    public BoardUpdateVo(Integer id, String title, String contents,
-                         LocalDateTime updateTime,Integer boardId, Integer boardAdminId,
-                         List<MultipartFile> fileList) {
+    public BoardUpdateDto(Integer id, String title, String contents,
+                          LocalDateTime updateTime, Integer boardId, Integer boardAdminId,
+                          List<MultipartFile> fileList) {
 
         this.id = id;
         this.boardId = boardId;

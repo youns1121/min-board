@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
 <style>
     fieldset {
@@ -19,6 +19,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" th:src="@{/script/main.js}"></script>
     <script type="text/javascript" th:src="@{/script/fileUpload.js}"></script>
+    <script type="text/javascript"history.replaceState({}, null, location.pathname)></script>
+
 </head>
 <br/>
 <body>
@@ -57,10 +59,10 @@
                 <tr>
                     <td>
                         <div class="fileCount" id="Files0"
-                             th:remove="${boardAdmin.attachedFileYn eq 'N' or boardAdmin.attachedFileCount eq 0 }? all : none">
+                             th:remove="${boardAdmin.boardFileYn eq 'N' or boardAdmin.boardFileCount eq 0 }? all : none">
                                     <input type='file' class="file" name='fileList' />
                                     <button type="button" id="button-add-file"
-                                                th:onclick="|addFileForm('${boardAdmin.attachedFileCount}')|">파일추가</button>
+                                                th:onclick="|addFileForm('${boardAdmin.boardFileCount}')|">파일추가</button>
 
                         </div>
                             <div id="file-list">

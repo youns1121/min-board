@@ -1,9 +1,10 @@
 package com.minboard.controller;
 
 import com.minboard.dto.*;
+import com.minboard.dto.request.BoardRequestDto;
 import com.minboard.service.BoardAdminService;
 import com.minboard.service.CommentsService;
-import com.minboard.service.FileStoreService;
+import com.minboard.service.BoardFileService;
 import com.minboard.service.impl.BoardServiceImpl;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,102 +24,78 @@ import java.util.List;
 public class BoardController {
 
     private final BoardServiceImpl boardService;
-    private final FileStoreService fileStoreService;
+    private final BoardFileService boardFileService;
     private final CommentsService commentsService;
     private final BoardAdminService boardAdminService;
 
-    @GetMapping
-    public String boardHeader(Model model){
-
-        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
-
-        model.addAttribute("categoryList", categoryList);
-
-        return "html/header/boardHeader";
-    }
-
     @GetMapping("/new")
-    public String boardSave(Model model, BoardSaveVo boardSaveVo,
-                            @RequestParam("categoryNumber") int categoryNumber) {
+    public String boardSave(Model model, @RequestParam("categoryNumber") int categoryNumber) {
 
-        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
-        BoardAdminDto boardAdminDto = boardAdminService.getBoardCategory(categoryNumber);
         model.addAttribute("categoryNumber", categoryNumber);
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("board", boardSaveVo);
-        model.addAttribute("boardAdmin",boardAdminDto);
+        model.addAttribute("categoryList",  boardAdminService.getBoardCategoryList());
+        model.addAttribute("board", BoardSaveDto.builder().build());
+        model.addAttribute("boardAdmin",boardAdminService.getBoardCategory(categoryNumber));
         return "html/boardNew";
     }
 
     @ResponseBody
     @PostMapping("/new")
-    public String boardSave(@Validated @ModelAttribute("board")  BoardSaveVo boardSaveVo) throws IOException {
+    public String boardSave(@Validated @ModelAttribute("board") BoardSaveDto boardSaveDto) throws IOException {
 
-        boardService.saveBoard(boardSaveVo);
-        boardService.saveBoardFile(boardSaveVo);
-        return boardSaveVo.getId().toString();
+        boardService.saveBoard(boardSaveDto);
+        boardService.saveBoardFile(boardSaveDto.getFileList(), boardSaveDto.getId());
+        return boardSaveDto.getId().toString();
     }
 
     @ResponseBody
     @PostMapping("/update")
-    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateVo boardUpdateVo,
-                              @ModelAttribute("uploadFileUpdateVo") UploadFileUpdateVo uploadFileUpdateVo
-    ) throws IOException {
+    public String boardModify(@Validated @ModelAttribute("boardUpdateVo") BoardUpdateDto boardUpdateDto) throws IOException {
 
-        boardService.updateBoardFile(boardUpdateVo);
-        boardService.modifyBoard(boardUpdateVo);
-        return boardUpdateVo.getId().toString();
+        boardService.modifyBoard(boardUpdateDto);
+        boardService.saveBoardFile(boardUpdateDto.getFileList(), boardUpdateDto.getId());
+        return boardUpdateDto.getId().toString();
     }
 
     @GetMapping("/update/{id}")
     public String boardModify(@PathVariable("id") int id, Model model) {
 
-        BoardDto boardDto = boardService.getDetailViewBoard(id);
-        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
-        model.addAttribute("boardUpdateVo", boardDto);
-        model.addAttribute("uploadFileList", uploadFileList);
+        model.addAttribute("boardUpdate", boardService.getDetailViewBoard(id));
+        model.addAttribute("boardFileList", boardFileService.getBoardFileList(id));
         return "html/boardEdit";
     }
 
     @ResponseBody
     @PostMapping("/reply")
-    public String boardReplySave(@Validated @ModelAttribute("board") BoardSaveVo boardSaveVo) throws IOException {
+    public String boardReplySave(@Validated @ModelAttribute("board") BoardSaveDto boardSaveDto) throws IOException {
 
-        boardService.saveBoardReply(boardSaveVo);
-        boardService.saveBoardFile(boardSaveVo);
-        return boardSaveVo.getId().toString();
+        boardService.saveBoardReply(boardSaveDto);
+        boardService.saveBoardFile(boardSaveDto.getFileList(), boardSaveDto.getId());
+        return boardSaveDto.getId().toString();
     }
 
     @GetMapping("/reply/{id}")
-    public String boardReply(BoardSaveVo boardSaveVo, Model model){
+    public String boardReply(@PathVariable("id") int id, Model model){
 
-        BoardDto detailViewBoard = boardService.getBoardReply(boardSaveVo.getId());
-        model.addAttribute("board", detailViewBoard);
+        model.addAttribute("board", boardService.getBoardReply(id));
         return "html/boardReply";
     }
 
     @GetMapping("/category/{categoryNumber}")
-    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber,BoardDto boardDto, Model model) {
+    public String boardCategoryList(@PathVariable("categoryNumber") int categoryNumber, BoardRequestDto requestDto, Model model) {
 
-        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
-        List<BoardDto> boardList = boardService.getBoardList(boardDto);
-        boardDto.setCategoryNumber(categoryNumber);
-        BoardAdminDto boardCategory = boardAdminService.getBoardCategory(categoryNumber);
+        requestDto.setCategoryNumber(categoryNumber);
 
-        model.addAttribute("boardCategory", boardCategory);
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("boardList", boardList);
+        model.addAttribute("boardCategory", boardAdminService.getBoardCategory(categoryNumber));
+        model.addAttribute("categoryList", boardAdminService.getBoardCategoryList());
+        model.addAttribute("boardList", boardService.getBoardList(requestDto));
         return "html/boardList";
     }
 
-    @GetMapping("/category")
-    public String boardCategoryList(BoardDto boardDto, Model model) {
+    @GetMapping(value = {"/category", "/"})
+    public String boardCategoryList(BoardRequestDto requestDto, Model model) {
 
-        List<BoardAdminDto> categoryList = boardAdminService.getBoardCategoryList();
-        List<BoardDto> boardList = boardService.getBoardList(boardDto);
-
-        model.addAttribute("boardList", boardList);
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("boardList", boardService.getBoardList(requestDto));
+        model.addAttribute("categoryList", boardAdminService.getBoardCategoryList());
         return "html/main";
     }
 
@@ -127,24 +103,23 @@ public class BoardController {
     @ResponseBody
     @GetMapping("/validation/comments/yn")
     public String validationCommentsYn(@RequestParam int categoryNumber){
-        BoardAdminDto boardCategory  = boardAdminService.getBoardCategory(categoryNumber);
-        return boardCategory.getCommentsYn();
+
+        BoardAdminVo boardAdminVo  = boardAdminService.getBoardCategory(categoryNumber);
+        return boardAdminVo.getCommentsYn();
     }
 
     @GetMapping("/view/{id}")
     public String boardDetails(@PathVariable("id") int id, Model model) {
-        BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
-        List<UploadFileDto> uploadFileList = fileStoreService.getUploadFileList(id);
-        model.addAttribute("detailViewBoard", detailViewBoard);
-        model.addAttribute("uploadFileList", uploadFileList);
+
+        model.addAttribute("detailViewBoard", boardService.getDetailViewBoard(id));
+//        model.addAttribute("boardFileList", boardFileService.getBoardFileList(id));
         return "html/boardDetail";
     }
 
-    /** 첨부파일 다운로드 **/
-    @GetMapping("/attach/{fileId}")
-    public ResponseEntity<String> boardFileDownload(@PathVariable int fileId) throws MalformedURLException {
+    @GetMapping("/attach/{fileid}")
+    public ResponseEntity<String> boardFileDownload(@PathVariable("fileid") int fileId) throws MalformedURLException {
 
-        DownloadFileDto downloadFileInfo = fileStoreService.downloadAttachedFile(fileId);
+        DownloadFileDto downloadFileInfo = boardFileService.downloadBoardFile(fileId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, downloadFileInfo.getContentDisposition())
                 .body(downloadFileInfo.getResource());
@@ -153,7 +128,7 @@ public class BoardController {
     @PostMapping("/delete")
     public String boardRemove(int id) {
 
-        BoardDto detailViewBoard = boardService.getDetailViewBoard(id);
+        BoardVo detailViewBoard = boardService.getDetailViewBoard(id);
         boardService.removeBoard(id);
         return "redirect:/board/category/"+detailViewBoard.getCategoryNumber();
     }
@@ -161,39 +136,50 @@ public class BoardController {
     @ResponseBody
     @PostMapping("/deleteFile")
     public void boardFileRemove(int id){
-        fileStoreService.deleteFile(id);
+
+        boardFileService.deleteFile(id);
     }
 
     @ResponseBody
     @PostMapping("/comment")
-    public void CommentsAdd(CommentsSaveVo commentsSaveVo){
-        commentsService.insertComments(commentsSaveVo);
+    public void CommentsAdd(CommentsSaveDto commentsSaveDto){
+
+        commentsService.saveComments(commentsSaveDto);
     }
 
 
     @GetMapping("/commentsList/{id}")
     public String boardCommentsList(@PathVariable("id") int id, Model model){
 
-        List<CommentsDto> commentsList = commentsService.getBoardHierarchicalCommentsList(id);
-        model.addAttribute("commentsList", commentsList);
+        model.addAttribute("commentsList", commentsService.getBoardHierarchicalCommentsList(id));
         return "html/boardCommentsDetail";
     }
 
     @ResponseBody
     @PostMapping("/comment/update")
-    public void boardCommentsModify(CommentsUpdateVo commentsUpdateVo){
-        commentsService.updateComments(commentsUpdateVo);
+    public void boardCommentsModify(BoardCommentsUpdateDto boardCommentsUpdateDto){
+
+        commentsService.modifyComments(boardCommentsUpdateDto);
     }
 
     @ResponseBody
     @PostMapping("/commentDelete")
-    public void boardCommentsRemove(CommentsDto commentsDto){
-        commentsService.deleteComments(commentsDto);
+    public void boardCommentsRemove(BoardCommentsUpdateDto boardCommentsUpdateDto){
+
+        commentsService.removeComments(boardCommentsUpdateDto);
     }
 
     @ResponseBody
     @PostMapping("/comment/reply")
-    public void commentsReplyAdd(CommentsReplySaveVo commentsReplySaveVo){
-        commentsService.insertCommentsReply(commentsReplySaveVo);
+    public void commentsReplyAdd(BoardCommentsReplySaveDto commentsReplySaveDto){
+
+        commentsService.saveCommentsReply(commentsReplySaveDto);
+    }
+
+    @GetMapping("/header")
+    public String boardHeader(Model model){
+
+        model.addAttribute("categoryList", boardAdminService.getBoardCategoryList());
+        return "html/header/boardHeader";
     }
 }

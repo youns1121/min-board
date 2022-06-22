@@ -1,73 +1,79 @@
 package com.minboard.service.impl;
 
-import com.minboard.dto.CommentsDto;
-import com.minboard.mapper.CommentsMapper;
+import com.minboard.dto.BoardCommentsUpdateDto;
+import com.minboard.dto.BoardCommentsReplySaveDto;
+import com.minboard.dto.CommentsSaveDto;
+import com.minboard.mapper.BoardCommentsMapper;
 import com.minboard.service.CommentsService;
-import com.minboard.vo.CommentsReplySaveVo;
-import com.minboard.vo.CommentsSaveVo;
-import com.minboard.vo.CommentsUpdateVo;
+import com.minboard.vo.BoardCommentsVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Service
 public class CommentsServiceImpl implements CommentsService {
 
-    private final CommentsMapper commentsMapper;
+    private final BoardCommentsMapper commentsMapper;
 
-    @Override /** 댓글작성 **/
-    public void insertComments(CommentsSaveVo CommentsSaveVo) {
-        commentsMapper.insertComments(CommentsSaveVo);
-        commentsMapper.insertCommentsSetGroup(CommentsSaveVo);
-    }
+    @Transactional
+    @Override
+    public void saveComments(CommentsSaveDto commentsSaveDto) {
 
-    @Override /** 게시물의 계층형 댓글전체 보기 **/
-    public List<CommentsDto> getBoardHierarchicalCommentsList(int boardId) {
-        List<CommentsDto> hierarchicalCommentsAll = commentsMapper.getBoardHierarchicalCommentsList(boardId);
-        return hierarchicalCommentsAll;
+        commentsSaveDto.setCommentsInit(0, 0);
+        commentsMapper.insertComments(commentsSaveDto);
+        commentsMapper.updateCommentsSetGroup(commentsSaveDto);
     }
 
     @Override
-    public void updateComments(CommentsUpdateVo CommentsUpdateVo) {
-        commentsMapper.updateComments(CommentsUpdateVo);
+    public List<BoardCommentsVo> getBoardHierarchicalCommentsList(int boardId) {
+
+        return commentsMapper.getBoardHierarchicalCommentsList(boardId);
     }
 
+    @Transactional
     @Override
-    public void deleteComments(CommentsDto CommentsDto) {
-        commentsMapper.deleteComments(CommentsDto);
-        commentsMapper.decreaseSort(CommentsDto);
+    public void modifyComments(BoardCommentsUpdateDto boardCommentsUpdateDto) {
+
+        commentsMapper.updateComments(boardCommentsUpdateDto);
     }
 
+    @Transactional
     @Override
-    public void deleteAllComments(int boardId) {
-        commentsMapper.deleteAllComments(boardId);
+    public void removeComments(BoardCommentsUpdateDto boardCommentsUpdateDto) {
+
+        commentsMapper.updateIsDeleteComments(boardCommentsUpdateDto);
+        commentsMapper.updateCommentsSortDecrease(boardCommentsUpdateDto);
     }
 
+    @Transactional
     @Override
-    public void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo) {
+    public void saveCommentsReply(BoardCommentsReplySaveDto commentsReplySaveDto) {
 
-        int calculationResult = commentsMapper.hierarchicalCalculationFormula(commentsReplySaveVo);
+        int calculationResult = commentsMapper.getHierarchicalCalculationFormula(commentsReplySaveDto);
 
         if (calculationResult == 0){
-            calculationResultZero(commentsReplySaveVo);
-        }
-
-        if(calculationResult != 0){
-            commentsReplySaveVo.setSort(calculationResult);
-            calculationResultNotZero(commentsReplySaveVo);
+            calculationResultZero(commentsReplySaveDto);
+        }else {
+            commentsReplySaveDto.setSort(calculationResult);
+            calculationResultNotZero(commentsReplySaveDto);
         }
     }
 
-    public void calculationResultZero(CommentsReplySaveVo commentsReplySaveVo){
-        int addSortValue = commentsMapper.calculationFormulaResultZero(commentsReplySaveVo);
-        commentsReplySaveVo.setSort(addSortValue);
-        commentsMapper.insertResultZero(commentsReplySaveVo);
+    @Transactional
+    public void calculationResultZero(BoardCommentsReplySaveDto commentsReplySaveDto){
+
+        commentsReplySaveDto.setSort(commentsMapper.getCalculationFormulaResultZero(commentsReplySaveDto));
+        commentsMapper.insertCommentsReply(commentsReplySaveDto);
     }
 
-    public void calculationResultNotZero(CommentsReplySaveVo commentsReplySaveVo){
-        commentsMapper.calculationFormulaResultNotZero(commentsReplySaveVo);
-        commentsMapper.insertResultNotZero(commentsReplySaveVo);
+    @Transactional
+    public void calculationResultNotZero(BoardCommentsReplySaveDto commentsReplySaveDto){
+
+        commentsMapper.updateCommentsSortIncrease(commentsReplySaveDto);
+        commentsMapper.insertCommentsReply(commentsReplySaveDto);
     }
 }

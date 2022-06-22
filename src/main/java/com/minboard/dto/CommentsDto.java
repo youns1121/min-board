@@ -15,9 +15,9 @@ public class CommentsDto {
 
     private String contents;
 
-    private int commentGroup;
+    private int commentsGroup;
 
-    private int commentDepth;
+    private int commentsDepth;
 
     private int sort;
 

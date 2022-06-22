@@ -9,13 +9,13 @@
               </td>
               <td class="contents">
                   <span th:class="commentContents + ${comments.id}"
-                     th:style="${comments.commentDepth ne 0}
-                     ? 'width: 300px; color: red; font-style: italic; padding-left:'+ ${comments.commentDepth * 20}+'px'
+                     th:style="${comments.commentsDepth ne 0}
+                     ? 'width: 300px; color: red; font-style: italic; padding-left:'+ ${comments.commentsDepth * 20}+'px'
                      : 'width: 300px'"
-                     th:data-group="${comments.commentGroup}"
-                     th:data-depth="${comments.commentDepth}"
-                     th:data-sort="${comments.sort}">
-                  <span th:if="${comments.commentDepth ne 0}" th:text="ㄴRe"></span>
+                     th:data-group="${comments.commentsGroup}"
+                     th:data-depth="${comments.commentsDepth}"
+                     th:data-sort="${comments.commentsSort}">
+                  <span th:if="${comments.commentsDepth ne 0}" th:text="ㄴRe"></span>
 
                   </span>
                   <span th:class="commentsContents" th:text = "${comments.contents}" th:id="spanComment_+${comments.id}"></span>
@@ -35,8 +35,11 @@
                   <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') == null}"
                      th:text="*{#temporals.format(comments.createTime, 'yyyy-MM-dd-HH:mm')}" th:value="생성시간">
                   </a>
-                  <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') != null}"
-                     style="color: forestgreen; font-weight:bold" th:text="수정시간 ">
+                  <a
+                          th:if="${comments.updateTime != comments.createTime &&
+                          #temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') != null}"
+                     style="color: forestgreen; font-weight:bold" th:text="수정시간 "
+                  >
                   </a>
                   <a th:if="${#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm') != null}"
                      th:text="*{#temporals.format(comments.updateTime, 'yyyy-MM-dd-HH:mm')}" th:value="수정시간">
@@ -44,9 +47,9 @@
 
                   <input type="hidden" class="commentId" th:value="${comments.id}" ><br/>
                   <div class="optionButton">
-                      <button type="button" th:id="commentReply + ${comments.id}" th:data-group="${comments.commentGroup}"
-                              th:data-depth="${comments.commentDepth}"
-                              th:data-sort="${comments.sort}"
+                      <button type="button" th:id="commentReply + ${comments.id}" th:data-group="${comments.commentsGroup}"
+                              th:data-depth="${comments.commentsDepth}"
+                              th:data-sort="${comments.commentsSort}"
                               th:value="${comments.id}"
                               onclick="getCommentReply(this)">답변작성
                       </button>

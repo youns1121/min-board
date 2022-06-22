@@ -35,12 +35,10 @@ public class MemberDto {
 
     private LocalDateTime updateTime;
 
-    private String delYn;
-
     @Builder
     public MemberDto(String userName, String password, String name,
                      String birthday, String gender, String memberRole,
-                     LocalDateTime createTime, LocalDateTime updateTime, String delYn) {
+                     LocalDateTime createTime, LocalDateTime updateTime) {
         this.userName = userName;
         this.password = password;
         this.name = name;
@@ -49,7 +47,6 @@ public class MemberDto {
         this.memberRole = memberRole;
         this.createTime = createTime;
         this.updateTime = updateTime;
-        this.delYn = delYn;
     }
 
     public MemberDto() {

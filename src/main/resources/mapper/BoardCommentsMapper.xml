@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.minboard.mapper.BoardCommentsMapper">
+
+    <resultMap id="boardCommentsVoResultMap" type="BoardCommentsVo">
+        <result property="commentsGroup" column="comments_group"/>
+        <result property="commentsSort" column="comments_sort"/>
+        <result property="commentsDepth" column="comments_depth" />
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="delYn" column="del_yn"/>
+        <result property="boardId" column="board_id"/>
+    </resultMap>
+
+    <insert id="insertComments"
+            parameterType="commentsSaveDto"
+            useGeneratedKeys ="true"
+            keyProperty="id">
+
+        insert into board_comments(
+                        contents
+                        , comments_group
+                        , comments_depth
+                        , comments_sort
+                        , create_time
+                        , update_time
+                        , board_id
+        )values(
+                        #{contents}
+                        , #{commentsGroup}
+                        , #{commentsDepth}
+                        , #{commentsSort}
+                        , #{createTime}
+                        , #{updateTime}
+                        , #{boardId}
+
+        )
+    </insert>
+
+    <select id="getBoardHierarchicalCommentsList" parameterType="int" resultType="BoardCommentsVo" resultMap="boardCommentsVoResultMap" >
+            select
+                     id
+                     , contents
+                     , comments_group
+                     , comments_sort
+                     , comments_depth
+                     , create_time
+                     , update_time
+                     , board_id
+                     , del_yn
+
+            from    board_comments
+
+            where
+                    board_id  = #{id} and del_yn = 'N'
+
+            order by
+                    comments_group asc
+                    , comments_sort asc;
+
+    </select>
+
+    <update id="updateComments" parameterType="boardCommentsUpdateDto">
+        update board_comments
+
+        set
+                contents = #{contents}
+                , update_time = #{updateTime}
+
+        where
+                id = #{id} and del_yn = 'N'
+    </update>
+
+    <update id="updateIsDeleteComments" parameterType="int">
+        update board_comments
+
+        set
+            del_yn = 'Y'
+
+        where
+                id = #{id} and del_yn = 'N'
+    </update>
+
+    <update id="updateIsDeleteAllComments" parameterType="int">
+        update board_comments
+
+        set
+            del_yn = 'Y'
+
+        where
+            board_id = #{boardId} and del_yn = 'N'
+    </update>
+
+
+    <update id="updateCommentsSetGroup" parameterType="boardCommentsUpdateDto">
+        update  board_comments
+        
+        set     comments_group = #{id}
+        
+        where
+                board_id = #{boardId}
+              and id = #{id}
+              and del_yn = 'N';
+    </update>
+
+    <select id="getHierarchicalCalculationFormula" resultType="int" >
+        select  ifnull(min( comments_sort), 0)
+
+        from    board_comments
+
+        where   comments_group = ${commentsGroup}
+              and comments_sort > ${commentsSort}
+              and comments_depth <![CDATA[ <= ]]> ${commentsDepth};
+    </select>
+
+    <select id="getCalculationFormulaResultZero" resultType="int">
+        select  ifnull(max( comments_sort), 0) + 1
+
+        from    board_comments
+
+        where   comments_group = ${commentsGroup};
+    </select>
+
+    <insert id="insertCommentsReply" parameterType="boardCommentsReplySaveDto">
+        insert into board_comments(
+                    contents
+                    , board_id
+                    , comments_sort
+                    , comments_group
+                    , comments_depth
+                    , create_time
+                    , update_time
+        )values(
+                   #{contents}
+                   , #{boardId}
+                   , #{commentsSort}
+                   , #{commentsGroup}
+                   , #{commentsDepth} + 1
+                   , #{createTime}
+                   , #{updateTime}
+        )
+    </insert>
+
+    <update id="updateCommentsSortIncrease" parameterType="boardCommentsReplySaveDto">
+        update board_comments
+        set
+                comments_sort = comments_sort + 1
+        where
+                comments_group =  #{commentsGroup} and comments_sort <![CDATA[ >= ]]>  #{commentsSort};
+    </update>
+
+    <update id="updateCommentsSortDecrease" parameterType="boardCommentsUpdateDto">
+        update board_comments
+        set
+            comments_sort = comments_sort - 1
+        where
+                comments_group =  ${commentsGroup} and comments_sort > ${commentsSort};
+
+    </update>
+</mapper>

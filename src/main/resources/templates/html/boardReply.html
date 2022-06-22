@@ -49,7 +49,7 @@
             <br/>
             <tr>
                 <td>
-                    <div th:remove="${board.attachedFileYn eq 'N' or board.attachedFileCount eq 0}? all:none">
+                    <div th:remove="${board.boardFileYn eq 'N' or board.boardFileCount eq 0}? all:none">
                         <div class="fileCount" id="Files0">
                             <input type='file' class="file" name='fileList' />
                             <button type="button" id="button-add-file" onclick="addFileReplyForm()">파일추가</button>

@@ -1,9 +1,10 @@
 package com.minboard.mapper;
 
 
-import com.minboard.dto.BoardDto;
-import com.minboard.vo.BoardSaveVo;
-import com.minboard.vo.BoardUpdateVo;
+import com.minboard.dto.BoardSaveDto;
+import com.minboard.dto.request.BoardRequestDto;
+import com.minboard.vo.BoardVo;
+import com.minboard.dto.BoardUpdateDto;
 import org.apache.ibatis.annotations.Mapper;
 
 
@@ -11,50 +12,30 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
-    BoardDto selectFileTest(int id);
 
-    List<BoardDto> selectBoardList(BoardDto boardDto);
-    List<BoardDto> selectBoardAllList(BoardDto boardDto);
+    List<BoardVo> selectBoardList(BoardRequestDto requestDto);
 
-    /** 게시물 총 갯수 **/
-    int totalCountBoard();
+    BoardVo selectBoard(int id);
 
-    /** 게시물 상세보기 **/
-    BoardDto selectBoard(int id);
+    void insertBoard(BoardSaveDto boardSaveDto);
 
-    /** 게시물 수정 상세보기 **/
-    BoardUpdateVo selectUpdateBoard(int id);
-
-    /** 게시물 생성 **/
-    void insertBoard(BoardSaveVo boardSaveVo);
-
-    /** 게시물 삭제 **/
     void deleteBoard(int id);
 
-    /** 게시물 수정 **/
-    void updateBoard(BoardUpdateVo boardUpdateVo); // 게시물 수정
-
-    int countComments(int id);
-
-    int countAttachedFile(int id);
+    void updateBoard(BoardUpdateDto boardUpdateVo);
 
     void updateBoardGroupSet(int boardId);
 
-    int hierarchicalCalculationFormula(BoardSaveVo boardSaveVo);
+    int selectHierarchicalCalculationFormula(BoardSaveDto boardSaveDto);
 
-    int calculationFormulaResultZero(BoardSaveVo boardSaveVo);
+    int selectCalculationFormulaResultZero(BoardSaveDto boardSaveDto);
 
-    void insertBoareReply(BoardSaveVo boardSaveVo);
+    void insertBoardReply(BoardSaveDto boardSaveDto);
 
-    void calculationFormulaResultNotZero(BoardSaveVo boardSaveVo);
+    void updateBoardSortIncrease(BoardSaveDto boardSaveDto);
 
-    BoardDto selectBoardReply(int id);
+    BoardVo selectBoardReply(int id);
 
-    void decreaseSort(BoardDto boardDto);
+    void updateBoardSortDecrease(BoardVo boardVo);
 
-    BoardDto selectBoardCategoryNumber(int categoryNumber);
-
-    void deleteBoardAdmin(int id);
-
-    List<BoardDto> findByBoardList(int boardAdminId);
+    List<BoardVo> findByBoardList(int boardAdminId);
 }

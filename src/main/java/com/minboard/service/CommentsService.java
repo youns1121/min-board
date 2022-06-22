@@ -1,28 +1,21 @@
 package com.minboard.service;
 
-import com.minboard.dto.CommentsDto;
-import com.minboard.vo.CommentsReplySaveVo;
-import com.minboard.vo.CommentsSaveVo;
-import com.minboard.vo.CommentsUpdateVo;
+import com.minboard.dto.BoardCommentsUpdateDto;
+import com.minboard.dto.BoardCommentsReplySaveDto;
+import com.minboard.dto.CommentsSaveDto;
+import com.minboard.vo.BoardCommentsVo;
 
 import java.util.List;
 
 public interface CommentsService {
 
-    void insertComments(CommentsSaveVo commentsSaveVo);
+    void saveComments(CommentsSaveDto commentsSaveDto);
 
-    /** 게시물의 계층형 댓글전체 보기 **/
-    List<CommentsDto> getBoardHierarchicalCommentsList(int boardId);
+    List<BoardCommentsVo> getBoardHierarchicalCommentsList(int boardId);
 
-    /** 댓글 수정하기 **/
-    void updateComments(CommentsUpdateVo commentsUpdateVo);
+    void modifyComments(BoardCommentsUpdateDto commentsUpdateDto);
 
-    /** 댓글 삭제하기 **/
-    void deleteComments(CommentsDto commentsDto);
+    void removeComments(BoardCommentsUpdateDto boardCommentsUpdateDto);
 
-    /** 게시글의 모든댓글 삭제하기 **/
-    void deleteAllComments(int boardId);
-
-    /** 댓글의 답변 작성하기 **/
-    void insertCommentsReply(CommentsReplySaveVo commentsReplySaveVo);
+    void saveCommentsReply(BoardCommentsReplySaveDto commentsReplySaveDto);
 }

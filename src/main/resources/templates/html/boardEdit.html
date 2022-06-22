@@ -24,14 +24,14 @@
   <br/>
 </head>
 <body>
-  <form class="boardEdit" th:object="${boardUpdateVo}" th:action="@{/board/update}" enctype="multipart/form-data" method="post" >
+  <form class="boardEdit" th:object="${boardUpdate}" th:action="@{/board/update}" enctype="multipart/form-data" method="post" >
     <fieldset>
       <legend>수정하기</legend>
         <div>
           <tr>
             <th>카테고리: </th>
             <td>
-              <span id="categoryName" th:text="${boardUpdateVo.categoryName}"></span>
+              <span id="categoryName" th:text="${boardUpdate.categoryName}"></span>
             </td>
             <br/>
           </tr>
@@ -40,7 +40,7 @@
               <label>작성일:</label>
             </td>
             <td>
-              <label th:text="${#temporals.format(boardUpdateVo.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
+              <label th:text="${#temporals.format(boardUpdate.createTime, 'yyyy-MM-dd-HH:mm')}"></label>
             </td>
           </tr>
           <br/>
@@ -61,15 +61,15 @@
           <br/>
           <bt/>
           <br/>
-          <div th:remove="${boardUpdateVo.attachedFileYn eq 'N' or boardUpdateVo.attachedFileCount eq 0}? all:none">
+          <div th:remove="${boardUpdate.boardFileYn eq 'N' or boardUpdate.boardFileCount eq 0}? all:none">
             <tr>
               <th>파일리스트: </th>
               <br/>
             </tr>
 
-          <tr th:each="uploadFile : ${uploadFileList}">
-            <div class="fileCount" th:id="Files+${uploadFile.id}" th:value="${uploadFile.id}">
-            <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|" th:text="${uploadFile.originalFileName}"></a>
+          <tr th:each="boardFile : ${boardFileList}">
+            <div class="fileCount" th:id="Files+${boardFile.id}" th:value="${boardFile.id}">
+            <a class="file" style="width: 300px;" th:id="${boardFile.id}" th:href="|/board/attach/${boardFile.id}|" th:text="${boardFile.originalFileName}"></a>
             <button type="button" onclick="deleteFile(this)">삭제</button>
             </div>
           </tr>
@@ -77,8 +77,8 @@
           <tr>
             <td>
               <div id="Files0">
-                <button type="button" id="button-add-file" th:data-id="${boardUpdateVo.categoryNumber}"
-                        th:onclick="|addFileUpdateForm('${boardUpdateVo.attachedFileCount}')|">파일추가</button>
+                <button type="button" id="button-add-file" th:data-id="${boardUpdate.categoryNumber}"
+                        th:onclick="|addFileUpdateForm('${boardUpdate.boardFileCount}')|">파일추가</button>
               </div>
               <div id="file-list"></div>
             </td>
@@ -87,14 +87,14 @@
       </div>
     </fieldset>
       <button type="button" class="selectbox-control" id="updateButton"
-              th:value="${boardUpdateVo.boardAdminId}"
-              th:data-adminid="${boardUpdateVo.boardAdminId}"
-              th:data-id="${boardUpdateVo.categoryNumber}"
+              th:value="${boardUpdate.boardAdminId}"
+              th:data-adminid="${boardUpdate.boardAdminId}"
+              th:data-id="${boardUpdate.categoryNumber}"
 
               onclick="updateFn()" >수정완료
       </button>
       <button type="button"  th:onclick="|location.href='@{/board/view/{id}(id = ${id})}'|">취소</button>
-      <button type="button" th:onclick="|location.href='/board/category/${boardUpdateVo.categoryNumber}'|">목록</button>
+      <button type="button" th:onclick="|location.href='/board/category/${boardUpdate.categoryNumber}'|">목록</button>
   </form>
 </body>
 </html>

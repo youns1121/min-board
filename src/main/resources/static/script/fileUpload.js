@@ -17,7 +17,7 @@ function validationFileYn(){
         url: '/board/validation/file/yn',
         data: formData,
         success: function(categoryNumber){
-            location.href="/board/new?categorynumber=" + categoryNumber;
+            location.href="/board/new?categoryNumber=" + categoryNumber;
         }
     })
 }

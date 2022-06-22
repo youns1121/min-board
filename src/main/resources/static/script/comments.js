@@ -91,11 +91,11 @@ function addCommentReply(obj){
     let dataSort = $(obj).parents('td').find('span').data('sort')
 
     let formData ={
-        commentGroup : dataGroup,
+        commentsGroup : dataGroup,
+        commentsSort : dataSort,
+        commentsDepth : dataDepth,
         contents : contents,
-        boardId : boardId,
-        commentDepth : dataDepth,
-        sort : dataSort
+        boardId : boardId
     }
 
     $.ajax({
@@ -171,8 +171,8 @@ function deleteComment(obj) {
     let dataSort = parseInt($(obj).siblings()[0].dataset['sort'])
     let formData = {
         id: id,
-        commentGroup : dataGroup,
-        sort : dataSort
+        commentsGroup : dataGroup,
+        commentsSort : dataSort
     }
 
     $.ajax({

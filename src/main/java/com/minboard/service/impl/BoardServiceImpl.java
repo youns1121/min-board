@@ -1,158 +1,144 @@
 package com.minboard.service.impl;
 
 
-import com.minboard.dto.BoardDto;
-import com.minboard.dto.UploadFileDto;
+import com.minboard.dto.BoardSaveDto;
+import com.minboard.dto.request.BoardRequestDto;
 import com.minboard.mapper.BoardAdminMapper;
 import com.minboard.mapper.BoardMapper;
-import com.minboard.mapper.CommentsMapper;
-import com.minboard.mapper.UploadFileMapper;
+import com.minboard.mapper.BoardCommentsMapper;
+import com.minboard.mapper.BoardFileMapper;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
-import com.minboard.vo.BoardSaveVo;
-import com.minboard.vo.BoardUpdateVo;
-import com.minboard.vo.UploadFileUpdateVo;
-import com.minboard.vo.UploadFileVo;
+import com.minboard.vo.BoardVo;
+import com.minboard.dto.BoardUpdateDto;
+import com.minboard.vo.BoardFileVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-@Service
+
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Service
 public class BoardServiceImpl implements BoardService {
 
-    private final FileStoreServiceImpl fileStoreService;
+    private final BoardFileServiceImpl fileStoreService;
     private final BoardMapper boardMapper;
     private final BoardAdminMapper boardAdminMapper;
-    private final UploadFileMapper fileMapper;
-    private final CommentsMapper commentsMapper;
+    private final BoardFileMapper fileMapper;
+    private final BoardCommentsMapper commentsMapper;
 
     @Value("${custom.path.uploadPath}")
     private String uploadPath;
 
-
-    /** 게시물 생성 **/
+    @Transactional
     @Override
-    public void saveBoard(BoardSaveVo boardSaveVo) {
-        boardSaveVo.setBoardSortDepth(boardSaveVo);
-        boardMapper.insertBoard(boardSaveVo);
-        boardMapper.updateBoardGroupSet(boardSaveVo.getId());
+    public void saveBoard(BoardSaveDto boardSaveDto) {
+        boardMapper.insertBoard(boardSaveDto);
+        boardMapper.updateBoardGroupSet(boardSaveDto.getId());
     }
 
-
+    @Transactional
     @Override
-    public void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException {
+    public void saveBoardFile(List<MultipartFile> fileList, int boardId) throws IOException {
 
-        if(CollectionUtils.isEmpty(boardSaveVo.getFileList()) == false) {
-            List<UploadFileVo> uploadFileInfoList = fileStoreService.storeFiles(boardSaveVo.getFileList(),
-                    boardSaveVo.getId());
-            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
-                fileStoreService.insertFileInfoList(uploadFileInfoList);
-            }
-        }
-    }
-
-    @Override
-    public void updateBoardFile(BoardUpdateVo boardUpdateVo) throws IOException {
-        if(CollectionUtils.isEmpty(boardUpdateVo.getFileList()) == false) {
-            List<UploadFileUpdateVo> uploadFileInfoList = fileStoreService.storeFilesUpdate(boardUpdateVo.getFileList(),
-                    boardUpdateVo.getId());
-
-            if(CollectionUtils.isEmpty(uploadFileInfoList) == false) {
-                fileStoreService.updateFileInfoList(uploadFileInfoList);
-            }
+        if(!CollectionUtils.isEmpty(fileList)) {
+             fileStoreService.saveBoardFileList(fileStoreService.storeFiles(fileList, boardId));
         }
     }
 
 
     @Override
-    @Transactional(readOnly = true)
-    public BoardDto getDetailViewBoard(int id) {
-        BoardDto detailViewBoard = boardMapper.selectBoard(id);
-        return detailViewBoard;
+    public BoardVo getDetailViewBoard(int id) {
+
+        return boardMapper.selectBoard(id);
     }
 
     @Override
-    public BoardDto getBoardReply(int id) {
+    public BoardVo getBoardReply(int id) {
 
-        BoardDto boardReply = boardMapper.selectBoardReply(id);
-        return boardReply;
+        return boardMapper.selectBoardReply(id);
     }
 
+    @Transactional
     @Override
     public void removeBoard(int id) {
-        List<UploadFileDto> uploadFileList = fileMapper.getUploadFileList(id);
-        int uploadFileListSize= uploadFileList.size();
-        for(int i=0; i < uploadFileListSize; i++){
-            File file = new File(uploadPath + uploadFileList.get(i).getStoreFileName() + "." +
-                    uploadFileList.get(i).getExtensionName());
+        List<BoardFileVo> boardFileList = fileMapper.selectBoardFileList(id);
+        int boardFileListSize = boardFileList.size();
+
+        for(int i = 0; i < boardFileListSize; i++){
+            File file = new File(uploadPath + boardFileList.get(i).getStoreFileName() + "." +
+                    boardFileList.get(i).getExtensionName());
 
             if(file.exists()){
                 file.delete();
             }
         }
-        commentsMapper.deleteAllComments(id);
-        BoardDto boardReply = boardMapper.selectBoardReply(id);
-        if(boardReply.getBoardSort() != 0) {
-            boardMapper.decreaseSort(boardReply);
+        commentsMapper.updateIsDeleteAllComments(id);
+        BoardVo boardReply = boardMapper.selectBoardReply(id);
+
+        if(boardReply.getBoardSort() > 0) {
+            boardMapper.updateBoardSortDecrease(boardReply);
         }
         boardMapper.deleteBoard(id);
-        fileMapper.deleteAllFile(id);
-
+        fileMapper.deleteBoardFileList(id);
     }
 
+    @Transactional
     @Override
-    public void modifyBoard(BoardUpdateVo boardUpdateVo) {
+    public void modifyBoard(BoardUpdateDto boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<BoardDto> getBoardList(BoardDto boardDto) {
+    public List<BoardVo> getBoardList(BoardRequestDto requestDto) {
 
-        boardDto.setCategoryNumber(boardDto.getCategoryNumber());
-        List<BoardDto> boardList = Collections.emptyList();
-        int boardTotalCount = boardAdminMapper.totalCountCategoryBoard(boardDto.getCategoryNumber());
-        PaginationInfo paginationInfo = new PaginationInfo(boardDto);
+        List<BoardVo> boardList = Collections.emptyList();
+        int boardTotalCount = boardAdminMapper.totalCountCategoryBoard(requestDto.getCategoryNumber());
+        PaginationInfo paginationInfo = new PaginationInfo(requestDto);
         paginationInfo.setTotalRecordCount(boardTotalCount);
-        boardDto.setPaginationInfo(paginationInfo);
+        requestDto.setPaginationInfo(paginationInfo);
 
         if(boardTotalCount > 0){
-            boardList = boardMapper.selectBoardList(boardDto);
+            boardList = boardMapper.selectBoardList(requestDto);
         }
         return boardList;
     }
 
+    @Transactional
     @Override
-    public void saveBoardReply(BoardSaveVo boardSaveVo){
-        int calculationResult = boardMapper.hierarchicalCalculationFormula(boardSaveVo);
+    public void saveBoardReply(BoardSaveDto boardSaveDto){
+
+        int calculationResult = boardMapper.selectHierarchicalCalculationFormula(boardSaveDto);
 
         if(calculationResult == 0){
-            calculationResultZero(boardSaveVo);
-        }
-
-        if(calculationResult != 0){
-            boardSaveVo.setBoardSort(calculationResult);
-            calculationResultNotZero(boardSaveVo);
+            calculationResultZero(boardSaveDto);
+        }else {
+            boardSaveDto.setBoardSort(calculationResult);
+            calculationResultNotZero(boardSaveDto);
         }
     }
 
-    public void calculationResultZero(BoardSaveVo boardSaveVo){
-        int addSortValue = boardMapper.calculationFormulaResultZero(boardSaveVo);
-        boardSaveVo.setBoardSort(addSortValue);
-        boardMapper.insertBoareReply(boardSaveVo);
+    @Transactional
+    public void calculationResultZero(BoardSaveDto boardSaveDto){
+
+        boardSaveDto.setBoardSort(boardMapper.selectCalculationFormulaResultZero(boardSaveDto));
+        boardMapper.insertBoardReply(boardSaveDto);
     }
 
-    public void calculationResultNotZero(BoardSaveVo boardSaveVo){
-        boardMapper.calculationFormulaResultNotZero(boardSaveVo);
-        boardMapper.insertBoareReply(boardSaveVo);
+    @Transactional
+    public void calculationResultNotZero(BoardSaveDto boardSaveDto){
+
+        boardMapper.updateBoardSortIncrease(boardSaveDto);
+        boardMapper.insertBoardReply(boardSaveDto);
     }
 
 }

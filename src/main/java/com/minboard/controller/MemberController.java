@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -23,15 +20,40 @@ public class MemberController {
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping("/success")
+    public String memberSuccess(){
+
+        return "html/member/loginSuccess.html";
+    }
+
+    @GetMapping("/fail")
+    public String memberFail(){
+
+        return "html/member/loginFail.html";
+    }
+
     @GetMapping("/siginin")
     public String memberSiginIn(Model model){
 
+
         model.addAttribute("siginin", new MemberDto());
+
 
         return "html/member/memberSiginInForm";
     }
 
-
+//    @PostMapping("/siginin")
+//    public String memberSiginIn(@ModelAttribute("siginin") MemberDto memberDto, BindingResult bindingResult){
+//
+//        memberService.isLoginMember(memberDto);
+//
+//        if(bindingResult.hasErrors()){
+//            log.info("errors={}", bindingResult);
+//            return "html/member/memberSiginInForm";
+//        }
+//
+//        return "redirect:/board/category";
+//    }
 
     @GetMapping("/siginup")
     public String memberSiginUp(Model model){
@@ -42,8 +64,8 @@ public class MemberController {
     }
 
     @PostMapping("/siginup")
-    public String memberSiginUp(@Validated @ModelAttribute("siginup") MemberDto memberDto, BindingResult bindingResult){
-
+    public String memberSiginUp(@Validated @ModelAttribute("siginup") MemberDto memberDto, BindingResult bindingResult,
+                                Model model){
 
         if (bindingResult.hasErrors()) {
 
@@ -51,9 +73,22 @@ public class MemberController {
             return "html/member/memberSiginUpForm";
         }
 
-        memberService.insertMember(memberDto, passwordEncoder);
+        try {
+            memberService.insertMember(memberDto, passwordEncoder);
+        }catch (IllegalStateException e){
+            model.addAttribute("errors", e);
+            return "html/member/memberSiginUpForm";
+        }
 
         return "redirect:/admin";
+    }
+
+    @GetMapping("/duplicate/check/member")
+    @ResponseBody
+    public String getDuplicateCheckMember(String userName){
+
+//        memberService.validateDuplicateMember(m);
+        return "name";
     }
 
 

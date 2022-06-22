@@ -69,14 +69,14 @@
             <input type="hidden" th:field="*{id}">
         </tr>
         <br/><br/>
-          <div th:remove="${detailViewBoard.attachedFileYn eq 'N' or detailViewBoard.attachedFileCount eq 0}? all:none">
+          <div th:remove="${detailViewBoard.boardFileYn eq 'N' or detailViewBoard.boardFileCount eq 0}? all:none">
               <tr>
                   <th>파일리스트: </th>
                   <br/>
               </tr>
-              <tr th:each="uploadFile : ${detailViewBoard.uploadFileDtoList}">
-                  <a class="file" style="width: 300px;" th:id="${uploadFile.id}" th:href="|/board/attach/${uploadFile.id}|"
-                     th:text="${uploadFile.originalFileName}">
+              <tr th:each="boardFileList : ${detailViewBoard.boardFileVoList}">
+                  <a class="file" style="width: 300px;" th:id="${boardFileList.id}" th:href="|/board/attach/${boardFileList.id}|"
+                     th:text="${boardFileList.originalFileName}">
                   </a>
                   <br/>
               </tr>
@@ -101,7 +101,7 @@
     <br/>
   <button type="button" class="createButton"
           th:value="${detailViewBoard.categoryNumber}"
-          th:onclick="|location.href='@{/board/new(categorynumber=${detailViewBoard.categoryNumber})}'|">글쓰기
+          th:onclick="|location.href='@{/board/new(categoryNumber=${detailViewBoard.categoryNumber})}'|">글쓰기
   </button>
   <span th:remove="${detailViewBoard.replyYn eq 'N'}? all: none">
         <button type="button" class="replyButton"

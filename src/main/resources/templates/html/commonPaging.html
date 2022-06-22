@@ -1,29 +1,29 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<nav th:fragment="pagination"  th:object="${boardDto.paginationInfo}"
-     th:with="info=${boardDto.paginationInfo}" aria-label="Page navigation" class="text-center">
+<nav th:fragment="pagination"  th:object="${boardRequestDto.paginationInfo}"
+     th:with="info=${boardRequestDto.paginationInfo}" aria-label="Page navigation" class="text-center">
   <ul class="pagination">
 
     <li th:if="*{hasPreviousPage == true}" th:onclick="movePage([[${#request.requestURI}]],
-     [[ ${boardDto.makeQueryString(1)}]])">
+     [[ ${boardRequestDto.makeQueryString(1)}]])">
       <a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>&nbsp;
     </li>
     <li th:if="*{hasPreviousPage == true}" th:onclick="movePage([[ ${#request.requestURI} ]],
-     [[ ${boardDto.makeQueryString(info.firstPage - 1)} ]])">
+     [[ ${boardRequestDto.makeQueryString(info.firstPage - 1)} ]])">
       <a href="javascript:void(0)" aria-label="Previous"><span aria-hidden="true">&lsaquo;</span></a>&nbsp;
     </li>
     <li th:each="pageNo : *{#numbers.sequence(firstPage, lastPage )}"
-        th:class="${pageNo == boardDto.currentPageNo} ? 'active'">
+        th:class="${pageNo == boardRequestDto.currentPageNo} ? 'active'">
       <a href="javascript:void(0)" th:text="${pageNo}" th:onclick="movePage([[ ${#request.requestURI}]],
-      [[ ${boardDto.makeQueryString(pageNo)} ]])"></a>&nbsp;
+      [[ ${boardRequestDto.makeQueryString(pageNo)} ]])"></a>&nbsp;
     </li>
     <li th:if="*{hasNextPage == true}" th:onclick="movePage([[ ${#request.requestURI} ]],
-     [[ ${boardDto.makeQueryString(info.lastPage + 1)} ]])">
+     [[ ${boardRequestDto.makeQueryString(info.lastPage + 1)} ]])">
       <a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&rsaquo;</span></a>&nbsp;
     </li>
     <li th:if="*{hasNextPage == true}" th:onclick="movePage([[ ${#request.requestURI} ]],
-     [[ ${boardDto.makeQueryString(info.totalPageCount)} ]])">
+     [[ ${boardRequestDto.makeQueryString(info.totalPageCount)} ]])">
       <a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>&nbsp;
     </li>
   </ul>

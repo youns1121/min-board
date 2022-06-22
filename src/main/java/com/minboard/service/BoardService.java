@@ -1,39 +1,31 @@
 package com.minboard.service;
 
-import com.minboard.dto.BoardDto;
-import com.minboard.vo.BoardSaveVo;
-import com.minboard.vo.BoardUpdateVo;
+import com.minboard.dto.BoardSaveDto;
+import com.minboard.dto.request.BoardRequestDto;
+import com.minboard.vo.BoardVo;
+import com.minboard.dto.BoardUpdateDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 
 public interface BoardService {
+    List<BoardVo> getBoardList(BoardRequestDto boardRequestDto);
 
-    /** 게시물 리스트 **/
-    List<BoardDto> getBoardList(BoardDto boardDto);
+    BoardVo getDetailViewBoard(int id);
 
-    /** 게시물 상세보기 **/
-    BoardDto getDetailViewBoard(int id);
+    BoardVo getBoardReply(int id);
 
-    BoardDto getBoardReply(int id);
+    void saveBoard(BoardSaveDto boardSaveDto) throws IOException;
 
-    /** 게시물 생성 **/
-    void saveBoard(BoardSaveVo boardSaveVo) throws IOException;
+    void saveBoardFile(List<MultipartFile> fileList, int id) throws IOException;
 
-    /** 게시물의 파일 저장 **/
-    void saveBoardFile(BoardSaveVo boardSaveVo) throws IOException;
-
-    /** 게시물의 파일 수정 **/
-    void updateBoardFile(BoardUpdateVo boardUpdateVo) throws IOException;
-
-    /** 게시물 삭제 **/
     void removeBoard(int id);
 
-    /** 게시물 수정 **/
-    void modifyBoard(BoardUpdateVo boardUpdateVo);
+    void modifyBoard(BoardUpdateDto boardUpdateVo);
 
-    void saveBoardReply(BoardSaveVo boardSaveVo);
+    void saveBoardReply(BoardSaveDto boardSaveDto);
 
 
 }

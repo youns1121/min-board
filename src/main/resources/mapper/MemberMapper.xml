@@ -6,7 +6,7 @@
 <mapper namespace="com.minboard.mapper.MemberMapper">
 
 
-    <resultMap id="MemberMap" type="MemberSaveVo">
+    <resultMap id="MemberMap" type="MemberVo">
         <result property="userName" column="username"/>
         <result property="memberRole" column="member_role"/>
         <result property="createTime" column="create_time"/>
@@ -19,45 +19,65 @@
             keyProperty="seq">
 
         insert into members(
-                    username,
-                    password,
-                    name,
-                    birthday,
-                    gender,
-                    member_role,
-                    create_time
+                    username
+                    , password
+                    , name
+                    , birthday
+                    , gender
+                    , member_role
+                    , create_time
         )values(
-                #{userName},
-                #{password},
-                #{name},
-                #{birthday},
-                #{gender},
-                #{memberRole},
-                #{createTime}
+                #{userName}
+                , #{password}
+                , #{name}
+                , #{birthday}
+                , #{gender}
+                , #{memberRole}
+                , #{createTime}
          )
     </insert>
 
-    <select id="findByUserName" resultType="MemberSaveVo" resultMap="MemberMap">
+    <select id="findByUserName" parameterType="memberDto" resultType="MemberVo" resultMap="MemberMap">
 
     select
-        seq,
-        username,
-        password,
-        name,
-        birthday,
-        gender,
-        member_role,
-        del_yn,
-        create_time,
-        update_time
+        seq
+        , username
+        , password
+        , name
+        , birthday
+        , gender
+        , member_role
+        , del_yn
+        , create_time
+        , update_time
 
-    from
-         members
+    from members
 
     where
           username = #{userName} and del_yn = 'N'
+    </select>
+
+    <select id="isLoginMember" parameterType="MemberDto" resultType="boolean" >
+        select
+            (
+                case
+                when count(*) = 1 then true
+                when count(*) = 0 then false
+                end
+            )
+        from members
+        where username = #{userName} and password = #{password}
 
     </select>
+
+    <update id="updateMemberLastLogin" parameterType="MemberUpdateDto">
+        update members
+        set
+            last_login_time = #{lastLoginTime}
+
+        where
+            username = #{userName}
+    </update>
 
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.minboard.enums;
 
 public interface EnumMapperType {
-    String getCode();
-    String getTitle();
+
+    String getKey();
+    String getValue();
 }

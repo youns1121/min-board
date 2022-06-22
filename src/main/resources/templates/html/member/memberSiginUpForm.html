@@ -32,8 +32,12 @@
         <th>아이디</th>
         <td>
           <input type="text"  style="width: 300px;" th:field="*{userName}">
+          <span><input type="button" value="중복 확인"></span>
           <div class="field-error" th:errors="*{userName}">아이디 오류</div>
         </td>
+
+
+
       </tr>
       <tr>
         <th>패스워드</th>

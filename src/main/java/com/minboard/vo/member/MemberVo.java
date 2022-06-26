@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @Getter
 @EqualsAndHashCode(of = {"seq"})
-public class MemberVo implements UserDetails {
+public class MemberVo {
 
     private Long seq;
 
@@ -54,62 +51,21 @@ public class MemberVo implements UserDetails {
         this.delYn = delYn;
     }
 
-    public MemberDto createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
+//    public MemberDto createMember(MemberDto memberDto, PasswordEncoder passwordEncoder){
+//
+//        MemberDto member = MemberDto.builder()
+//                .userName(memberDto.getUserName())
+//                .password(passwordEncoder.encode(memberDto.getPassword()))
+//                .name(memberDto.getName())
+//                .gender(memberDto.getGender())
+//                .birthday(memberDto.getBirthday())
+//                .createTime(LocalDateTime.now())
+//                .memberRole(MemberMangeEnums.MemberRoleEnum.ROLE_USER.getKey())
+//                .build();
+//
+//        return member;
+//    }
 
-        MemberDto member = MemberDto.builder()
-                .userName(memberDto.getUserName())
-                .password(passwordEncoder.encode(memberDto.getPassword()))
-                .name(memberDto.getName())
-                .gender(memberDto.getGender())
-                .birthday(memberDto.getBirthday())
-                .createTime(LocalDateTime.now())
-                .memberRole(MemberMangeEnums.MemberRoleEnum.ROLE_USER.getKey())
-                .build();
-
-        return member;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        ArrayList<GrantedAuthority> auth = new ArrayList<>();
-        auth.add(new SimpleGrantedAuthority(memberRole));
-        return auth;
-    }
-
-    @Override
-    public String getUsername() {
-
-        return this.userName;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-
-        return true;
-    }
 
 
 }

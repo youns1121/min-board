@@ -1,18 +1,22 @@
 package com.minboard.controller;
 
-import com.minboard.dto.BoardAdminDto;
-import com.minboard.dto.BoardDto;
+import com.minboard.dto.BoardAdminSaveDto;
+import com.minboard.dto.BoardAdminUpdateDto;
+import com.minboard.dto.request.BoardAdminRequestDto;
 import com.minboard.service.BoardAdminService;
-import com.minboard.vo.BoardAdminSaveVo;
-import com.minboard.vo.BoardAdminUpdateVo;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
+
+@Slf4j
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 @Controller
@@ -22,50 +26,43 @@ public class BoardAdminController {
 
     @GetMapping("/setting/update/{id}")
     public String boardAdminModify(@PathVariable("id") int id, Model model) {
-        BoardAdminDto boardAdminDto = boardAdminService.getBoardAdmin(id);
-        model.addAttribute("boardAdminUpdate", boardAdminDto);
+
+        model.addAttribute("boardAdminUpdate", boardAdminService.getBoardAdmin(id));
         return "html/boardAdminEdit";
     }
 
-    @ResponseBody
-    @PostMapping("/setting/update")
-    public String boardAdminModify(@ModelAttribute("boardAdminUpdateVo") BoardAdminUpdateVo boardAdminUpdateVo) {
-
-        boardAdminService.modifyBoardAdminSetting(boardAdminUpdateVo);
-        return boardAdminUpdateVo.getId().toString();
-    }
-
     @PostMapping("/setting")
-    public String boardAdminSetting(@ModelAttribute("boardAdmin") BoardAdminSaveVo boardAdminSaveVo){
+    public String boardAdminSetting(@Validated @ModelAttribute("boardAdmin") BoardAdminSaveDto boardAdminSaveDto,
+                                    BindingResult bindingResult){
 
-        boardAdminService.saveBoardAdminSetting(boardAdminSaveVo);
-        return "redirect:/admin/setting/update/" + boardAdminSaveVo.getId();
+        if(bindingResult.hasErrors()){
+            log.info("errors={}", bindingResult);
+            return "html/boardAdminSetting";
+        }
+        boardAdminService.saveBoardAdminSetting(boardAdminSaveDto);
+        return "redirect:/admin/setting/update/" + boardAdminSaveDto.getId();
     }
 
 
     @GetMapping("/setting")
-    public String boardAdminSetting(Model model, BoardAdminSaveVo boardAdminSaveVo){
+    public String boardAdminSetting(Model model){
 
-        model.addAttribute("boardAdmin", boardAdminSaveVo);
+        model.addAttribute("boardAdmin", BoardAdminSaveDto.builder().build());
         return "html/boardAdminSetting";
     }
 
-    @GetMapping("/view/{id}")
-    public String boardAdminDetails(@PathVariable("id") int id, Model model){
+    @ResponseBody
+    @PostMapping("/setting/update")
+    public String boardAdminModify(@ModelAttribute("boardAdminUpdateVo") BoardAdminUpdateDto boardAdminUpdateDto ) {
 
-        BoardAdminDto boardAdminDto = boardAdminService.getBoardAdmin(id);
-        model.addAttribute("boardAdmin", boardAdminDto);
-        return "html/boardAdminDetail";
+        boardAdminService.modifyBoardAdminSetting(boardAdminUpdateDto);
+        return boardAdminUpdateDto.getId().toString();
     }
 
-
     @GetMapping
-    public String boardAdminList(BoardAdminDto boardAdminDto, Model model){
+    public String boardAdminList(Model model, BoardAdminRequestDto boardAdminRequestDto) {
 
-        List<BoardAdminDto> boardAdminDtoList = boardAdminService.getBoardAdminList(boardAdminDto);
-
-        model.addAttribute("boardAdminList", boardAdminDtoList);
-
+        model.addAttribute("boardAdminList", boardAdminService.getBoardAdminList(boardAdminRequestDto));
 
         return "html/boardAdmin";
     }

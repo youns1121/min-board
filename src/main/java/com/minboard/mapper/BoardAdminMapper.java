@@ -1,9 +1,9 @@
 package com.minboard.mapper;
 
-import com.minboard.dto.BoardAdminDto;
-import com.minboard.dto.BoardDto;
-import com.minboard.vo.BoardAdminSaveVo;
-import com.minboard.vo.BoardAdminUpdateVo;
+import com.minboard.dto.BoardAdminSaveDto;
+import com.minboard.dto.BoardAdminUpdateDto;
+import com.minboard.dto.request.BoardAdminRequestDto;
+import com.minboard.vo.BoardAdminVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,23 +11,20 @@ import java.util.List;
 @Mapper
 public interface BoardAdminMapper {
 
-    void insertBoardAdminSetting(BoardAdminSaveVo boardAdminSaveVo);
+    void insertBoardAdminSetting(BoardAdminSaveDto boardAdminSaveDto);
 
-    void updateBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo);
+    void updateBoardAdminSetting(BoardAdminUpdateDto boardAdminUpdateDto);
 
-    List<BoardAdminDto> selectBoardCategoryList();
+    List<BoardAdminVo> selectBoardCategoryList();
 
-    /** 관리자 게시물 상세보기 **/
-    BoardAdminDto selectBoardCategory(int id);
+    BoardAdminVo selectBoardCategory(int id);
 
-    /** 관리자 게시물 상세보기 **/
-    BoardAdminDto selectBoardAdmin(int boardAdminId);
+    BoardAdminVo selectBoardAdmin(int boardAdminId);
 
-    void deleteBoardAdmin(int boardAdminId);
+    void updateIsDeleteBoardAdmin(int boardAdminId);
 
     int totalCountCategoryBoard(int categoryNumber);
 
-    /** 관리자 게시물 리스트 **/
-    List<BoardAdminDto> selectBoardAdminList(BoardAdminDto boardAdminDto);
+    List<BoardAdminVo> selectBoardAdminList(BoardAdminRequestDto boardAdminRequestDto);
 
 }

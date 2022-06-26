@@ -3,7 +3,6 @@ package com.minboard.dto;
 import com.minboard.vo.BoardFileVo;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@Setter
 public class BoardSaveDto {
 
     private Integer id;
@@ -45,6 +43,19 @@ public class BoardSaveDto {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    public void setBoardSortAndDepth(){
+
+        if(boardSort == null && boardDepth == null ){
+
+            this.boardSort = 0;
+            this.boardDepth = 0;
+        }
+    }
+
+    public void setBoardSort(Integer boardSort) {
+        this.boardSort = boardSort;
+    }
 
     @Builder
     public BoardSaveDto(Integer id, String title, String contents,

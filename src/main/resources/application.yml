@@ -12,7 +12,7 @@ spring:
     cache: false
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:mysql://localhost:3306/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:log4jdbc:mysql://localhost:3307/mybatis?allowMultiQueries=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: min
     password: wjdqhqhdks
   servlet:
@@ -24,8 +24,8 @@ mybatis:
   configuration:
     return-instance-for-empty-row: true
   mapper-locations: classpath:mapper/**.xml
-  type-aliases:package: com.minBoard.vo, com.minBoard.paging,  com.minBoard.dto
+  type-aliases:package: com.minBoard.vo, com.minBoard.paging, com.minBoard.dto
 
 custom:
   path:
-    uploadPath: 'C:/Users/daema/board/file/'      # 게시판 파일 업로드 경로
+    uploadPath: 'D:/board/file/'      # 게시판 파일 업로드 경로

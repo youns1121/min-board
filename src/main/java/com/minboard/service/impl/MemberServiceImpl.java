@@ -7,29 +7,26 @@ import com.minboard.service.MemberService;
 import com.minboard.vo.member.MemberVo;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class MemberServiceImpl implements MemberService, UserDetailsService {
+public class MemberServiceImpl implements MemberService {
 
      private final MemberMapper memberMapper;
 
-     @Override
-     public void insertMember(MemberDto memberDto, PasswordEncoder passwordEncoder) {
-
-          validateDuplicateMember(memberDto);
-
-          MemberVo memberSave = new MemberVo();
-
-          MemberDto member = memberSave.createMember(memberDto, passwordEncoder);
-
-          memberMapper.insertMember(member);
-     }
+//     @Override
+//     public void insertMember(MemberDto memberDto, PasswordEncoder passwordEncoder) {
+//
+//          validateDuplicateMember(memberDto);
+//
+//          MemberVo memberSave = new MemberVo();
+//
+//          MemberDto member = memberSave.createMember(memberDto, passwordEncoder);
+//
+//          memberMapper.insertMember(member);
+//     }
 
      @Override
      public void validateDuplicateMember(MemberDto member) {
@@ -50,16 +47,16 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
           return true;
      }
 
-     @Override
-     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-          MemberVo findMember = memberMapper.findByUserName(userName);
-
-          if(findMember == null){
-               throw new UsernameNotFoundException(MemberMangeEnums.MemberAccessStatus.MEMBER_NOT_FOUND.getKey());
-          }
-
-          return findMember;
-     }
+//     @Override
+//     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+//          MemberVo findMember = memberMapper.findByUserName(userName);
+//
+//          if(findMember == null){
+//               throw new UsernameNotFoundException(MemberMangeEnums.MemberAccessStatus.MEMBER_NOT_FOUND.getKey());
+//          }
+//
+//          return findMember;
+//     }
 
 
 }

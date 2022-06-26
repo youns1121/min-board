@@ -1,73 +1,77 @@
 package com.minboard.service;
 
 
-import com.minboard.dto.BoardAdminDto;
-import com.minboard.dto.BoardDto;
-import com.minboard.dto.UploadFileDto;
+import com.minboard.dto.BoardAdminSaveDto;
+import com.minboard.dto.BoardAdminUpdateDto;
+import com.minboard.dto.request.BoardAdminRequestDto;
 import com.minboard.mapper.BoardAdminMapper;
 import com.minboard.mapper.BoardMapper;
-import com.minboard.mapper.UploadFileMapper;
+import com.minboard.mapper.BoardFileMapper;
 import com.minboard.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 
 import java.util.List;
 
-@Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Service
 public class BoardAdminService{
 
     private final BoardAdminMapper boardAdminMapper;
     private final BoardMapper boardMapper;
-    private final UploadFileMapper uploadFileMapper;
+    private final BoardFileMapper uploadFileMapper;
 
-    /** 게시물 생성 **/
-    public void saveBoardAdminSetting(BoardAdminSaveVo boardAdminSaveVo) {
-        boardAdminMapper.insertBoardAdminSetting(boardAdminSaveVo);
+    @Transactional
+    public void saveBoardAdminSetting(BoardAdminSaveDto boardAdminSaveDto) {
+
+        boardAdminMapper.insertBoardAdminSetting(boardAdminSaveDto);
     }
 
-    public void modifyBoardAdminSetting(BoardAdminUpdateVo boardAdminUpdateVo){
-        boardAdminMapper.updateBoardAdminSetting(boardAdminUpdateVo);
+    @Transactional
+    public void modifyBoardAdminSetting(BoardAdminUpdateDto boardAdminUpdateDto){
+
+        boardAdminMapper.updateBoardAdminSetting(boardAdminUpdateDto);
     }
 
 
-    public BoardAdminDto getBoardAdmin(int id){
-        BoardAdminDto boardAdminDto = boardAdminMapper.selectBoardAdmin(id);
-        return boardAdminDto;
+    public BoardAdminVo getBoardAdmin(int id){
+
+        return boardAdminMapper.selectBoardAdmin(id);
     }
 
-    public BoardAdminDto getBoardCategory(int categoryNumber){
-        BoardAdminDto boardAdminDto = boardAdminMapper.selectBoardCategory(categoryNumber);
-        return boardAdminDto;
+    public BoardAdminVo getBoardCategory(int categoryNumber){
+
+        return boardAdminMapper.selectBoardCategory(categoryNumber);
     }
 
-    public List<BoardAdminDto> getBoardAdminList(BoardAdminDto boardAdminDto){
+    public List<BoardAdminVo> getBoardAdminList(BoardAdminRequestDto boardAdminRequestDto){
 
-        List<BoardAdminDto> boardAdminDtoList = boardAdminMapper.selectBoardAdminList(boardAdminDto);
-        return boardAdminDtoList;
+        return boardAdminMapper.selectBoardAdminList(boardAdminRequestDto);
     }
 
+    @Transactional
     public void removeBoardAdmin(int id){
-        List<BoardDto> boardIdList = boardMapper.findByBoardList(id);
+
+        List<BoardVo> boardIdList = boardMapper.findByBoardList(id);
         int size = boardIdList.size();
 
-        for(int i=0; i< size; i++) {
-            uploadFileMapper.deleteAllFile(boardIdList.get(i).getBoardId());
+//        for(int i=0; i< size; i++) {
+//            uploadFileMapper.deleteBoardFileList(boardIdList.get(i).getBoardId());
+//        }
+
+        for (BoardVo boardVo : boardIdList){
+            uploadFileMapper.deleteBoardFileList(boardVo.getBoardId());
         }
-        boardMapper.deleteBoardAdmin(id);
+        boardAdminMapper.updateIsDeleteBoardAdmin(id);
     }
 
-    public List<BoardAdminDto> getBoardCategoryList(){
-        List<BoardAdminDto> BoardCategoryList = boardAdminMapper.selectBoardCategoryList();
+    public List<BoardAdminVo> getBoardCategoryList(){
 
-        return BoardCategoryList;
+        return boardAdminMapper.selectBoardCategoryList();
     }
-
-    public int getTotalCountCategoryBoard(int categoryNumber){
-        int totalCountCategoryBoard = boardAdminMapper.totalCountCategoryBoard(categoryNumber);
-        return totalCountCategoryBoard;
-    }
-
 
 }

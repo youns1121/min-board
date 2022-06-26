@@ -42,6 +42,8 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     @Override
     public void saveBoard(BoardSaveDto boardSaveDto) {
+
+        boardSaveDto.setBoardSortAndDepth();
         boardMapper.insertBoard(boardSaveDto);
         boardMapper.updateBoardGroupSet(boardSaveDto.getId());
     }

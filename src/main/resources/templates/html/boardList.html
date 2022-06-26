@@ -69,10 +69,11 @@
         <th:block th:fragment="content">
           <tbody>
           <tr th:if="${not #lists.isEmpty(boardList)}" th:each="board, index : ${boardList}" >
-              <td style="text-align: center" th:text="${boardRequestDto.paginationInfo.totalRecordCount} -
-              ((${boardRequestDto.paginationInfo.paginationDto.currentPageNo - 1}) *
-              ${boardRequestDto.paginationInfo.paginationDto.recordsPerPage} +
-              ${boardRequestDto.paginationInfo.firstPage} + ${index.index}-1)"></td>
+              <td style="text-align: center" th:text="
+              ${boardRequestDto.paginationInfo.totalRecordCount}
+              - ((${boardRequestDto.paginationInfo.paginationDto.currentPageNo - 1})
+              * ${boardRequestDto.paginationInfo.paginationDto.recordsPerPage}
+              + ${boardRequestDto.paginationInfo.firstPage} + ${index.index}-1)"></td>
               <td th:onclick="|location.href='@{/board/view/{id}(id = ${board.id})}'|"
                   style="cursor:pointer; width: 250px; ">
                   <span th:style="${board.boardDepth ne 0}
@@ -84,10 +85,9 @@
                   </span>
                   <span th:text="${board.title}"></span>
               </td>
-              <td></td>
+              <td><!--작성자--></td>
               <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                   th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red; text-align: center">
-
               </td>
 
               <td style="text-align: center" th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd') < (#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"

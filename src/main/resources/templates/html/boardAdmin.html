@@ -19,14 +19,15 @@
   <div th:fragment="boardHeader" th:replace="html/header/boardHeader :: boardHeader"></div>
 </head>
 <body>
-
-
 <div class="container" style="max-width: 600px">
   <h1>관리자 페이지</h1>
   <div>
     <button type="button" class="writeButton" th:onclick="|location.href='@{/admin/setting}'|" >관리자설정</button>
-
   </div>
+
+  <br/>
+    <button type="button" th:text="회원가입" th:onclick="|location.href='@{/member/siginup}'|"></button>
+    <button type="button" th:text="로그인" th:onclick="|location.href='@{/member/siginin}'|"></button>
 
   <div>
     <h2 th:text="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></h2>
@@ -40,10 +41,10 @@
           <th>작성일</th>
         </tr>
         </thead>
-        <th:block layout:fragment="content">
+        <th:block th:fragment="content">
           <tbody>
           <tr th:if="${not #lists.isEmpty(boardAdminList)}" th:each="boardAdmin : ${boardAdminList}">
-            <td th:text="${boardAdmin.num}"></td>
+            <td th:text="${boardAdmin.categoryNumber}"></td>
             <td th:text="${boardAdmin.categoryName}"
                 style="cursor:pointer"
                 th:onclick="|location.href='@{/board/category/{categoryNumber}(categoryNumber = ${boardAdmin.categoryNumber})}'|">

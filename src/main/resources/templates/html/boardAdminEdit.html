@@ -66,10 +66,10 @@
       <th>첨부파일 기능</th>
       <div id="file">
         <td>
-          <label><input name="attachedFileYn" class="on" type="radio" value="Y"
-                        th:checked="${boardAdminUpdate.attachedFileYn} eq Y ">사용</label>
-          <label><input  name="attachedFileYn" class="off" type="radio" value="N"
-                         th:checked="${boardAdminUpdate.attachedFileYn} eq N ">사용안함</label>
+          <label><input name="boardFileYn" class="on" type="radio" value="Y"
+                        th:checked="${boardAdminUpdate.boardFileYn} eq Y ">사용</label>
+          <label><input  name="boardFileYn" class="off" type="radio" value="N"
+                         th:checked="${boardAdminUpdate.boardFileYn} eq N ">사용안함</label>
         </td>
       </div>
     </tr>
@@ -78,8 +78,8 @@
       <div id="fileMaxCount">
         <td>
         <span th:each="num : ${#numbers.sequence(1, 6)}">
-          <label><input  name="attachedFileCount" type="radio" th:value="${num}" th:text="${num}"
-                         th:checked="${num} eq ${boardAdminUpdate.attachedFileCount}">개</label>
+          <label><input  name="boardFileCount" type="radio" th:value="${num}" th:text="${num}"
+                         th:checked="${num} eq ${boardAdminUpdate.boardFileCount}">개</label>
         </span>
         </td>
       </div>

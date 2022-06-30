@@ -1,19 +1,35 @@
+jQuery.fn.serializeObject = function() {
+    var obj = null;
+    try {
+        if (this[0].tagName && this[0].tagName.toUpperCase() == "FORM") {
+            var arr = this.serializeArray();
+            if (arr) {
+                obj = {};
+                jQuery.each(arr, function() {
+                    obj[this.name] = this.value;
+                });
+            }//if ( arr ) {
+        }
+    } catch (e) {
+        alert(e.message);
+    } finally {
+    }
+
+    return obj;
+};
+
+
 
 function createAdminFn(){
-    let formData = new FormData();
-    formData.append("categoryName", $('#categoryName').val())
-    formData.append("contents", $('#contents').val())
-    formData.append("commentsYn", $("input:radio[name=commentsYn]:checked").val())
-    formData.append("replyYn", $("input:radio[name=replyYn]:checked").val())
-    formData.append("boardFileYn", $("input:radio[name=boardFileYn]:checked").val())
-    formData.append("boardFileCount", $("input:radio[name=boardFileCount]:checked").val())
+
+    var obj = $('#boardAdminDetails').serializeObject();
 
     $.ajax({
         url: '/admin/setting',
         type : "POST",
-        contentType : false,
-        processData: false,
-        data : formData,
+        data : JSON.stringify(obj),
+        contentType: "application/json",
+        dataType : "JSON",
         success: function(returnData) {
             alert('등록되었습니다.')
             location.href = '/admin/view/' + returnData + '?'+"status="+true

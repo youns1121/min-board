@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.UUID;
+
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardAdminSaveDto {
 
     private Integer id;

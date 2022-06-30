@@ -31,8 +31,9 @@ public class BoardAdminController {
         return "html/boardAdminEdit";
     }
 
+    @ResponseBody
     @PostMapping("/setting")
-    public String boardAdminSetting(@Validated @ModelAttribute("boardAdmin") BoardAdminSaveDto boardAdminSaveDto,
+    public String boardAdminSetting(@RequestBody BoardAdminSaveDto boardAdminSaveDto,
                                     BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){

@@ -22,17 +22,15 @@ jQuery.fn.serializeObject = function() {
 
 function createAdminFn(){
 
-    var obj = $('#boardAdminDetails').serializeObject();
-
     $.ajax({
         url: '/admin/setting',
         type : "POST",
-        data : JSON.stringify(obj),
+        data : JSON.stringify($('#boardAdminDetails').serializeObject()),
         contentType: "application/json",
         dataType : "JSON",
         success: function(returnData) {
             alert('등록되었습니다.')
-            location.href = '/admin/view/' + returnData + '?'+"status="+true
+            location.href = '/admin/setting/update/' + returnData + '?'+"status="+true
         },
         error : function (){
             return false;

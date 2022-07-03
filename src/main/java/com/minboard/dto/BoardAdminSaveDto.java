@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.UUID;
+
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardAdminSaveDto {
 
     private Integer id;
@@ -39,6 +39,19 @@ public class BoardAdminSaveDto {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    public LocalDateTime getCreateTime() {
+        return createTime == null ? this.createTime = LocalDateTime.now() : null;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime == null ? this.updateTime = LocalDateTime.now() : null;
+    }
+
+    public int getCategoryNumber() {
+
+        return this.categoryNumber == 0 ? (int)(Math.random()* 1000) : 0;
+    }
 
     @Builder
     public BoardAdminSaveDto(Integer id, String contents, String categoryName,

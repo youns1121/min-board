@@ -21,6 +21,7 @@
 <body>
 <br/>
 <form id="boardAdminDetails" th:object="${boardAdminUpdate}" th:action method="POST">
+  <h2 th:if="${param.status}" th:text="'수정 완료'"></h2>
   <table>
     <tr>
       <th>카테고리 번호</th>

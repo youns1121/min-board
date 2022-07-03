@@ -31,8 +31,9 @@ public class BoardAdminController {
         return "html/boardAdminEdit";
     }
 
+    @ResponseBody
     @PostMapping("/setting")
-    public String boardAdminSetting(@Validated @ModelAttribute("boardAdmin") BoardAdminSaveDto boardAdminSaveDto,
+    public String boardAdminSetting(@Validated @RequestBody BoardAdminSaveDto boardAdminSaveDto,
                                     BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
@@ -40,7 +41,8 @@ public class BoardAdminController {
             return "html/boardAdminSetting";
         }
         boardAdminService.saveBoardAdminSetting(boardAdminSaveDto);
-        return "redirect:/admin/setting/update/" + boardAdminSaveDto.getId();
+
+        return String.valueOf(boardAdminSaveDto.getId());
     }
 
 

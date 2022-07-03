@@ -57,11 +57,6 @@ public class BoardAdminService{
     public void removeBoardAdmin(int id){
 
         List<BoardVo> boardIdList = boardMapper.findByBoardList(id);
-        int size = boardIdList.size();
-
-//        for(int i=0; i< size; i++) {
-//            uploadFileMapper.deleteBoardFileList(boardIdList.get(i).getBoardId());
-//        }
 
         for (BoardVo boardVo : boardIdList){
             uploadFileMapper.deleteBoardFileList(boardVo.getBoardId());

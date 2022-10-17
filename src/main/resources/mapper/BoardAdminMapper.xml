@@ -132,8 +132,10 @@
 
     <update id="updateIsDeleteBoardAdmin" parameterType="int">
         update  board as b
-                join board_admin as ba on ba.id = b.board_admin_id
-                left join board_comments as bc on b.id = bc.board_id
+                inner join board_admin as ba
+                    on ba.id = b.board_admin_id
+                left join board_comments as bc
+                    on b.id = bc.board_id
 
         set
                 ba.del_yn = 'Y'
@@ -163,8 +165,10 @@
 
     <select id="totalCountCategoryBoard" resultType="int">
         select  count(b.id) as categoet_count
+
         from    board_admin as ba
-        join    board as b ON ba.id = b.board_admin_id
+        inner join    board as b
+            ON ba.id = b.board_admin_id
         where
                 b.del_yn = 'N'
                 <if test = 'categoryNumber != 0'>

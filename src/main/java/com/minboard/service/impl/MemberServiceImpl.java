@@ -7,8 +7,9 @@ import com.minboard.service.MemberService;
 import com.minboard.vo.member.MemberVo;
 import lombok.RequiredArgsConstructor;
 
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -16,21 +17,17 @@ public class MemberServiceImpl implements MemberService {
 
      private final MemberMapper memberMapper;
 
-//     @Override
-//     public void insertMember(MemberDto memberDto, PasswordEncoder passwordEncoder) {
-//
-//          validateDuplicateMember(memberDto);
-//
-//          MemberVo memberSave = new MemberVo();
-//
-//          MemberDto member = memberSave.createMember(memberDto, passwordEncoder);
-//
-//          memberMapper.insertMember(member);
-//     }
+     @Override
+     @Transactional
+     public void insertMember(MemberDto memberDto, PasswordEncoder passwordEncoder) {
+
+          validateDuplicateMember(memberDto);
+          memberMapper.insertMember(memberDto);
+     }
 
      @Override
      public void validateDuplicateMember(MemberDto member) {
-          MemberVo findMember = memberMapper.findByUserName(member.getUserName());
+          MemberVo findMember = memberMapper.findByMemberId(member.getMemberId());
 
           if(findMember != null){
                throw new IllegalStateException(MemberMangeEnums.MemberAccessStatus.MEMBER_EXIST.getKey());

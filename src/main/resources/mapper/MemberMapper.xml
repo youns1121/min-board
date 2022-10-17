@@ -7,66 +7,75 @@
 
 
     <resultMap id="MemberMap" type="MemberVo">
-        <result property="userName" column="username"/>
+        <result property="memberSeq" column="member_seq"/>
+        <result property="memberId" column="member_id"/>
+        <result property="memberPassword" column="member_password"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberGender" column="member_gender"/>
+        <result property="memberBirthday" column="member_birthday"/>
         <result property="memberRole" column="member_role"/>
         <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
         <result property="delYn" column="del_yn"/>
     </resultMap>
 
     <insert id="insertMember"
             parameterType="MemberDto"
             useGeneratedKeys ="true"
-            keyProperty="seq">
+            keyProperty="seq"
+    >
 
         insert into members(
-                    username
-                    , password
-                    , name
-                    , birthday
-                    , gender
+                    member_id
+                    , member_password
+                    , member_name
+                    , member_birthday
+                    , member_gender
                     , member_role
                     , create_time
+                    , update_time
         )values(
-                #{userName}
-                , #{password}
-                , #{name}
-                , #{birthday}
-                , #{gender}
-                , #{memberRole}
-                , #{createTime}
+                    #{memberId}
+                    , #{memberPassword}
+                    , #{memberName}
+                    , #{memberBirthday}
+                    , #{memberGender}
+                    , #{memberRole}
+                    , #{createTime}
+                    , #{updateTime}
          )
     </insert>
 
-    <select id="findByUserName" parameterType="memberDto" resultType="MemberVo" resultMap="MemberMap">
+    <select id="findByMemberId" parameterType="memberDto" resultType="MemberVo" resultMap="MemberMap">
 
     select
-        seq
-        , username
-        , password
-        , name
-        , birthday
-        , gender
-        , member_role
-        , del_yn
-        , create_time
-        , update_time
+            member_seq
+            , member_id
+            , member_password
+            , member_name
+            , member_birthday
+            , member_gender
+            , member_role
+            , del_yn
+            , create_time
+            , update_time
 
-    from members
+    from    members
 
     where
-          username = #{userName} and del_yn = 'N'
+          member_id = #{memberId} and del_yn = 'N'
     </select>
 
     <select id="isLoginMember" parameterType="MemberDto" resultType="boolean" >
         select
             (
                 case
-                when count(*) = 1 then true
-                when count(*) = 0 then false
+                    when count(*) = 1 then true
+                    when count(*) = 0 then false
                 end
             )
         from members
-        where username = #{userName} and password = #{password}
+        where member_id = #{memberId} and member_password = #{memberPassword}
 
     </select>
 
@@ -76,8 +85,6 @@
             last_login_time = #{lastLoginTime}
 
         where
-            username = #{userName}
+            member_id = #{memberId}
     </update>
-
-
 </mapper>

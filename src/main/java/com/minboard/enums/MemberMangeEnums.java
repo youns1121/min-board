@@ -7,8 +7,8 @@ public enum MemberMangeEnums {
     ;
 
     public enum MemberRoleEnum implements EnumMapperType{
-        ROLE_ADMIN("관리자"),
-        ROLE_USER("사용자");
+        ADMIN("관리자"),
+        USER("사용자");
 
         private String title;
 
@@ -19,7 +19,6 @@ public enum MemberMangeEnums {
 
         @Override
         public String getKey() {
-
             return name();
         }
 

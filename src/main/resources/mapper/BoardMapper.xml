@@ -63,8 +63,10 @@
                     , b.del_yn
 
         from        board as b
-        join        board_admin as ba on b.board_admin_id = ba.id
-        left join   board_file bf on b.id = bf.board_id
+        inner join  board_admin as ba
+            on b.board_admin_id = ba.id
+        left join   board_file bf
+            on b.id = bf.board_id
             
         where 
                     b.del_yn = 'N'
@@ -119,7 +121,8 @@
                , b.del_yn
 
         from   board as b
-               join board_admin as ba on b.board_admin_id = ba.id
+        inner join board_admin as ba
+            on b.board_admin_id = ba.id
 
         where
                b.id = #{id} and b.del_yn = 'N'
@@ -135,8 +138,9 @@
                , b.create_time
                , b.update_time
 
-        from board as a
-            join board_admin as ba
+        from board as b
+        inner join board_admin as ba
+            on b.board_admin_id = ba.id
 
         where
               b.id = #{id} and b.del_yn = 'N'
@@ -156,11 +160,13 @@
                  , uf.board_id
 
         from board as b
-                join board_admin as ba on ba.id = b.board_admin_id
-                join board_file uf on b.id = uf.board_id
+        inner join board_admin as ba
+            on ba.id = b.board_admin_id
+        inner join board_file uf
+            on b.id = uf.board_id
 
         where
-                b.del_yn = 'N' and ba.id = #{id};
+            b.del_yn = 'N' and ba.id = #{id};
     </select>
 
     <insert id="insertBoard"
@@ -178,7 +184,7 @@
                           , create_time
                           , update_time
                           , board_admin_id
-                        )values(
+        )values(
                             #{title}
                             , #{contents}
                             , #{boardGroup}
@@ -187,7 +193,7 @@
                             , #{createTime}
                             , #{updateTime}
                             , #{boardAdminId}
-                        )
+        )
     </insert>
 
     <update id="updateBoard" parameterType="BoardUpdateDto">
@@ -251,7 +257,8 @@
                 , b.del_yn
 
         from    board as b
-                join board_admin as ba on b.board_admin_id = ba.id
+        inner join board_admin as ba on b.board_admin_id = ba.id
+
         where
                 b.id = #{id} and b.del_yn = 'N'
     </select>

@@ -20,7 +20,7 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+<!--  <script type="text/javascript" th:src="@{/script/main.js}"></script>-->
 </head>
 <body>
 <form th:object="${siginup}" th:action="@{/member/siginup}"  method="post">
@@ -31,9 +31,9 @@
       <tr>
         <th>아이디</th>
         <td>
-          <input type="text"  style="width: 300px;" th:field="*{userName}">
+          <input type="text"  style="width: 300px;" th:field="*{memberId}">
           <span><input type="button" value="중복 확인"></span>
-          <div class="field-error" th:errors="*{userName}">아이디 오류</div>
+          <div class="field-error" th:errors="*{memberId}">아이디 오류</div>
         </td>
 
 
@@ -42,24 +42,24 @@
       <tr>
         <th>패스워드</th>
         <td>
-          <input type="password"  style="width: 300px;" th:field="*{password}">
-          <div class="field-error" th:errors="*{password}">패스워드 오류</div>
+          <input type="password"  style="width: 300px;" th:field="*{memberPassword}">
+          <div class="field-error" th:errors="*{memberPassword}">패스워드 오류</div>
         </td>
       </tr>
       <tr>
         <th>이름</th>
         <td>
-          <input type="text" rows="3" style="width: 300px;"  th:field="*{name}">
-          <div class="field-error" th:errors="*{name}">이름 오류</div>
+          <input type="text" rows="3" style="width: 300px;"  th:field="*{memberName}">
+          <div class="field-error" th:errors="*{memberName}">이름 오류</div>
 
         </td>
       </tr>
       <tr>
         <th>성별</th>
         <td>
-          <label><input type="radio" rows="3" style="width: 300px;" value="남" th:field="*{gender}">남자</label>
-          <label><input type="radio" rows="3" style="width: 300px;" value="여" th:field="*{gender}">여자</label>
-          <div class="field-error" th:errors="*{gender}">성별 오류</div>
+          <label><input type="radio" rows="3" style="width: 300px;" value="남" th:field="*{memberGender}">남자</label>
+          <label><input type="radio" rows="3" style="width: 300px;" value="여" th:field="*{memberGender}">여자</label>
+          <div class="field-error" th:errors="*{memberGender}">성별 오류</div>
 
 
         </td>
@@ -67,7 +67,7 @@
       <tr>
         <th>생년월일</th>
         <td>
-          <input type="text" rows="3" style="width: 300px;" th:field="*{birthday}"  >
+          <input type="text" rows="3" style="width: 300px;" th:field="*{memberBirthday}"  >
         </td>
       </tr>
       </div>

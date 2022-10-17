@@ -15,7 +15,7 @@
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/main.css}"/>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script type="text/javascript" th:src="@{/script/main.js}"></script>
+<!--  <script type="text/javascript" th:src="@{/script/main.js}"></script>-->
 </head>
 <body>
 <form th:object="${siginin}" th:action="@{/member/siginin}" method="post">
@@ -25,13 +25,13 @@
     <tr>
       <td>
         <label>아이디</label>
-        <input type="text" class="form-member" style="width: 300px;" th:field="*{userName}">
+        <input type="text" class="form-member" style="width: 300px;" th:field="*{memberId}">
       </td>
     </tr>
     <tr>
       <td>
         <label>패스워드</label>
-        <input type="password" class="form-pw" style="width: 300px;" th:field="*{password}">
+        <input type="password" class="form-pw" style="width: 300px;" th:field="*{memberPassword}">
       </td>
     </tr>
     </div>

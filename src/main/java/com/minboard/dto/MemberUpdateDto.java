@@ -1,5 +1,6 @@
 package com.minboard.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,31 +12,30 @@ import java.time.LocalDateTime;
 @Setter
 public class MemberUpdateDto {
 
-    private Long seq;
+    private Long memberSeq;
 
-    private String userName;
+    private String memberId;
 
-    private String password;
+    private String memberPassword;
 
-    private String name;
+    private String memberName;
 
-    private String birthday;
+    private String memberBirthday;
 
-    private String gender;
+    private String memberGender;
 
     private String memberRole;
 
     private LocalDateTime lastLoginTime;
 
-    public MemberUpdateDto(Long seq, String userName, String password,
-                           String name, String birthday, String gender,
-                           String memberRole, LocalDateTime lastLoginTime) {
-        this.seq = seq;
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
-        this.birthday = birthday;
-        this.gender = gender;
+    @Builder
+    public MemberUpdateDto(Long memberSeq, String memberId, String memberPassword, String memberName, String memberBirthday, String memberGender, String memberRole, LocalDateTime lastLoginTime) {
+        this.memberSeq = memberSeq;
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberName = memberName;
+        this.memberBirthday = memberBirthday;
+        this.memberGender = memberGender;
         this.memberRole = memberRole;
         this.lastLoginTime = lastLoginTime;
     }

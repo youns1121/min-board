@@ -5,14 +5,12 @@ import com.minboard.dto.MemberUpdateDto;
 import com.minboard.vo.member.MemberVo;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.time.LocalDateTime;
-
 @Mapper
 public interface MemberMapper {
 
     void insertMember(MemberDto memberDto);
 
-    MemberVo findByUserName(String userName);
+    MemberVo findByMemberId(String memberId);
 
     boolean isLoginMember(MemberDto memberDto);
 

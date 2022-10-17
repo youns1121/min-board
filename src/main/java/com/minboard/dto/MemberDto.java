@@ -1,5 +1,6 @@
 package com.minboard.dto;
 
+import com.minboard.enums.MemberMangeEnums;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,43 +13,39 @@ import java.time.LocalDateTime;
 @Setter
 public class MemberDto {
 
-    private Long seq;
+    private Long memberSeq;
 
     @NotBlank(message = "아이디는 필수값 입니다.")
-    private String userName;
+    private String memberId;
 
     @NotBlank(message = "패스워드는 필수값 입니다.")
     @Length(min=8, max=16, message = "비밀번호는 8자 이상, 16자 이하로 입력해주세요")
-    private String password;
+    private String memberPassword;
 
     @NotBlank(message = "이름은 필수값 입니다.")
-    private String name;
+    private String memberName;
 
-    private String birthday;
+    private String memberBirthday;
 
     @NotBlank(message = "성별은 필수값 입니다.")
-    private String gender;
+    private String memberGender;
 
-    private String memberRole;
+    private MemberMangeEnums.MemberRoleEnum memberRole;
 
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
 
     @Builder
-    public MemberDto(String userName, String password, String name,
-                     String birthday, String gender, String memberRole,
-                     LocalDateTime createTime, LocalDateTime updateTime) {
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.memberRole = memberRole;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-    }
-
-    public MemberDto() {
+    public MemberDto(Long memberSeq, String memberId, String memberPassword, String memberName, String memberBirthday, String memberGender) {
+        this.memberSeq = memberSeq;
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberName = memberName;
+        this.memberBirthday = memberBirthday;
+        this.memberGender = memberGender;
+        this.memberRole = MemberMangeEnums.MemberRoleEnum.USER;
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
     }
 }

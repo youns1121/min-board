@@ -22,7 +22,7 @@
     <insert id="insertMember"
             parameterType="MemberDto"
             useGeneratedKeys ="true"
-            keyProperty="seq"
+            keyProperty="memberSeq"
     >
 
         insert into members(

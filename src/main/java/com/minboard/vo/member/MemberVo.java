@@ -4,14 +4,19 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 @NoArgsConstructor
 @Getter
-@EqualsAndHashCode(of = {"seq"})
-public class MemberVo {
+@EqualsAndHashCode(of = {"memberSeq"})
+public class MemberVo implements UserDetails {
 
     private Long memberSeq;
 
@@ -45,5 +50,40 @@ public class MemberVo {
         this.createTime = createTime;
         this.updateTime = updateTime;
         this.delYn = delYn;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority(this.memberRole));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.memberPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.memberId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

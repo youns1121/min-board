@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration
@@ -23,22 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /** 로그인 설정 **/
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-//
-//        http.authorizeRequests()
-//                //페이지 권한 설정
-//                    .antMatchers("/admin/**").permitAll()
-//                .and()//로그인 설정
-//                    .formLogin()
-//                    .loginPage("/member/siginin") // 로그인 페이지 URL
-//                    .loginProcessingUrl("/member/siginin") // 스프링 시큐리티가 낚아채서 대신 로그인 진행
-//                    .defaultSuccessUrl("/board/category") //로그인 성공시 이동할 URL
-//                    .usernameParameter("userName") // 로그인시  form에서 사용할 파라미터 이름으로 userName을 지정
-//                    .failureUrl("/member/siginin") // 로그인 실패시 이동할 URL
-//                .and()//로그아웃 설정
-//                    .logout()
-//                    .logoutSuccessUrl("/board/category")  //로그아웃 성공시 이동할 URL
-//        ;
+
 
         http
                 .authorizeRequests()
@@ -51,10 +37,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/member/siginin")
                     .usernameParameter("memberId")
                     .passwordParameter("memberPassword")
-                    .defaultSuccessUrl("/board", true)
+                    .defaultSuccessUrl("/", true)
                     .permitAll()
                 .and()
-                    .logout();
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("JSESSIONID", "remember-me") // 로그아웃 후 쿠키 삭제
+                    .invalidateHttpSession(true)
+                ;
     }
 
 

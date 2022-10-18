@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class BoardAdminService{
@@ -37,17 +36,19 @@ public class BoardAdminService{
         boardAdminMapper.updateBoardAdminSetting(boardAdminUpdateDto);
     }
 
-
+    @Transactional(readOnly = true)
     public BoardAdminVo getBoardAdmin(int id){
 
         return boardAdminMapper.selectBoardAdmin(id);
     }
 
-    public BoardAdminVo getBoardCategory(int categoryNumber){
+    @Transactional(readOnly = true)
+    public BoardAdminVo getBoardCategory(Integer categoryNumber){
 
         return boardAdminMapper.selectBoardCategory(categoryNumber);
     }
 
+    @Transactional(readOnly = true)
     public List<BoardAdminVo> getBoardAdminList(BoardAdminRequestDto boardAdminRequestDto){
 
         return boardAdminMapper.selectBoardAdminList(boardAdminRequestDto);
@@ -64,6 +65,7 @@ public class BoardAdminService{
         boardAdminMapper.updateIsDeleteBoardAdmin(id);
     }
 
+    @Transactional(readOnly = true)
     public List<BoardAdminVo> getBoardCategoryList(){
 
         return boardAdminMapper.selectBoardCategoryList();

@@ -2,10 +2,8 @@ package com.minboard.controller;
 
 import com.minboard.dto.MemberDto;
 import com.minboard.service.MemberService;
-import com.minboard.service.common.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,9 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MyUserDetailsService myUserDetailsService;
-    private final PasswordEncoder passwordEncoder;
 
+
+//    @GetMapping("/")
+//    public String index(Model model, @CurrentUser Account account) {
+//        if (account == null) {
+//            model.addAttribute("message", "Hello Spring Security");
+//        } else {
+//
+//            model.addAttribute("message", "Hello" + account.getUsername());
+//        }
+//
+//        return "index";
+//    }
     @GetMapping("/success")
     public String memberSuccess(){
 
@@ -44,14 +52,14 @@ public class MemberController {
     @PostMapping("/siginin")
     public String memberSiginIn(@ModelAttribute("siginin") MemberDto memberDto, BindingResult bindingResult){
 
-        memberService.isLoginMember(memberDto);
+        memberService.loginMember(memberDto);
 
         if(bindingResult.hasErrors()){
             log.info("errors={}", bindingResult);
             return "html/member/memberSiginInForm";
         }
 
-        return "redirect:/board/category";
+        return "redirect:/";
     }
 
     @GetMapping("/siginup")
@@ -63,8 +71,7 @@ public class MemberController {
     }
 
     @PostMapping("/siginup")
-    public String memberSiginUp(@Validated @ModelAttribute("siginup") MemberDto memberDto, BindingResult bindingResult,
-                                Model model){
+    public String memberSiginUp(@Validated @ModelAttribute("siginup") MemberDto memberDto, BindingResult bindingResult, Model model){
 
         if (bindingResult.hasErrors()) {
 
@@ -73,13 +80,19 @@ public class MemberController {
         }
 
         try {
-            memberService.insertMember(memberDto, passwordEncoder);
+            memberService.insertMember(memberDto);
         }catch (IllegalStateException e){
             model.addAttribute("errors", e);
             return "html/member/memberSiginUpForm";
         }
 
         return "redirect:/admin";
+    }
+
+    @GetMapping("/logout")
+    public String memberLogOut(){
+
+        return "redirect:/board/category";
     }
 
     @GetMapping("/duplicate/check/member")

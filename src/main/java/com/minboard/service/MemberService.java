@@ -1,13 +1,15 @@
 package com.minboard.service;
 
 import com.minboard.dto.MemberDto;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.minboard.vo.member.MemberVo;
 
 public interface MemberService {
 
-     void insertMember(MemberDto memberDto, PasswordEncoder passwordEncoder);
+     void insertMember(MemberDto memberDto);
 
      void validateDuplicateMember(MemberDto memberDto);
 
-     boolean isLoginMember(MemberDto memberDto);
+     void loginMember(MemberDto memberDto);
+
+     MemberVo findByMemberId(String memberId);
 }

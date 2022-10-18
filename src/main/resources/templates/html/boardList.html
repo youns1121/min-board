@@ -19,14 +19,6 @@
 
 
     <div th:fragment="boardHeader" th:replace="html/header/boardHeader :: boardHeader"></div>
-    <sec:authorize access="isAuthenticated()">
-        로그아웃
-    </sec:authorize>
-    <br/>
-    <sec:authorize access="isAnonymous()">
-        <button type="button" th:text="회원가입" th:onclick="|location.href='@{/member/siginup}'|"></button>
-        <button type="button" th:text="로그인"  th:onclick="|location.href='@{/member/siginin}'|"></button>
-    </sec:authorize>
 
 </head>
 <body>
@@ -42,7 +34,6 @@
                   th:each="category : ${categoryList}"
                   th:if="${category.categoryNumber} eq ${categoryNumber}"
                   th:onclick="|location.href='@{/board/new(categoryNumber=${category.categoryNumber})}'|" >글쓰기</button>
-          <button type="button" class="admin" th:onclick="|location.href='@{/admin}'|">관리자 페이지</button>
         </div>
     <div>
 

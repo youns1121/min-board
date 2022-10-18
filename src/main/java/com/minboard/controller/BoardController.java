@@ -29,12 +29,13 @@ public class BoardController {
     private final BoardAdminService boardAdminService;
 
     @GetMapping("/new")
-    public String boardSave(Model model, @RequestParam("categoryNumber") int categoryNumber) {
+    public String boardSave(Model model, @RequestParam(value = "categoryNumber", required = false) Integer categoryNumber) {
 
         model.addAttribute("categoryNumber", categoryNumber);
         model.addAttribute("categoryList",  boardAdminService.getBoardCategoryList());
         model.addAttribute("board", BoardSaveDto.builder().build());
-        model.addAttribute("boardAdmin",boardAdminService.getBoardCategory(categoryNumber));
+         model.addAttribute("boardAdmin",boardAdminService.getBoardCategory(categoryNumber));
+
         return "html/boardNew";
     }
 
@@ -91,7 +92,7 @@ public class BoardController {
         return "html/boardList";
     }
 
-    @GetMapping(value = {"/category", "/"})
+    @GetMapping(value = {"/category"})
     public String boardCategoryList(BoardRequestDto requestDto, Model model) {
 
         model.addAttribute("boardList", boardService.getBoardList(requestDto));
@@ -174,12 +175,5 @@ public class BoardController {
     public void commentsReplyAdd(BoardCommentsReplySaveDto commentsReplySaveDto){
 
         commentsService.saveCommentsReply(commentsReplySaveDto);
-    }
-
-    @GetMapping("/header")
-    public String boardHeader(Model model){
-
-        model.addAttribute("categoryList", boardAdminService.getBoardCategoryList());
-        return "html/header/boardHeader";
     }
 }

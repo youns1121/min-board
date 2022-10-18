@@ -94,13 +94,14 @@ public class BoardServiceImpl implements BoardService {
         fileMapper.deleteBoardFileList(id);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void modifyBoard(BoardUpdateDto boardUpdateVo) {
        boardMapper.updateBoard(boardUpdateVo);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BoardVo> getBoardList(BoardRequestDto requestDto) {
 
         List<BoardVo> boardList = Collections.emptyList();

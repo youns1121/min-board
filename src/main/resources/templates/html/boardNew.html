@@ -30,7 +30,18 @@
         <fieldset class="field">
             <legend>글쓰기</legend>
             <td>카테고리</td>
-            <span>
+
+            <span th:if="${categoryNumber} eq null">
+                <select class="selectbox">
+                    <option th:each="category : ${categoryList}"
+                            th:value="${category.categoryNumber}"
+                            th:data-adminid="${category.id}"
+                            th:text="${category.categoryName}">
+                    </option>
+                </select>
+            </span>
+
+            <span th:if="${categoryNumber} ne null">
                 <select class="selectbox">
                     <option th:each="category : ${categoryList}"
                             th:value="${category.categoryNumber}"

@@ -17,7 +17,7 @@ public interface BoardAdminMapper {
 
     List<BoardAdminVo> selectBoardCategoryList();
 
-    BoardAdminVo selectBoardCategory(int id);
+    BoardAdminVo selectBoardCategory(Integer id);
 
     BoardAdminVo selectBoardAdmin(int boardAdminId);
 

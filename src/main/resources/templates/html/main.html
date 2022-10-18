@@ -18,23 +18,9 @@
 
   <div th:fragment="boardHeader" th:replace="html/header/boardHeader :: boardHeader"></div>
 
-
-
 </head>
 <body>
 <div class="container" style="max-width: 600px">
-  <h1 th:each="category : ${categoryList}"
-      th:if="${category.categoryNumber} eq ${categorynumber}"
-      th:text="${category.categoryName}">
-  </h1>
-  <h1 th:if="${categorynumber} eq  null" th:text="전체보기"></h1>
-  <div>
-    <button type="button" class="writeButton"
-            th:each="category : ${categoryList}"
-            th:if="${category.categoryNumber} eq ${categorynumber}"
-            th:onclick="|location.href='@{/board/new(categoryNumber=${category.categoryNumber})}'|" >글쓰기</button>
-    <button type="button" class="admin" th:onclick="|location.href='@{/admin}'|">관리자 페이지</button>
-  </div>
   <div>
 
     <br/>

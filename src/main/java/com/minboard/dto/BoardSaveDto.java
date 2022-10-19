@@ -18,6 +18,8 @@ public class BoardSaveDto {
     @NotBlank(message = "제목은 필수값 입니다.")
     private String title;
 
+    private Long memberSeq;
+
     @NotBlank(message = "내용은 필수값 입니다.")
     @Length(min = 20, max = 100,message = "내용은 20자 이상 100자 이하")
     private String contents;
@@ -44,6 +46,28 @@ public class BoardSaveDto {
 
     private LocalDateTime updateTime;
 
+    @Builder
+    public BoardSaveDto(Integer id, String title, Long memberSeq, String contents,
+                        List<MultipartFile> fileList, BoardFileVo uploadFileVo, BoardUpdateDto boardUpdateVo,
+                        Integer boardSort, Integer boardDepth, Integer boardGroup,
+                        Integer boardId, Integer boardAdminId, String categoryName) {
+        this.id = id;
+        this.title = title;
+        this.memberSeq = memberSeq;
+        this.contents = contents;
+        this.fileList = fileList;
+        this.uploadFileVo = uploadFileVo;
+        this.boardUpdateVo = boardUpdateVo;
+        this.boardSort = boardSort;
+        this.boardDepth = boardDepth;
+        this.boardGroup = boardGroup;
+        this.boardId = boardId;
+        this.boardAdminId = boardAdminId;
+        this.categoryName = categoryName;
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
+    }
+
     public void setBoardSortAndDepth(){
 
         if(boardSort == null && boardDepth == null ){
@@ -57,24 +81,7 @@ public class BoardSaveDto {
         this.boardSort = boardSort;
     }
 
-    @Builder
-    public BoardSaveDto(Integer id, String title, String contents,
-                        List<MultipartFile> fileList, BoardFileVo uploadFileVo, BoardUpdateDto boardUpdateVo,
-                        Integer boardSort, Integer boardDepth, Integer boardGroup,
-                        Integer boardId, Integer boardAdminId, String categoryName) {
-        this.id = id;
-        this.title = title;
-        this.contents = contents;
-        this.fileList = fileList;
-        this.uploadFileVo = uploadFileVo;
-        this.boardUpdateVo = boardUpdateVo;
-        this.boardSort = boardSort;
-        this.boardDepth = boardDepth;
-        this.boardGroup = boardGroup;
-        this.boardId = boardId;
-        this.boardAdminId = boardAdminId;
-        this.categoryName = categoryName;
-        this.createTime = LocalDateTime.now();
-        this.updateTime = LocalDateTime.now();
+    public void setMemberSeq(Long memberSeq) {
+        this.memberSeq = memberSeq;
     }
 }

@@ -76,7 +76,7 @@
                   </span>
                   <span th:text="${board.title}"></span>
               </td>
-              <td><!--작성자--></td>
+              <td th:text="${board.memberId}" style="text-align: center"></td>
               <td th:if="${#temporals.format(board.createTime, 'yyyy-MM-dd').equals(#dates.format(#dates.createToday(), 'yyyy-MM-dd'))}"
                   th:text="${#temporals.format(board.createTime, 'HH:mm')}" style="color: red; text-align: center">
               </td>

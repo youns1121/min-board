@@ -19,17 +19,7 @@ public class MemberController {
     private final MemberService memberService;
 
 
-//    @GetMapping("/")
-//    public String index(Model model, @CurrentUser Account account) {
-//        if (account == null) {
-//            model.addAttribute("message", "Hello Spring Security");
-//        } else {
-//
-//            model.addAttribute("message", "Hello" + account.getUsername());
-//        }
-//
-//        return "index";
-//    }
+
     @GetMapping("/success")
     public String memberSuccess(){
 
@@ -58,7 +48,6 @@ public class MemberController {
             log.info("errors={}", bindingResult);
             return "html/member/memberSiginInForm";
         }
-
         return "redirect:/";
     }
 

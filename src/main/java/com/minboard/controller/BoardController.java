@@ -5,11 +5,14 @@ import com.minboard.dto.request.BoardRequestDto;
 import com.minboard.service.BoardAdminService;
 import com.minboard.service.CommentsService;
 import com.minboard.service.BoardFileService;
+import com.minboard.service.MemberService;
 import com.minboard.service.impl.BoardServiceImpl;
 import com.minboard.vo.*;
+import com.minboard.vo.member.MemberVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class BoardController {
     private final BoardFileService boardFileService;
     private final CommentsService commentsService;
     private final BoardAdminService boardAdminService;
+    private final MemberService memberService;
 
     @GetMapping("/new")
     public String boardSave(Model model, @RequestParam(value = "categoryNumber", required = false) Integer categoryNumber) {
@@ -113,7 +118,6 @@ public class BoardController {
     public String boardDetails(@PathVariable("id") int id, Model model) {
 
         model.addAttribute("detailViewBoard", boardService.getDetailViewBoard(id));
-//        model.addAttribute("boardFileList", boardFileService.getBoardFileList(id));
         return "html/boardDetail";
     }
 

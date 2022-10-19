@@ -23,6 +23,7 @@
         <result property="boardFileCount" column="board_file_count"/>
         <result property="categoryName" column="category_name" />
         <result property="categoryNumber" column="category_number" />
+        <result property="memberId" column="member_id" />
         <collection property="boardFileVoList" column="id" javaType="java.util.List" select="selectBoardFileList"/>
     </resultMap>
 
@@ -61,10 +62,13 @@
                     , b.create_time
                     , b.update_time
                     , b.del_yn
+                    , m.member_id
 
         from        board as b
         inner join  board_admin as ba
             on b.board_admin_id = ba.id
+        inner join  members as m
+            on b.member_seq = m.member_seq
         left join   board_file bf
             on b.id = bf.board_id
             
@@ -118,11 +122,13 @@
                , b.create_time
                , b.update_time
                , b.board_admin_id
-               , b.del_yn
+               , m.member_id
 
         from   board as b
         inner join board_admin as ba
             on b.board_admin_id = ba.id
+        inner join members as m
+            on b.member_seq = m.member_seq
 
         where
                b.id = #{id} and b.del_yn = 'N'
@@ -184,6 +190,7 @@
                           , create_time
                           , update_time
                           , board_admin_id
+                          , member_id
         )values(
                             #{title}
                             , #{contents}
@@ -193,6 +200,7 @@
                             , #{createTime}
                             , #{updateTime}
                             , #{boardAdminId}
+                            , #{memberSeq}
         )
     </insert>
 

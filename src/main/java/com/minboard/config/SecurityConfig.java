@@ -27,9 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
         http
+                .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/board", "/member").permitAll()
-                    .antMatchers("/admin").hasAnyAuthority("ROLE_ADMIN")
+                    .antMatchers("/board/**", "/member/**").permitAll()
+                    .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
 //                    .anyRequest().authenticated() // 어떤 URI로 접근하던지 인증이 필요함을 설정합니다.
                 .and()
                     .formLogin()

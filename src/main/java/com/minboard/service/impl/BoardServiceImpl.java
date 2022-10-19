@@ -3,17 +3,17 @@ package com.minboard.service.impl;
 
 import com.minboard.dto.BoardSaveDto;
 import com.minboard.dto.request.BoardRequestDto;
-import com.minboard.mapper.BoardAdminMapper;
-import com.minboard.mapper.BoardMapper;
-import com.minboard.mapper.BoardCommentsMapper;
-import com.minboard.mapper.BoardFileMapper;
+import com.minboard.mapper.*;
 import com.minboard.paging.PaginationInfo;
 import com.minboard.service.BoardService;
+import com.minboard.service.MemberService;
 import com.minboard.vo.BoardVo;
 import com.minboard.dto.BoardUpdateDto;
 import com.minboard.vo.BoardFileVo;
+import com.minboard.vo.member.MemberVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -35,21 +35,27 @@ public class BoardServiceImpl implements BoardService {
     private final BoardAdminMapper boardAdminMapper;
     private final BoardFileMapper fileMapper;
     private final BoardCommentsMapper commentsMapper;
+    private final MemberMapper memberMapper;
 
     @Value("${custom.path.uploadPath}")
     private String uploadPath;
 
-    @Transactional
     @Override
+    @Transactional
     public void saveBoard(BoardSaveDto boardSaveDto) {
+
+        MemberVo member = memberMapper.findByMemberId(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (member != null){
+            boardSaveDto.setMemberSeq(member.getMemberSeq());
+        }
 
         boardSaveDto.setBoardSortAndDepth();
         boardMapper.insertBoard(boardSaveDto);
         boardMapper.updateBoardGroupSet(boardSaveDto.getId());
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void saveBoardFile(List<MultipartFile> fileList, int boardId) throws IOException {
 
         if(!CollectionUtils.isEmpty(fileList)) {
@@ -59,19 +65,21 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public BoardVo getDetailViewBoard(int id) {
 
         return boardMapper.selectBoard(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BoardVo getBoardReply(int id) {
 
         return boardMapper.selectBoardReply(id);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public void removeBoard(int id) {
         List<BoardFileVo> boardFileList = fileMapper.selectBoardFileList(id);
         int boardFileListSize = boardFileList.size();

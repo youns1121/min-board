@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 
@@ -18,9 +19,9 @@ import org.springframework.util.StringUtils;
 public class MyUserDetailsService implements UserDetailsService {
 
     private final MemberMapper memberMapper;
-    private final MemberService memberService;
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 
         if(!StringUtils.hasText(memberId)){

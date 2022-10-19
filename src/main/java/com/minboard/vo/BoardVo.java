@@ -3,7 +3,6 @@ package com.minboard.vo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,15 +53,17 @@ public class BoardVo{
 
     private int boardFileCount;
 
+    private String memberId;
+
     @Builder
     public BoardVo(Integer id, String title, String contents,
-                   List<MultipartFile> fileList, BoardFileVo boardFileVo,
+                   BoardFileVo boardFileVo,
                    int boardSort, int boardDepth, int boardGroup,
                    Integer boardId, Integer boardAdminId, String categoryName,
                    LocalDateTime createTime, LocalDateTime updateTime, int commentsCount,
                    int fileCount, String delYn, String replyYn, String commentsYn,
                    int categoryNumber, List<BoardFileVo> boardFileVoList,
-                   String boardFileYn, int boardFileCount) {
+                   String boardFileYn, int boardFileCount, String memberId) {
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -84,5 +85,6 @@ public class BoardVo{
         this.boardFileVoList = boardFileVoList;
         this.boardFileYn = boardFileYn;
         this.boardFileCount = boardFileCount;
+        this.memberId = memberId;
     }
 }
